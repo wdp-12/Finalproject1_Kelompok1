@@ -44,13 +44,28 @@ var gameInterval;
 
 var score = 0;
 var highscore = 0;
+var isPaused = false;
+
+
+function pauseOrPlay(pause) {
+    if (pause === true) {
+        isPaused = true;
+        document.getElementById('pauseIcon').style.display = 'none';
+        document.getElementById('playIcon').style.display = 'block';
+    } else if (pause === false) {
+        isPaused = false;
+        document.getElementById('pauseIcon').style.display = 'block';
+        document.getElementById('playIcon').style.display = 'none';
+    }
+}
 
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
 }
 
 function loop() {
-    if (!isPlaying) {
+    if (!isPlaying || isPaused) {
+        requestAnimationFrame(loop);
         return;
     }
 
@@ -98,7 +113,7 @@ function loop() {
         }
 
         if (cell.x === pizza.x && cell.y === pizza.y) {
-            snake.maxCells++;
+            snake.maxCells+=5;
             pizza.x = getRandomInt(0, 25) * grid;
             pizza.y = getRandomInt(0, 25) * grid;
             score += 5;
