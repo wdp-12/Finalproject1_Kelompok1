@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="head-container">
+        <img id="pauseIcon" src="assets/pause.svg" alt="Pause" onclick="pauseOrPlay()" style="display: block;">
+        <img id="playIcon" src="assets/play.svg" alt="Pause" onclick="pauseOrPlay()" style="display: none;">
+        <p>Snake Amazon</p>
+    </div>
+
+    <div class="game-container">
+        <!-- Kontainer Kiri dengan Peraturan Permainan -->
+        <div class="card-l">
+            <div class="card-header">
+                <p>Game Rules</p>
+            </div>
+
+            <ul class="card-content">
+                <li>
+                    <img src="assets/apple.svg" alt="Logo Apel">
+                    +1 Score
+                </li>
+                <li>
+                    <img src="assets/pizza.svg" alt="Logo Pizza">
+                    +5 Score
+                </li>
+                <li>
+                    <img src="assets/bomb.svg" alt="Logo Bomb">
+                    Kill Snake
+                </li>
+            </ul>
+        </div>
+
+        <!-- Elemen Canvas untuk Permainan -->
+        <div>
+            <canvas width="400" height="400" id="game-canvas"></canvas>
+        </div>
+
+        <!-- Kontainer Kanan -->
+        <div class="card-r">
+            <div class="card-header">
+                <p>Tutorial</p>
+            </div>
+            <div class="card-content">
+                <p>Gunakan Tombol</p>
+                <img src="assets/arrow-keys.svg" alt="Arrow Keys">
+                <p>untuk bermain</p>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="bottom-container">
+        <!-- Elemen untuk Menampilkan Skor -->
+        <p id="score">Score: 0</p>
+
+        <!-- Elemen untuk Menampilkan Skor Tertinggi -->
+        <p id="highscore">Highscore: 0</p>
+
+        <!-- Tombol "Start" untuk Memulai Permainan -->
+        <button id="startButton">Start</button>
+    </div>
+
+    <!-- Game Over Modal -->
+    <div id="gameOverModal">
+        <div class="game-over-modal">
+            <div class="game-over-content">
+                <span class="close">X</span>
+                <p>Game Over :(</p>
+            </div>
+        </div>
+    </div>
+
+</body>
+<script src="main.js"></script>
+
+</html>
