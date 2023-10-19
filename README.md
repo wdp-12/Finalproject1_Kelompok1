@@ -3,7 +3,7 @@
 Status: In progress <br>
 Expired Date: November 4, 2023
 
-### Konsep Dasar
+### Basic Concept
 
 1. Terdapat seekor ular.
 2. Terdapat umpan.
@@ -12,7 +12,7 @@ Expired Date: November 4, 2023
 
 ---
 
-### Aturan Main
+### Game Rules
 
 1. Tombol "start" mengarah ke perintah "start game"
 2. Pilih level dan buat username.
@@ -20,7 +20,7 @@ Expired Date: November 4, 2023
 4. Memakan umpan akan meningkatkan skor dan panjang ular.
 5. Terdapat highscore dan skor per putaran.
 
-### Item dalam game
+### Game Item
 
 | Nama Item | Objektif | Kemunculan | Batas Waktu Kemunculan |
 | --- | --- | --- | --- |
