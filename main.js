@@ -49,10 +49,13 @@ var isPaused = false;
 
 function pauseOrPlay(pause) {
     if (pause === true) {
-        isPaused = true;
+        isPlaying = true
+        isPaused = true
         document.getElementById('pauseIcon').style.display = 'none';
         document.getElementById('playIcon').style.display = 'block';
-    } else if (pause === false) {
+    }
+    if (pause === false) {
+        isPlaying = true
         isPaused = false;
         document.getElementById('pauseIcon').style.display = 'block';
         document.getElementById('playIcon').style.display = 'none';
@@ -63,15 +66,21 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
 }
 
-function loop() {
-    if (!isPlaying || isPaused) {
-        requestAnimationFrame(loop);
+let lastTime = 0; // Time var comparer
+
+function loop(timestamp) {
+    if (!isPlaying) {
+        // requestAnimationFrame(loop);
         return;
     }
 
     requestAnimationFrame(loop);
 
-    if (++count < 7) {
+    if (++count < 20) {
+        return;
+    }
+
+    if (isPaused) {
         return;
     }
 
@@ -138,6 +147,11 @@ function loop() {
     var bombImage = new Image();
     bombImage.src = 'assets/bomb.svg';
     context.drawImage(bombImage, bomb.x, bomb.y, grid - 1, grid - 1);
+
+    // Trace game loop speed
+    const deltaTime = Math.ceil(timestamp - lastTime);
+    lastTime = timestamp;
+    console.log(`Kecepatan loop game ${deltaTime}ms`);
 }
 
 function updatePizza() {
@@ -193,6 +207,15 @@ function gameOver() {
 startButton.addEventListener('click', startGame);
 
 document.addEventListener('keydown', function (e) {
+    if (e.which === 32) {
+        if (!isPlaying) {
+            startGame();
+        } else if (!isPaused) {
+            pauseOrPlay(true)
+        } else { 
+            pauseOrPlay(false)
+        }
+    }
     if (isPlaying) {
         if (e.which === 37 && snake.dx === 0) {
             snake.dx = -grid;
