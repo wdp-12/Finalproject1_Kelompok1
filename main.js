@@ -140,21 +140,57 @@ function loop() {
     context.drawImage(bombImage, bomb.x, bomb.y, grid - 1, grid - 1);
 }
 
+function isCollidingWithSnake(x, y) {
+    // Cek apakah koordinat (x, y) bertabrakan dengan tubuh ular
+    for (let i = 0; i < snake.cells.length; i++) {
+        if (snake.cells[i].x === x && snake.cells[i].y === y) {
+            return true; // Ada tumpang tindih dengan tubuh ular
+        }
+    }
+    return false; // Tidak ada tumpang tindih dengan tubuh ular
+}
+
 function updatePizza() {
     pizzaCount++;
-    if (pizzaCount >= 10) {
-        pizza.x = getRandomInt(0, 25) * grid;
-        pizza.y = getRandomInt(0, 25) * grid;
+
+    if (pizzaCount >= 5) {
+        var newPizzaX, newPizzaY;
+
+        do {
+            newPizzaX = getRandomInt(0, 25) * grid;
+            newPizzaY = getRandomInt(0, 25) * grid;
+        } while (
+            (newPizzaX === apple.x && newPizzaY === apple.y) ||
+            (newPizzaX === bomb.x && newPizzaY === bomb.y) ||
+            isCollidingWithSnake(newPizzaX, newPizzaY)
+        );
+
+        pizza.x = newPizzaX;
+        pizza.y = newPizzaY;
         pizzaCount = 0;
+        console.log('pizza pindah');
     }
 }
 
 function updateBomb() {
     bombCount++;
-    if (bombCount >= 15) {
-        bomb.x = getRandomInt(0, 25) * grid;
-        bomb.y = getRandomInt(0, 25) * grid;
+
+    if (bombCount >= 8) {
+        var newBombX, newBombY;
+
+        do {
+            newBombX = getRandomInt(0, 25) * grid;
+            newBombY = getRandomInt(0, 25) * grid;
+        } while (
+            (newBombX === apple.x && newBombY === apple.y) ||
+            (newBombX === pizza.x && newBombY === pizza.y) ||
+            isCollidingWithSnake(newBombX, newBombY)
+        );
+
+        bomb.x = newBombX;
+        bomb.y = newBombY;
         bombCount = 0;
+        console.log('bom pindah');
     }
 }
 
