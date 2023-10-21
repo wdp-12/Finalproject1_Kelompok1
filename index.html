@@ -40,7 +40,13 @@
         </div>
 
         <!-- Elemen Canvas untuk Permainan -->
-        <div>
+        <div class="canvas-container">
+            <div class="score">
+                <!-- Elemen untuk Menampilkan Skor -->
+                <p id="score">Score: 0</p>
+                <!-- Elemen untuk Menampilkan Skor Tertinggi -->
+                <p id="highscore">Highscore: 0</p>
+            </div>
             <canvas width="400" height="400" id="game-canvas"></canvas>
         </div>
 
@@ -59,14 +65,22 @@
     </div>
 
     <div class="bottom-container">
-        <!-- Elemen untuk Menampilkan Skor -->
-        <p id="score">Score: 0</p>
-
-        <!-- Elemen untuk Menampilkan Skor Tertinggi -->
-        <p id="highscore">Highscore: 0</p>
-
         <!-- Tombol "Start" untuk Memulai Permainan -->
         <button id="startButton">Start</button>
+
+        <div class="container-keys">
+            <div class="arrow-keys">
+                <div class="overlap-group">
+                    <img id="key-up" src="assets/arrow-keys/key-up.svg" />
+                    <img id="key-left" src="assets/arrow-keys/key-left.svg" />
+                    <img id="key-right" src="assets/arrow-keys/key-right.svg" />
+                    <img id="key-down" src="assets/arrow-keys/key-down.svg" />
+                    <img id="pause-key" src="assets/arrow-keys/pause.svg" onclick="pauseOrPlay(true)" />
+                    <img id="play-key" src="assets/arrow-keys/play.svg" onclick="pauseOrPlay(false)"
+                        style="display: none;" />
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Game Over Modal -->

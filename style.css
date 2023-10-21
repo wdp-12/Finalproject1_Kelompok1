@@ -19,7 +19,7 @@ body {
 /* KONTAINER ATAS */
 .head-container {
     position: relative;
-    height: 200px;
+    height: 170px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -38,7 +38,6 @@ body {
 
 .head-container p {
     font-size: 60px;
-    margin-top: 50px;
     bottom: 0;
 }
 
@@ -48,10 +47,6 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-#score {
-    margin-top: 25px;
 }
 
 /* KONTAINER GAME */
@@ -118,6 +113,14 @@ canvas {
     border: 3px solid white;
 }
 
+.score {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 3px solid white;
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+}
+
 
 #gameOverModal {
     display: none;
@@ -147,8 +150,8 @@ canvas {
     justify-content: center;
     border-radius: 25px;
     gap: 30px;
-    width: 30%;
-    height: 20%;
+    width: 600px;
+    height: 300px;
     background-color: #1A3A45;
 }
 
@@ -181,10 +184,108 @@ canvas {
     padding: 10px 25px;
     font-size: 20px;
     border-radius: 5px;
+    margin-top: 10px;
 }
 
 #startButton:hover,
 #startButton:focus {
     background-color: #3b8b3e;
     cursor: pointer;
+}
+
+
+
+/* RESPONSIVE BREAKPOINT */
+/* ukuran tablet */
+@media screen and (max-width: 768px) {
+
+    .card-l,
+    .card-r {
+        display: none;
+    }
+}
+
+/* RESPONSIVE BREAKPOINT */
+/* ukuran mobile */
+@media screen and (max-width: 576px) {
+    .head-container {
+        height: 100px;
+    }
+
+    .head-container img {
+        top: 15px;
+        left: 15px;
+        width: 30px;
+    }
+
+    .head-container p {
+        font-size: 50px;
+    }
+
+    .canvas-container {
+        width: 90%;
+    }
+
+    canvas {
+        width: 100%;
+    }
+}
+
+.container-keys {
+    width: 200px;
+    height: 200px;
+    margin-top: 30px;
+
+}
+
+.container-keys .arrow-keys {
+    position: fixed;
+    width: 200px;
+    height: 200px;
+}
+
+.container-keys .overlap-group {
+    position: relative;
+    height: 200px;
+}
+
+.container-keys #key-up {
+    position: absolute;
+    width: 132px;
+    height: 92px;
+    top: 0;
+    left: 34px;
+}
+
+.container-keys #key-left {
+    position: absolute;
+    width: 92px;
+    height: 132px;
+    top: 34px;
+    left: 0;
+}
+
+.container-keys #key-right {
+    position: absolute;
+    width: 92px;
+    height: 132px;
+    top: 34px;
+    left: 108px;
+}
+
+.container-keys #key-down {
+    position: absolute;
+    width: 132px;
+    height: 92px;
+    top: 108px;
+    left: 34px;
+}
+
+.container-keys #pause-key,
+.container-keys #play-key {
+    position: absolute;
+    width: 70px;
+    height: 70px;
+    top: 65px;
+    left: 65px;
 }

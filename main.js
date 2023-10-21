@@ -6,6 +6,8 @@ var scoreText = document.getElementById('score');
 var highscoreText = document.getElementById('highscore');
 var pauseIcon = document.getElementById("pauseIcon");
 var playIcon = document.getElementById("playIcon");
+var pauseKey = document.getElementById("pause-key"); // on mobile
+var playKey = document.getElementById("play-key"); // on mobile
 var closeModal = document.getElementsByClassName("close")[0];
 
 var grid = 16;
@@ -51,14 +53,18 @@ function pauseOrPlay(pause) {
     if (pause === true) {
         isPlaying = true
         isPaused = true
-        document.getElementById('pauseIcon').style.display = 'none';
-        document.getElementById('playIcon').style.display = 'block';
+        pauseIcon.style.display = 'none';
+        playIcon.style.display = 'block';
+        pauseKey.style.display = 'none'; // on mobile
+        playKey.style.display = 'block'; // on mobile
     }
     if (pause === false) {
         isPlaying = true
         isPaused = false;
-        document.getElementById('pauseIcon').style.display = 'block';
-        document.getElementById('playIcon').style.display = 'none';
+        pauseIcon.style.display = 'block';
+        playIcon.style.display = 'none';
+        pauseKey.style.display = 'block'; // on mobile
+        playKey.style.display = 'none'; // on mobile
     }
 }
 
@@ -76,7 +82,7 @@ function loop(timestamp) {
 
     requestAnimationFrame(loop);
 
-    if (++count < 20) {
+    if (++count < 10) {
         return;
     }
 
@@ -107,12 +113,12 @@ function loop(timestamp) {
     snake.cells.forEach(function (cell, index) {
         context.fillStyle = (index === 0) ? '#E79D56' : '#386858';
         context.fillRect(cell.x, cell.y, grid - 1, grid - 1);
-    
+
         if (index !== 0 && cell.x === snake.x && cell.y === snake.y) {
             gameOver();
             return;
         }
-    
+
         if (cell.x === apple.x && cell.y === apple.y) {
             snake.maxCells++;
             apple.x = getRandomInt(0, 25) * grid;
@@ -122,7 +128,7 @@ function loop(timestamp) {
         }
 
         if (cell.x === pizza.x && cell.y === pizza.y) {
-            snake.maxCells+=5;
+            snake.maxCells += 5;
             pizza.x = getRandomInt(0, 25) * grid;
             pizza.y = getRandomInt(0, 25) * grid;
             score += 5;
@@ -212,7 +218,7 @@ document.addEventListener('keydown', function (e) {
             startGame();
         } else if (!isPaused) {
             pauseOrPlay(true)
-        } else { 
+        } else {
             pauseOrPlay(false)
         }
     }
@@ -235,4 +241,76 @@ document.addEventListener('keydown', function (e) {
 
 document.querySelector(".close").addEventListener("click", function () {
     gameOverModal.style.display = "none";
+});
+
+
+
+// ARROW KEYS ON MOBILE
+var keyUp = document.getElementById('key-up');
+var keyDown = document.getElementById('key-down');
+var keyLeft = document.getElementById('key-left');
+var keyRight = document.getElementById('key-right');
+
+
+// Efek klik keyUp
+keyUp.addEventListener("touchstart", function () {
+    keyUp.style.opacity = "0.5"
+});
+keyUp.addEventListener("touchend", function () {
+    keyUp.style.opacity = "1"
+});
+// Turn up
+keyUp.addEventListener("click", function () {
+    if (snake.dy === 0) {
+        snake.dy = -grid;
+        snake.dx = 0;
+    }
+});
+
+
+// Efek klik keyDown
+keyDown.addEventListener("touchstart", function () {
+    keyDown.style.opacity = "0.5"
+});
+keyDown.addEventListener("touchend", function () {
+    keyDown.style.opacity = "1"
+});
+// Turn down
+keyDown.addEventListener("click", function () {
+    if (snake.dy === 0) {
+        snake.dy = grid;
+        snake.dx = 0;
+    }
+});
+
+
+// Efek klik keyLeft
+keyLeft.addEventListener("touchstart", function () {
+    keyLeft.style.opacity = "0.5"
+});
+keyLeft.addEventListener("touchend", function () {
+    keyLeft.style.opacity = "1"
+});
+// Turn left
+keyLeft.addEventListener("click", function () {
+    if (snake.dx === 0) {
+        snake.dx = -grid;
+        snake.dy = 0;
+    }
+});
+
+
+// Efek klik keyRight
+keyRight.addEventListener("touchstart", function () {
+    keyRight.style.opacity = "0.5"
+});
+keyRight.addEventListener("touchend", function () {
+    keyRight.style.opacity = "1"
+});
+// Turn right
+keyRight.addEventListener("click", function () {
+    if (snake.dx === 0) {
+        snake.dx = grid;
+        snake.dy = 0;
+    }
 });
