@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="head-container">
+        <img id="pauseIcon" src="assets/pause.svg" alt="Pause" onclick="pauseOrPlay(true)" style="display: block;">
+        <img id="playIcon" src="assets/play.svg" alt="Play" onclick="pauseOrPlay(false)" style="display: none;">
+        <p>Snake Amazon</p>
+    </div>
+
+    <audio id="bgAudio" src="assets/sound/backsound.mp3" loop></audio>
+<audio id="eatAudio" src="assets/sound/makan.mp3"></audio>
+<audio id="bombAudio" src="assets/sound/duar.mp3"></audio>
+
+    <div class="game-container">
+        <!-- Kontainer Kiri dengan Peraturan Permainan -->
+        <div class="card-l">
+            <div class="card-header">
+                <p>Game Rules</p>
+            </div>
+
+            <ul class="card-content">
+                <li>
+                    <img src="assets/item/apple.svg" alt="Logo Apel">
+                    +1 Score
+                </li>
+                <li>
+                    <img src="assets/item/pizza.svg" alt="Logo Pizza">
+                    +5 Score
+                </li>
+                <li>
+                    <img src="assets/item/bomb.svg" alt="Logo Bomb">
+                    Kill Snake
+                </li>
+            </ul>
+        </div>
+
+        <!-- Elemen Canvas untuk Permainan -->
+        <div class="canvas-container">
+            <div class="score">
+                <!-- Elemen untuk Menampilkan Skor -->
+                <p id="score">Score: 0</p>
+                <!-- Elemen untuk Menampilkan Skor Tertinggi -->
+                <p id="highscore">Highscore: 0</p>
+            </div>
+            <canvas width="400" height="400" id="game-canvas"></canvas>
+        </div>
+
+        <!-- Kontainer Kanan -->
+        <div class="card-r">
+            <div class="card-header">
+                <p>Tutorial</p>
+            </div>
+            <div class="card-content">
+                <p>Gunakan Tombol</p>
+                <img src="assets/arrow-keys.svg" alt="Arrow Keys">
+                <p>untuk bermain</p>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="bottom-container">
+        <!-- Tombol "Start" untuk Memulai Permainan -->
+        <button id="startButton">Start</button>
+
+        <div class="container-keys">
+            <div class="arrow-keys">
+                <div class="overlap-group">
+                    <img id="key-up" src="assets/arrow-keys/key-up.svg" />
+                    <img id="key-left" src="assets/arrow-keys/key-left.svg" />
+                    <img id="key-right" src="assets/arrow-keys/key-right.svg" />
+                    <img id="key-down" src="assets/arrow-keys/key-down.svg" />
+                    <img id="pause-key" src="assets/arrow-keys/pause.svg" onclick="pauseOrPlay(true)" />
+                    <img id="play-key" src="assets/arrow-keys/play.svg" onclick="pauseOrPlay(false)"
+                        style="display: none;" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Over Modal -->
+    <div id="gameOverModal">
+        <div class="game-over-modal">
+            <div class="game-over-content">
+                <span class="close">X</span>
+                <p>Game Over :(</p>
+            </div>
+        </div>
+    </div>
+
+</body>
+<script src="main.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    const username = urlParams.get('username');
+    if (username) {
+        const usernameElement = document.getElementById('username');
+        usernameElement.textContent = username;
+    }
+});
+</script>
+</html>
