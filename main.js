@@ -49,6 +49,21 @@ var highscore = 0;
 var isPaused = false;
 
 
+function playBackgroundSound() {
+    var bgAudio = document.getElementById('bgAudio');
+    bgAudio.play();
+}
+
+function playEatSound() {
+    var eatAudio = document.getElementById('eatAudio');
+    eatAudio.play();
+}
+
+function playBombSound() {
+    var bombAudio = document.getElementById('bombAudio');
+    bombAudio.play();
+}
+
 function pauseOrPlay(pause) {
     if (pause === true) {
         isPlaying = true
@@ -97,6 +112,7 @@ function loop(timestamp) {
     snake.y += snake.dy;
 
     if (snake.x < 0 || snake.x >= canvas.width || snake.y < 0 || snake.y >= canvas.height) {
+        playBombSound();
         gameOver();
         return;
     }
@@ -115,6 +131,7 @@ function loop(timestamp) {
         context.fillRect(cell.x, cell.y, grid - 1, grid - 1);
 
         if (index !== 0 && cell.x === snake.x && cell.y === snake.y) {
+            playBombSound();
             gameOver();
             return;
         }
@@ -125,6 +142,7 @@ function loop(timestamp) {
             apple.y = getRandomInt(0, 25) * grid;
             score++;
             scoreText.textContent = 'Score: ' + score;
+            playEatSound(); // Mainkan suara saat memakan apel
         }
 
         if (cell.x === pizza.x && cell.y === pizza.y) {
@@ -134,24 +152,26 @@ function loop(timestamp) {
             score += 5;
             scoreText.textContent = 'Score: ' + score;
             pizzaCount = 0;
+            playEatSound(); // Mainkan suara saat memakan pizza
         }
 
         if (cell.x === bomb.x && cell.y === bomb.y) {
+            playBombSound(); // Mainkan suara saat memakan bom
             gameOver();
             return;
         }
     });
 
     var appleImage = new Image();
-    appleImage.src = 'assets/apple.svg';
+    appleImage.src = 'assets/item/apple.svg';
     context.drawImage(appleImage, apple.x, apple.y, grid - 1, grid - 1);
 
     var pizzaImage = new Image();
-    pizzaImage.src = 'assets/pizza.svg';
+    pizzaImage.src = 'assets/item/pizza.svg';
     context.drawImage(pizzaImage, pizza.x, pizza.y, grid - 1, grid - 1);
 
     var bombImage = new Image();
-    bombImage.src = 'assets/bomb.svg';
+    bombImage.src = 'assets/item/bomb.svg';
     context.drawImage(bombImage, bomb.x, bomb.y, grid - 1, grid - 1);
 
     // Trace game loop speed
@@ -231,6 +251,8 @@ function startGame() {
     snake.dy = 0;
     apple.x = getRandomInt(0, 25) * grid;
     apple.y = getRandomInt(0, 25) * grid;
+    // Mulai putar suara latar belakang saat permainan dimulai
+    playBackgroundSound();
     setInterval(updatePizza, 5000); // 5 detik
     setInterval(updateBomb, 8000); // 8 detik
     loop();
@@ -238,6 +260,8 @@ function startGame() {
 
 function gameOver() {
     isPlaying = false;
+    // Menghentikan suara latar belakang
+    document.getElementById("bgAudio").pause();
     if (score > highscore) {
         highscore = score; // Perbarui highscore jika skor saat ini lebih tinggi
         highscoreText.textContent = 'Highscore: ' + highscore; // Perbarui teks highscore di layar
