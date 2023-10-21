@@ -38,7 +38,7 @@
                 </li>
                 <li>
                     <img src="assets/item/bomb.svg" alt="Logo Bomb">
-                    Kill Snake
+                     Kill Snake
                 </li>
             </ul>
         </div>
@@ -51,6 +51,7 @@
                 <!-- Elemen untuk Menampilkan Skor Tertinggi -->
                 <p id="highscore">Highscore: 0</p>
             </div>
+        <div>
             <canvas width="400" height="400" id="game-canvas"></canvas>
         </div>
 
@@ -85,6 +86,14 @@
                 </div>
             </div>
         </div>
+        <!-- Elemen untuk Menampilkan Skor -->
+        <p id="score">Score: 0</p>
+
+        <!-- Elemen untuk Menampilkan Skor Tertinggi -->
+        <p id="highscore">Highscore: 0</p>
+
+        <!-- Tombol "Start" untuk Memulai Permainan -->
+        <button id="startButton">Start</button>
     </div>
 
     <!-- Game Over Modal -->
@@ -99,14 +108,4 @@
 
 </body>
 <script src="main.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-    const urlParams = new URLSearchParams(window.location.search);
-    const username = urlParams.get('username');
-    if (username) {
-        const usernameElement = document.getElementById('username');
-        usernameElement.textContent = username;
-    }
-});
-</script>
 </html>
