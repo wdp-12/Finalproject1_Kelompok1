@@ -6,6 +6,8 @@ var scoreText = document.getElementById('score');
 var highscoreText = document.getElementById('highscore');
 var pauseIcon = document.getElementById("pauseIcon");
 var playIcon = document.getElementById("playIcon");
+var pauseKey = document.getElementById("pause-key"); // on mobile
+var playKey = document.getElementById("play-key"); // on mobile
 var closeModal = document.getElementsByClassName("close")[0];
 
 var grid = 16;
@@ -46,16 +48,60 @@ var score = 0;
 var highscore = 0;
 var isPaused = false;
 
+function fadeIn(audioElement, duration) {
+    audioElement.volume = 0;
+    audioElement.play();
+    let fadeInInterval = 10;
+    let targetVolume = 0.9;
+
+    let volumeStep = 1 / (duration / fadeInInterval);
+
+    const fadeInterval = setInterval(() => {
+        if (audioElement.volume < targetVolume) {
+            audioElement.volume += volumeStep;
+        } else {
+            clearInterval(fadeInterval);
+        }
+    }, fadeInInterval);
+}
+
+function playBackgroundSound() {
+    var bgAudio = document.getElementById('bgAudio');
+    fadeIn(bgAudio, 2000)
+}
+
+function playEatSound() {
+    var eatAudio = document.getElementById('eatAudio');
+    eatAudio.play();
+}
+
+function playBombSound() {
+    var bombAudio = document.getElementById('bombAudio');
+    bombAudio.play();
+}
+
+function playCDSound() {
+    var CDAudio = document.getElementById('CDAudio');
+    CDAudio.play();
+    CDAudio.volume = 0.6
+}
 
 function pauseOrPlay(pause) {
     if (pause === true) {
-        isPaused = true;
-        document.getElementById('pauseIcon').style.display = 'none';
-        document.getElementById('playIcon').style.display = 'block';
-    } else if (pause === false) {
+        isPlaying = true
+        isPaused = true
+        pauseIcon.style.display = 'none';
+        playIcon.style.display = 'block';
+        pauseKey.style.display = 'none'; // on mobile
+        playKey.style.display = 'block'; // on mobile
+    }
+    if (pause === false) {
+        isPlaying = true
         isPaused = false;
-        document.getElementById('pauseIcon').style.display = 'block';
-        document.getElementById('playIcon').style.display = 'none';
+        pauseIcon.style.display = 'block';
+        playIcon.style.display = 'none';
+        pauseKey.style.display = 'block'; // on mobile
+        playKey.style.display = 'none'; // on mobile
     }
 }
 
@@ -63,15 +109,21 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
 }
 
-function loop() {
-    if (!isPlaying || isPaused) {
-        requestAnimationFrame(loop);
+let lastTime = 0; // Time var comparer
+
+function loop(timestamp) {
+    if (!isPlaying) {
+        // requestAnimationFrame(loop);
         return;
     }
 
     requestAnimationFrame(loop);
 
-    if (++count < 7) {
+    if (++count < 10) {
+        return;
+    }
+
+    if (isPaused) {
         return;
     }
 
@@ -82,6 +134,7 @@ function loop() {
     snake.y += snake.dy;
 
     if (snake.x < 0 || snake.x >= canvas.width || snake.y < 0 || snake.y >= canvas.height) {
+        playBombSound();
         gameOver();
         return;
     }
@@ -98,46 +151,55 @@ function loop() {
     snake.cells.forEach(function (cell, index) {
         context.fillStyle = (index === 0) ? '#E79D56' : '#386858';
         context.fillRect(cell.x, cell.y, grid - 1, grid - 1);
-    
+
         if (index !== 0 && cell.x === snake.x && cell.y === snake.y) {
+            playBombSound();
             gameOver();
             return;
         }
-    
+
         if (cell.x === apple.x && cell.y === apple.y) {
             snake.maxCells++;
             apple.x = getRandomInt(0, 25) * grid;
             apple.y = getRandomInt(0, 25) * grid;
             score++;
             scoreText.textContent = 'Score: ' + score;
+            playEatSound(); // Mainkan suara saat memakan apel
         }
 
         if (cell.x === pizza.x && cell.y === pizza.y) {
-            snake.maxCells+=5;
+            snake.maxCells += 5;
             pizza.x = getRandomInt(0, 25) * grid;
             pizza.y = getRandomInt(0, 25) * grid;
             score += 5;
             scoreText.textContent = 'Score: ' + score;
             pizzaCount = 0;
+            playEatSound(); // Mainkan suara saat memakan pizza
         }
 
         if (cell.x === bomb.x && cell.y === bomb.y) {
+            playBombSound(); // Mainkan suara saat memakan bom
             gameOver();
             return;
         }
     });
 
     var appleImage = new Image();
-    appleImage.src = 'assets/apple.svg';
+    appleImage.src = 'assets/item/apple.svg';
     context.drawImage(appleImage, apple.x, apple.y, grid - 1, grid - 1);
 
     var pizzaImage = new Image();
-    pizzaImage.src = 'assets/pizza.svg';
+    pizzaImage.src = 'assets/item/pizza.svg';
     context.drawImage(pizzaImage, pizza.x, pizza.y, grid - 1, grid - 1);
 
     var bombImage = new Image();
-    bombImage.src = 'assets/bomb.svg';
+    bombImage.src = 'assets/item/bomb.svg';
     context.drawImage(bombImage, bomb.x, bomb.y, grid - 1, grid - 1);
+
+    // Trace game loop speed
+    const deltaTime = Math.ceil(timestamp - lastTime);
+    lastTime = timestamp;
+    console.log(`Kecepatan loop game ${deltaTime}ms`);
 }
 
 function isCollidingWithSnake(x, y) {
@@ -211,6 +273,8 @@ function startGame() {
     snake.dy = 0;
     apple.x = getRandomInt(0, 25) * grid;
     apple.y = getRandomInt(0, 25) * grid;
+    // Mulai putar suara latar belakang saat permainan dimulai
+    playBackgroundSound();
     setInterval(updatePizza, 5000); // 5 detik
     setInterval(updateBomb, 8000); // 8 detik
     loop();
@@ -218,6 +282,8 @@ function startGame() {
 
 function gameOver() {
     isPlaying = false;
+    // Menghentikan suara latar belakang
+    document.getElementById("bgAudio").pause();
     if (score > highscore) {
         highscore = score; // Perbarui high score jika skor saat ini lebih tinggi
         highscoreText.textContent = 'Highscore: ' + highscore; // Perbarui teks high score di layar
@@ -229,9 +295,56 @@ function gameOver() {
     gameOverModal.style.display = 'block';
 }
 
-startButton.addEventListener('click', startGame);
+function startCountdown() {
+    const countdownElement = document.getElementById('countdown');
+    const startButton = document.getElementById('startButton');
+    countdownElement.style.display = 'flex'
+    gameOverModal.style.display = 'none'
+
+
+    let countdown = 3;
+    let countdownInterval;
+    playCDSound()
+    
+    countdownElement.style.fontSize = '17vh'
+    countdownElement.style.color = 'white'
+    countdownElement.textContent = countdown;
+
+    function updateCountdown() {
+        countdown--;
+        countdownElement.textContent = countdown;
+        if (countdown <= 0) {
+            countdownElement.textContent = 'Mulai!';
+            countdownElement.style.fontSize = '10vh'
+            countdownElement.style.color = '#ff3300'
+            if (countdown < 0) {
+                clearInterval(countdownInterval);
+                startButton.disabled = false
+                startGame();
+                countdownElement.style.display = 'none'
+            }
+        }
+    }
+    countdownElement.style.fontSize = '23vh'
+    
+    countdownInterval = setInterval(updateCountdown, 1000)
+    startButton.disabled = true
+    isPlaying = true
+}
+
+startButton.addEventListener('click', startCountdown);
 
 document.addEventListener('keydown', function (e) {
+    if (e.which === 32) {
+        e.preventDefault()
+        if (!isPlaying) {
+            startCountdown();
+        } else if (!isPaused) {
+            pauseOrPlay(true)
+        } else {
+            pauseOrPlay(false)
+        }
+    }
     if (isPlaying) {
         if (e.which === 37 && snake.dx === 0) {
             snake.dx = -grid;
@@ -251,9 +364,7 @@ document.addEventListener('keydown', function (e) {
 
 document.querySelector(".close").addEventListener("click", function () {
     gameOverModal.style.display = "none";
-<<<<<<< Updated upstream
-});
-=======
+
 });
 
 function updateHighscore() {
@@ -268,7 +379,6 @@ function updateHighscore() {
 window.onload = function () {
     updateHighscore();
 };
-
 
 // ARROW KEYS ON MOBILE
 var keyUp = document.getElementById('key-up');
@@ -339,4 +449,3 @@ keyRight.addEventListener("click", function () {
         snake.dy = 0;
     }
 });
->>>>>>> Stashed changes
