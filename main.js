@@ -148,7 +148,7 @@ function loop(timestamp) {
 
     var pizzaImage = new Image();
     pizzaImage.src = 'assets/pizza.svg';
-    context.drawImage(pizzaImage, pizza.x, pizza.y, grid - 1, grid - 1);
+    context.drawImage(pizzaImage, pizza.x, pizza.y, grid + 2, grid + 2);
 
     var bombImage = new Image();
     bombImage.src = 'assets/bomb.svg';
