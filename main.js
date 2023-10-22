@@ -285,8 +285,11 @@ function gameOver() {
     // Menghentikan suara latar belakang
     document.getElementById("bgAudio").pause();
     if (score > highscore) {
-        highscore = score; // Perbarui highscore jika skor saat ini lebih tinggi
-        highscoreText.textContent = 'Highscore: ' + highscore; // Perbarui teks highscore di layar
+        highscore = score; // Perbarui high score jika skor saat ini lebih tinggi
+        highscoreText.textContent = 'Highscore: ' + highscore; // Perbarui teks high score di layar
+
+        // Simpan high score ke local storage
+        localStorage.setItem('highscore', highscore);
     }
     startButton.style.display = 'block';
     gameOverModal.style.display = 'block';
@@ -361,9 +364,21 @@ document.addEventListener('keydown', function (e) {
 
 document.querySelector(".close").addEventListener("click", function () {
     gameOverModal.style.display = "none";
+
 });
 
+function updateHighscore() {
+    if (localStorage.getItem('highscore') !== null) {
+        highscore = parseInt(localStorage.getItem('highscore'));
+    } else {
+        highscore = 0;
+    }
+    highscoreText.textContent = 'Highscore: ' + highscore;
+}
 
+window.onload = function () {
+    updateHighscore();
+};
 
 // ARROW KEYS ON MOBILE
 var keyUp = document.getElementById('key-up');
