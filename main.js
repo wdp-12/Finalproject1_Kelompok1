@@ -48,10 +48,26 @@ var score = 0;
 var highscore = 0;
 var isPaused = false;
 
+function fadeIn(audioElement, duration) {
+    audioElement.volume = 0;
+    audioElement.play();
+    let fadeInInterval = 10;
+    let targetVolume = 0.9;
+
+    let volumeStep = 1 / (duration / fadeInInterval);
+
+    const fadeInterval = setInterval(() => {
+        if (audioElement.volume < targetVolume) {
+            audioElement.volume += volumeStep;
+        } else {
+            clearInterval(fadeInterval);
+        }
+    }, fadeInInterval);
+}
 
 function playBackgroundSound() {
     var bgAudio = document.getElementById('bgAudio');
-    bgAudio.play();
+    fadeIn(bgAudio, 2000)
 }
 
 function playEatSound() {
@@ -62,6 +78,12 @@ function playEatSound() {
 function playBombSound() {
     var bombAudio = document.getElementById('bombAudio');
     bombAudio.play();
+}
+
+function playCDSound() {
+    var CDAudio = document.getElementById('CDAudio');
+    CDAudio.play();
+    CDAudio.volume = 0.6
 }
 
 function pauseOrPlay(pause) {
@@ -270,12 +292,50 @@ function gameOver() {
     gameOverModal.style.display = 'block';
 }
 
-startButton.addEventListener('click', startGame);
+function startCountdown() {
+    const countdownElement = document.getElementById('countdown');
+    const startButton = document.getElementById('startButton');
+    countdownElement.style.display = 'flex'
+    gameOverModal.style.display = 'none'
+
+
+    let countdown = 3;
+    let countdownInterval;
+    playCDSound()
+    
+    countdownElement.style.fontSize = '17vh'
+    countdownElement.style.color = 'white'
+    countdownElement.textContent = countdown;
+
+    function updateCountdown() {
+        countdown--;
+        countdownElement.textContent = countdown;
+        if (countdown <= 0) {
+            countdownElement.textContent = 'Mulai!';
+            countdownElement.style.fontSize = '10vh'
+            countdownElement.style.color = '#ff3300'
+            if (countdown < 0) {
+                clearInterval(countdownInterval);
+                startButton.disabled = false
+                startGame();
+                countdownElement.style.display = 'none'
+            }
+        }
+    }
+    countdownElement.style.fontSize = '23vh'
+    
+    countdownInterval = setInterval(updateCountdown, 1000)
+    startButton.disabled = true
+    isPlaying = true
+}
+
+startButton.addEventListener('click', startCountdown);
 
 document.addEventListener('keydown', function (e) {
     if (e.which === 32) {
+        e.preventDefault()
         if (!isPlaying) {
-            startGame();
+            startCountdown();
         } else if (!isPaused) {
             pauseOrPlay(true)
         } else {
