@@ -176,6 +176,24 @@ canvas {
 }
 
 
+/* START Countdown style */
+#countdown {
+    position: fixed;
+    /* text-align: center; */
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    top: 50%;
+    left: 50%;
+    transition: .1s;
+    background-color: rgba(0, 0, 0, 0.5);
+    font-size: 23vh;
+    transform: translate(-50%, -50%);
+}
+/* END Countdown style */
+
 #startButton {
     display: block;
     background-color: #4CAF50;

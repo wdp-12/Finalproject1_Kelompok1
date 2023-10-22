@@ -48,6 +48,43 @@ var score = 0;
 var highscore = 0;
 var isPaused = false;
 
+function fadeIn(audioElement, duration) {
+    audioElement.volume = 0;
+    audioElement.play();
+    let fadeInInterval = 10;
+    let targetVolume = 0.9;
+
+    let volumeStep = 1 / (duration / fadeInInterval);
+
+    const fadeInterval = setInterval(() => {
+        if (audioElement.volume < targetVolume) {
+            audioElement.volume += volumeStep;
+        } else {
+            clearInterval(fadeInterval);
+        }
+    }, fadeInInterval);
+}
+
+function playBackgroundSound() {
+    var bgAudio = document.getElementById('bgAudio');
+    fadeIn(bgAudio, 2000)
+}
+
+function playEatSound() {
+    var eatAudio = document.getElementById('eatAudio');
+    eatAudio.play();
+}
+
+function playBombSound() {
+    var bombAudio = document.getElementById('bombAudio');
+    bombAudio.play();
+}
+
+function playCDSound() {
+    var CDAudio = document.getElementById('CDAudio');
+    CDAudio.play();
+    CDAudio.volume = 0.6
+}
 
 function pauseOrPlay(pause) {
     if (pause === true) {
@@ -97,6 +134,7 @@ function loop(timestamp) {
     snake.y += snake.dy;
 
     if (snake.x < 0 || snake.x >= canvas.width || snake.y < 0 || snake.y >= canvas.height) {
+        playBombSound();
         gameOver();
         return;
     }
@@ -115,6 +153,7 @@ function loop(timestamp) {
         context.fillRect(cell.x, cell.y, grid - 1, grid - 1);
 
         if (index !== 0 && cell.x === snake.x && cell.y === snake.y) {
+            playBombSound();
             gameOver();
             return;
         }
@@ -125,6 +164,7 @@ function loop(timestamp) {
             apple.y = getRandomInt(0, 25) * grid;
             score++;
             scoreText.textContent = 'Score: ' + score;
+            playEatSound(); // Mainkan suara saat memakan apel
         }
 
         if (cell.x === pizza.x && cell.y === pizza.y) {
@@ -134,24 +174,26 @@ function loop(timestamp) {
             score += 5;
             scoreText.textContent = 'Score: ' + score;
             pizzaCount = 0;
+            playEatSound(); // Mainkan suara saat memakan pizza
         }
 
         if (cell.x === bomb.x && cell.y === bomb.y) {
+            playBombSound(); // Mainkan suara saat memakan bom
             gameOver();
             return;
         }
     });
 
     var appleImage = new Image();
-    appleImage.src = 'assets/apple.svg';
+    appleImage.src = 'assets/item/apple.svg';
     context.drawImage(appleImage, apple.x, apple.y, grid - 1, grid - 1);
 
     var pizzaImage = new Image();
     pizzaImage.src = 'assets/pizza.svg';
-    context.drawImage(pizzaImage, pizza.x, pizza.y, grid + 2, grid + 2);
+    context.drawImage(pizzaImage, pizza.x, pizza.y, grid - 1, grid - 1);
 
     var bombImage = new Image();
-    bombImage.src = 'assets/bomb.svg';
+    bombImage.src = 'assets/item/bomb.svg';
     context.drawImage(bombImage, bomb.x, bomb.y, grid - 1, grid - 1);
 
     // Trace game loop speed
@@ -160,21 +202,57 @@ function loop(timestamp) {
     console.log(`Kecepatan loop game ${deltaTime}ms`);
 }
 
+function isCollidingWithSnake(x, y) {
+    // Cek apakah koordinat (x, y) bertabrakan dengan tubuh ular
+    for (let i = 0; i < snake.cells.length; i++) {
+        if (snake.cells[i].x === x && snake.cells[i].y === y) {
+            return true; // Ada tumpang tindih dengan tubuh ular
+        }
+    }
+    return false; // Tidak ada tumpang tindih dengan tubuh ular
+}
+
 function updatePizza() {
     pizzaCount++;
-    if (pizzaCount >= 10) {
-        pizza.x = getRandomInt(0, 25) * grid;
-        pizza.y = getRandomInt(0, 25) * grid;
+
+    if (pizzaCount >= 5) {
+        var newPizzaX, newPizzaY;
+
+        do {
+            newPizzaX = getRandomInt(0, 25) * grid;
+            newPizzaY = getRandomInt(0, 25) * grid;
+        } while (
+            (newPizzaX === apple.x && newPizzaY === apple.y) ||
+            (newPizzaX === bomb.x && newPizzaY === bomb.y) ||
+            isCollidingWithSnake(newPizzaX, newPizzaY)
+        );
+
+        pizza.x = newPizzaX;
+        pizza.y = newPizzaY;
         pizzaCount = 0;
+        console.log('pizza pindah');
     }
 }
 
 function updateBomb() {
     bombCount++;
-    if (bombCount >= 15) {
-        bomb.x = getRandomInt(0, 25) * grid;
-        bomb.y = getRandomInt(0, 25) * grid;
+
+    if (bombCount >= 8) {
+        var newBombX, newBombY;
+
+        do {
+            newBombX = getRandomInt(0, 25) * grid;
+            newBombY = getRandomInt(0, 25) * grid;
+        } while (
+            (newBombX === apple.x && newBombY === apple.y) ||
+            (newBombX === pizza.x && newBombY === pizza.y) ||
+            isCollidingWithSnake(newBombX, newBombY)
+        );
+
+        bomb.x = newBombX;
+        bomb.y = newBombY;
         bombCount = 0;
+        console.log('bom pindah');
     }
 }
 
@@ -195,6 +273,8 @@ function startGame() {
     snake.dy = 0;
     apple.x = getRandomInt(0, 25) * grid;
     apple.y = getRandomInt(0, 25) * grid;
+    // Mulai putar suara latar belakang saat permainan dimulai
+    playBackgroundSound();
     setInterval(updatePizza, 5000); // 5 detik
     setInterval(updateBomb, 8000); // 8 detik
     loop();
@@ -202,6 +282,8 @@ function startGame() {
 
 function gameOver() {
     isPlaying = false;
+    // Menghentikan suara latar belakang
+    document.getElementById("bgAudio").pause();
     if (score > highscore) {
         highscore = score; // Perbarui highscore jika skor saat ini lebih tinggi
         highscoreText.textContent = 'Highscore: ' + highscore; // Perbarui teks highscore di layar
@@ -210,12 +292,50 @@ function gameOver() {
     gameOverModal.style.display = 'block';
 }
 
-startButton.addEventListener('click', startGame);
+function startCountdown() {
+    const countdownElement = document.getElementById('countdown');
+    const startButton = document.getElementById('startButton');
+    countdownElement.style.display = 'flex'
+    gameOverModal.style.display = 'none'
+
+
+    let countdown = 3;
+    let countdownInterval;
+    playCDSound()
+
+    countdownElement.style.fontSize = '17vh'
+    countdownElement.style.color = 'white'
+    countdownElement.textContent = countdown;
+
+    function updateCountdown() {
+        countdown--;
+        countdownElement.textContent = countdown;
+        if (countdown <= 0) {
+            countdownElement.textContent = 'Mulai!';
+            countdownElement.style.fontSize = '10vh'
+            countdownElement.style.color = '#ff3300'
+            if (countdown < 0) {
+                clearInterval(countdownInterval);
+                startButton.disabled = false
+                startGame();
+                countdownElement.style.display = 'none'
+            }
+        }
+    }
+    countdownElement.style.fontSize = '23vh'
+
+    countdownInterval = setInterval(updateCountdown, 1000)
+    startButton.disabled = true
+    isPlaying = true
+}
+
+startButton.addEventListener('click', startCountdown);
 
 document.addEventListener('keydown', function (e) {
     if (e.which === 32) {
+        e.preventDefault()
         if (!isPlaying) {
-            startGame();
+            startCountdown();
         } else if (!isPaused) {
             pauseOrPlay(true)
         } else {

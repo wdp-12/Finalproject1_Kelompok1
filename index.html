@@ -16,6 +16,11 @@
         <p>Snake Amazon</p>
     </div>
 
+    <audio id="bgAudio" src="assets/sound/backsound.mp3" loop></audio>
+    <audio id="eatAudio" src="assets/sound/makan.mp3"></audio>
+    <audio id="bombAudio" src="assets/sound/duar.mp3"></audio>
+    <audio id="CDAudio" src="assets/sound/countdown.mp3"></audio>
+
     <div class="game-container">
         <!-- Kontainer Kiri dengan Peraturan Permainan -->
         <div class="card-l">
@@ -25,15 +30,15 @@
 
             <ul class="card-content">
                 <li>
-                    <img src="assets/apple.svg" alt="Logo Apel">
+                    <img src="assets/item/apple.svg" alt="Logo Apel">
                     +1 Score
                 </li>
                 <li>
-                    <img src="assets/pizza.svg" alt="Logo Pizza">
+                    <img src="assets/item/pizza.svg" alt="Logo Pizza">
                     +5 Score
                 </li>
                 <li>
-                    <img src="assets/bomb.svg" alt="Logo Bomb">
+                    <img src="assets/item/bomb.svg" alt="Logo Bomb">
                     Kill Snake
                 </li>
             </ul>
@@ -93,7 +98,9 @@
         </div>
     </div>
 
+    <!-- Countdown -->
+    <p id="countdown"></p>
+    
 </body>
 <script src="main.js"></script>
-
 </html>
