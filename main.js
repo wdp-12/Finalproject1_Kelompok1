@@ -219,8 +219,11 @@ function startGame() {
 function gameOver() {
     isPlaying = false;
     if (score > highscore) {
-        highscore = score; // Perbarui highscore jika skor saat ini lebih tinggi
-        highscoreText.textContent = 'Highscore: ' + highscore; // Perbarui teks highscore di layar
+        highscore = score; // Perbarui high score jika skor saat ini lebih tinggi
+        highscoreText.textContent = 'Highscore: ' + highscore; // Perbarui teks high score di layar
+
+        // Simpan high score ke local storage
+        localStorage.setItem('highscore', highscore);
     }
     startButton.style.display = 'block';
     gameOverModal.style.display = 'block';
@@ -248,4 +251,92 @@ document.addEventListener('keydown', function (e) {
 
 document.querySelector(".close").addEventListener("click", function () {
     gameOverModal.style.display = "none";
+<<<<<<< Updated upstream
 });
+=======
+});
+
+function updateHighscore() {
+    if (localStorage.getItem('highscore') !== null) {
+        highscore = parseInt(localStorage.getItem('highscore'));
+    } else {
+        highscore = 0;
+    }
+    highscoreText.textContent = 'Highscore: ' + highscore;
+}
+
+window.onload = function () {
+    updateHighscore();
+};
+
+
+// ARROW KEYS ON MOBILE
+var keyUp = document.getElementById('key-up');
+var keyDown = document.getElementById('key-down');
+var keyLeft = document.getElementById('key-left');
+var keyRight = document.getElementById('key-right');
+
+
+// Efek klik keyUp
+keyUp.addEventListener("touchstart", function () {
+    keyUp.style.opacity = "0.5"
+});
+keyUp.addEventListener("touchend", function () {
+    keyUp.style.opacity = "1"
+});
+// Turn up
+keyUp.addEventListener("click", function () {
+    if (snake.dy === 0) {
+        snake.dy = -grid;
+        snake.dx = 0;
+    }
+});
+
+
+// Efek klik keyDown
+keyDown.addEventListener("touchstart", function () {
+    keyDown.style.opacity = "0.5"
+});
+keyDown.addEventListener("touchend", function () {
+    keyDown.style.opacity = "1"
+});
+// Turn down
+keyDown.addEventListener("click", function () {
+    if (snake.dy === 0) {
+        snake.dy = grid;
+        snake.dx = 0;
+    }
+});
+
+
+// Efek klik keyLeft
+keyLeft.addEventListener("touchstart", function () {
+    keyLeft.style.opacity = "0.5"
+});
+keyLeft.addEventListener("touchend", function () {
+    keyLeft.style.opacity = "1"
+});
+// Turn left
+keyLeft.addEventListener("click", function () {
+    if (snake.dx === 0) {
+        snake.dx = -grid;
+        snake.dy = 0;
+    }
+});
+
+
+// Efek klik keyRight
+keyRight.addEventListener("touchstart", function () {
+    keyRight.style.opacity = "0.5"
+});
+keyRight.addEventListener("touchend", function () {
+    keyRight.style.opacity = "1"
+});
+// Turn right
+keyRight.addEventListener("click", function () {
+    if (snake.dx === 0) {
+        snake.dx = grid;
+        snake.dy = 0;
+    }
+});
+>>>>>>> Stashed changes
