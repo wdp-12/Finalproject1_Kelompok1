@@ -20,7 +20,6 @@ body {
 .head-container {
     position: relative;
     height: 170px;
-    height: 200px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -39,7 +38,6 @@ body {
 
 .head-container p {
     font-size: 60px;
-    margin-top: 50px;
     bottom: 0;
 }
 
@@ -49,10 +47,6 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-#score {
-    margin-top: 25px;
 }
 
 /* KONTAINER GAME */
@@ -158,8 +152,6 @@ canvas {
     gap: 30px;
     width: 600px;
     height: 300px;
-    width: 30%;
-    height: 20%;
     background-color: #1A3A45;
 }
 
@@ -183,6 +175,24 @@ canvas {
     cursor: pointer;
 }
 
+
+/* START Countdown style */
+#countdown {
+    position: fixed;
+    /* text-align: center; */
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    top: 50%;
+    left: 50%;
+    transition: .1s;
+    background-color: rgba(0, 0, 0, 0.5);
+    font-size: 23vh;
+    transform: translate(-50%, -50%);
+}
+/* END Countdown style */
 
 #startButton {
     display: block;
