@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="assets/icon.png">
     <title>Snake</title>
 
     <link rel="stylesheet" href="style.css">
@@ -70,8 +71,6 @@
     </div>
 
     <div class="bottom-container">
-        <!-- Tombol "Start" untuk Memulai Permainan -->
-        <button id="startButton">Start</button>
 
         <div class="container-keys">
             <div class="arrow-keys">
@@ -88,19 +87,60 @@
         </div>
     </div>
 
+    <!-- Start Game Modal -->
+    <div id="startGameModal">
+        <div class="start-game-modal">
+            <div class="start-game-content">
+                <h1>
+                    Welcome
+                    <span style="color: #cd2900;">!</span>
+                </h1>
+                <p>Fill in the form below to start the game 🚀</p>
+                <form id="user-form">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" required>
+
+                    <label for="level">Select Level</label>
+                    <select id="level" name="level">
+                        <option value="easy">Easy</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                    <button type="button" id="startButton">Start Game</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!-- Game Over Modal -->
     <div id="gameOverModal">
         <div class="game-over-modal">
             <div class="game-over-content">
                 <span class="close">X</span>
                 <p>Game Over :(</p>
+                <p>Top 5 Players</p>
+                <table class="top-players">
+                    <tr>
+                        <th>Name</th>
+                        <th>Level</th>
+                        <th>Score</th>
+                    </tr>
+                    <!-- <tr>
+                        <td>Hamdan</td>
+                        <td>High</td>
+                        <td>200</td>
+                    </tr> -->
+                </table>
             </div>
         </div>
     </div>
 
     <!-- Countdown -->
-    <p id="countdown"></p>
-    
+    <div class="countdown">
+        <p id="countdown"></p>
+    </div>
+
 </body>
 <script src="main.js"></script>
+
 </html>
