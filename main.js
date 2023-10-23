@@ -96,7 +96,7 @@ function pauseOrPlay(pause) {
         pauseKey.style.display = 'none'; // on mobile
         playKey.style.display = 'block'; // on mobile
         var bgAudio = document.getElementById('bgAudio');
-        fadeIn(bgAudio, 1000, 0.3)
+        fadeIn(bgAudio, 800, 0.1)
     }
     if (pause === false) {
         isPlaying = true
@@ -106,7 +106,7 @@ function pauseOrPlay(pause) {
         pauseKey.style.display = 'block'; // on mobile
         playKey.style.display = 'none'; // on mobile
         var bgAudio = document.getElementById('bgAudio');
-        fadeIn(bgAudio, 1000, 0.9)
+        fadeIn(bgAudio, 800, 0.9)
     }
 }
 
