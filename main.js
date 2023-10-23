@@ -36,6 +36,7 @@ var pizza = {
 var bomb = {
     x: getRandomInt(0, 25) * grid,
     y: getRandomInt(0, 25) * grid
+    
 };
 
 var pizzaCount = 0;
@@ -48,11 +49,11 @@ var score = 0;
 var highscore = 0;
 var isPaused = false;
 
-function fadeIn(audioElement, duration) {
+function fadeIn(audioElement, duration, volume = 0.9) {
     audioElement.volume = 0;
     audioElement.play();
     let fadeInInterval = 10;
-    let targetVolume = 0.9;
+    let targetVolume = volume;
 
     let volumeStep = 1 / (duration / fadeInInterval);
 
@@ -94,6 +95,8 @@ function pauseOrPlay(pause) {
         playIcon.style.display = 'block';
         pauseKey.style.display = 'none'; // on mobile
         playKey.style.display = 'block'; // on mobile
+        var bgAudio = document.getElementById('bgAudio');
+        fadeIn(bgAudio, 1000, 0.3)
     }
     if (pause === false) {
         isPlaying = true
@@ -102,6 +105,8 @@ function pauseOrPlay(pause) {
         playIcon.style.display = 'none';
         pauseKey.style.display = 'block'; // on mobile
         playKey.style.display = 'none'; // on mobile
+        var bgAudio = document.getElementById('bgAudio');
+        fadeIn(bgAudio, 1000, 0.9)
     }
 }
 
@@ -160,8 +165,21 @@ function loop(timestamp) {
 
         if (cell.x === apple.x && cell.y === apple.y) {
             snake.maxCells++;
-            apple.x = getRandomInt(0, 25) * grid;
-            apple.y = getRandomInt(0, 25) * grid;
+            var newAppleX, newAppleY;
+
+            do {
+                newAppleX = getRandomInt(0, 25) * grid;
+                newAppleY = getRandomInt(0, 25) * grid;
+            } while (
+                (newAppleX === pizza.x && newAppleY === pizza.y) ||
+                (newAppleX === bomb.x && newAppleY === bomb.y) ||
+                isCollidingWithSnake(newAppleX, newAppleY)
+            );
+
+            apple.x = newAppleX;
+            apple.y = newAppleY;
+            // apple.x = getRandomInt(0, 25) * grid;
+            // apple.y = getRandomInt(0, 25) * grid;
             score++;
             scoreText.textContent = 'Score: ' + score;
             playEatSound(); // Mainkan suara saat memakan apel
@@ -169,12 +187,19 @@ function loop(timestamp) {
 
         if (cell.x === pizza.x && cell.y === pizza.y) {
             snake.maxCells += 5;
-            pizza.x = getRandomInt(0, 25) * grid;
-            pizza.y = getRandomInt(0, 25) * grid;
+            // pizza.x = getRandomInt(0, 25) * grid;
+            // pizza.y = getRandomInt(0, 25) * grid;
+            // updatePizza()
             score += 5;
             scoreText.textContent = 'Score: ' + score;
             pizzaCount = 0;
             playEatSound(); // Mainkan suara saat memakan pizza
+            pizza.x = -grid;
+            pizza.y = -grid;
+            setTimeout(function () {
+                pizza.x = getRandomInt(0, 25) * grid;
+                pizza.y = getRandomInt(0, 25) * grid;
+            }, getRandomInt(5, 10) * 1000);
         }
 
         if (cell.x === bomb.x && cell.y === bomb.y) {
@@ -201,6 +226,29 @@ function loop(timestamp) {
     lastTime = timestamp;
     console.log(`Kecepatan loop game ${deltaTime}ms`);
 }
+//Agar item tidak stack dengan sesama
+function initializeItem(item) {
+    let newItemX, newItemY;
+
+    do {
+        newItemX = getRandomInt(0, 25) * grid;
+        newItemY = getRandomInt(0, 25) * grid;
+    } while (
+        (newItemX === snake.x && newItemY === snake.y) ||
+        (newItemX === apple.x && newItemY === apple.y) ||
+        (newItemX === pizza.x && newItemY === pizza.y) ||
+        (newItemX === bomb.x && newItemY === bomb.y) ||
+        isCollidingWithSnake(newItemX, newItemY)
+    );
+
+    item.x = newItemX;
+    item.y = newItemY;
+}
+
+// Kemudian, gunakan fungsi ini untuk menginisialisasi item:
+initializeItem(apple);
+initializeItem(pizza);
+initializeItem(bomb);
 
 function isCollidingWithSnake(x, y) {
     // Cek apakah koordinat (x, y) bertabrakan dengan tubuh ular
@@ -215,7 +263,7 @@ function isCollidingWithSnake(x, y) {
 function updatePizza() {
     pizzaCount++;
 
-    if (pizzaCount >= 5) {
+    if (pizzaCount >= 4) {
         var newPizzaX, newPizzaY;
 
         do {
@@ -230,14 +278,14 @@ function updatePizza() {
         pizza.x = newPizzaX;
         pizza.y = newPizzaY;
         pizzaCount = 0;
-        console.log('pizza pindah');
+        // console.log('pizza pindah');
     }
 }
 
 function updateBomb() {
     bombCount++;
 
-    if (bombCount >= 8) {
+    if (bombCount >= 5) {
         var newBombX, newBombY;
 
         do {
@@ -252,7 +300,7 @@ function updateBomb() {
         bomb.x = newBombX;
         bomb.y = newBombY;
         bombCount = 0;
-        console.log('bom pindah');
+        // console.log('bom pindah');
     }
 }
 
@@ -271,12 +319,23 @@ function startGame() {
     snake.maxCells = 4;
     snake.dx = grid;
     snake.dy = 0;
+
+    // Periksa dan atur ulang posisi bom jika berada di posisi yang sama dengan snake
+    do {
+        bomb.x = getRandomInt(0, 25) * grid;
+        bomb.y = getRandomInt(0, 25) * grid;
+    } while (
+        (bomb.x === apple.x && bomb.y === apple.y) ||
+        (bomb.x === pizza.x && bomb.y === pizza.y) ||
+        isCollidingWithSnake(bomb.x, bomb.y)
+    );
+
     apple.x = getRandomInt(0, 25) * grid;
     apple.y = getRandomInt(0, 25) * grid;
-    // Mulai putar suara latar belakang saat permainan dimulai
+
     playBackgroundSound();
-    setInterval(updatePizza, 5000); // 5 detik
-    setInterval(updateBomb, 8000); // 8 detik
+    setInterval(updatePizza, 5000);
+    setInterval(updateBomb, 5000);
     loop();
 }
 
@@ -305,7 +364,6 @@ function startCountdown() {
     let countdown = 3;
     let countdownInterval;
     playCDSound()
-    
     countdownElement.style.fontSize = '17vh'
     countdownElement.style.color = 'white'
     countdownElement.textContent = countdown;
@@ -326,7 +384,6 @@ function startCountdown() {
         }
     }
     countdownElement.style.fontSize = '23vh'
-    
     countdownInterval = setInterval(updateCountdown, 1000)
     startButton.disabled = true
     isPlaying = true
@@ -367,6 +424,22 @@ document.querySelector(".close").addEventListener("click", function () {
 
 });
 
+
+// ________[Badword]________
+let username = "biji kuda"
+function usernameCheck(username) {
+    const lowerCaseUsername = username.toLowerCase();
+    for (const badWord of badWordList) {
+        if (lowerCaseUsername.includes(badWord)) {
+            console.log('mulut anda kotorr!!');
+            return false;
+        }
+    }
+    console.log('sip namamu bagus');
+    return true;
+}
+usernameCheck(username)
+
 function updateHighscore() {
     if (localStorage.getItem('highscore') !== null) {
         highscore = parseInt(localStorage.getItem('highscore'));
@@ -375,6 +448,7 @@ function updateHighscore() {
     }
     highscoreText.textContent = 'Highscore: ' + highscore;
 }
+
 
 window.onload = function () {
     updateHighscore();
@@ -449,3 +523,5 @@ keyRight.addEventListener("click", function () {
         snake.dy = 0;
     }
 });
+
+
