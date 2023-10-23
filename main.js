@@ -195,7 +195,7 @@ function loop(timestamp) {
             playEatSound(); // Mainkan suara saat memakan pizza
             pizza.x = -grid;
             pizza.y = -grid;
-            setTimeout(function() {
+            setTimeout(function () {
                 pizza.x = getRandomInt(0, 25) * grid;
                 pizza.y = getRandomInt(0, 25) * grid;
             }, getRandomInt(5, 10) * 1000);
@@ -326,7 +326,7 @@ function startCountdown() {
     let countdown = 3;
     let countdownInterval;
     playCDSound()
-    
+
     countdownElement.style.fontSize = '17vh'
     countdownElement.style.color = 'white'
     countdownElement.textContent = countdown;
@@ -347,7 +347,7 @@ function startCountdown() {
         }
     }
     countdownElement.style.fontSize = '23vh'
-    
+
     countdownInterval = setInterval(updateCountdown, 1000)
     startButton.disabled = true
     isPlaying = true
@@ -387,6 +387,20 @@ document.querySelector(".close").addEventListener("click", function () {
     gameOverModal.style.display = "none";
 });
 
+// ________[Badword]________
+let username = "biji kuda"
+function usernameCheck(username) {
+    const lowerCaseUsername = username.toLowerCase();
+    for (const badWord of badWordList) {
+        if (lowerCaseUsername.includes(badWord)) {
+            console.log('mulut anda kotorr!!');
+            return false;
+        }
+    }
+    console.log('sip namamu bagus');
+    return true;
+}
+usernameCheck(username)
 
 
 // ARROW KEYS ON MOBILE
