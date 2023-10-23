@@ -1,6 +1,7 @@
 var canvas = document.getElementById('game-canvas');
 var context = canvas.getContext('2d');
 var startButton = document.getElementById('startButton');
+var startGameModal = document.getElementById('startGameModal')
 var gameOverModal = document.getElementById('gameOverModal');
 var scoreText = document.getElementById('score');
 var highscoreText = document.getElementById('highscore');
@@ -9,6 +10,8 @@ var playIcon = document.getElementById("playIcon");
 var pauseKey = document.getElementById("pause-key"); // on mobile
 var playKey = document.getElementById("play-key"); // on mobile
 var closeModal = document.getElementsByClassName("close")[0];
+var playerName; // untuk menyimpan nama pleyer
+var playerLevel; // untuk menyimpan level pleyer
 
 var grid = 16;
 
@@ -124,7 +127,19 @@ function loop(timestamp) {
 
     requestAnimationFrame(loop);
 
-    if (++count < 10) {
+    // nilai default kecepatan ular
+    let countThreshold = 15;
+
+    // Menyesuaikan countThreshold berdasarkan level
+    if (playerLevel === "easy") {
+        countThreshold = 15;
+    } else if (playerLevel === "medium") {
+        countThreshold = 10;
+    } else if (playerLevel === "high") {
+        countThreshold = 5;
+    }
+
+    if (++count < countThreshold) {
         return;
     }
 
@@ -214,7 +229,7 @@ function loop(timestamp) {
     context.drawImage(appleImage, apple.x, apple.y, grid - 1, grid - 1);
 
     var pizzaImage = new Image();
-    pizzaImage.src = 'assets/item/pizza.svg';
+    pizzaImage.src = 'assets/pizza.svg';
     context.drawImage(pizzaImage, pizza.x, pizza.y, grid - 1, grid - 1);
 
     var bombImage = new Image();
@@ -307,7 +322,7 @@ function updateBomb() {
 function startGame() {
     isPlaying = true;
     canvas.style.display = 'block';
-    startButton.style.display = 'none';
+    startGameModal.style.display = 'none';
     gameOverModal.style.display = 'none';
     pizzaCount = 0;
     bombCount = 0;
@@ -343,6 +358,18 @@ function gameOver() {
     isPlaying = false;
     // Menghentikan suara latar belakang
     document.getElementById("bgAudio").pause();
+
+    // Simpan Nama, Level, dan Skor ke localStorage
+    var playerData = {
+        name: playerName,
+        level: playerLevel,
+        score: score
+    };
+
+    var allPlayers = JSON.parse(localStorage.getItem('players')) || [];
+    allPlayers.push(playerData);
+    localStorage.setItem('players', JSON.stringify(allPlayers));
+
     if (score > highscore) {
         highscore = score; // Perbarui high score jika skor saat ini lebih tinggi
         highscoreText.textContent = 'Highscore: ' + highscore; // Perbarui teks high score di layar
@@ -350,9 +377,41 @@ function gameOver() {
         // Simpan high score ke local storage
         localStorage.setItem('highscore', highscore);
     }
-    startButton.style.display = 'block';
+
+    // Tampilkan modal Game Over
+    displayGameOver();
+}
+
+function displayGameOver() {
+    // Ambil data pemain dari localStorage
+    var allPlayers = JSON.parse(localStorage.getItem('players')) || [];
+
+    // Urutkan pemain berdasarkan skor (descending)
+    allPlayers.sort(function (a, b) {
+        return b.score - a.score;
+    });
+
+    // Batasi hasil ke 5 pemain teratas
+    var topPlayers = allPlayers.slice(0, 5);
+
+    // Dapatkan elemen untuk menampilkan data pemain
+    var tabel = document.querySelector('.top-players');
+
+    if (topPlayers.length > 0) {
+        topPlayers.forEach(function (player) {
+            tabel.innerHTML +=
+                `<tr>
+                <td>${player.name}</td>
+                <td>${player.level}</td>
+                <td>${player.score}</td>
+            </tr>`;
+        });
+    }
+
+    // Tampilkan modal Game Over
     gameOverModal.style.display = 'block';
 }
+
 
 function startCountdown() {
     const countdownElement = document.getElementById('countdown');
@@ -375,7 +434,7 @@ function startCountdown() {
         if (countdown <= 0) {
             countdownElement.textContent = 'Mulai!';
             countdownElement.style.fontSize = '10vh'
-            countdownElement.style.color = '#ff3300'
+            countdownElement.style.color = '#cd2900'
             if (countdown < 0) {
                 clearInterval(countdownInterval);
                 startButton.disabled = false
@@ -391,7 +450,12 @@ function startCountdown() {
     isPlaying = true
 }
 
-startButton.addEventListener('click', startCountdown);
+startButton.addEventListener('click', function () {
+    startGameModal.style.display = 'none';
+    playerName = document.getElementById('name').value; // mengambil name value
+    playerLevel = document.getElementById('level').value; // mengambil level value
+    startCountdown();
+});
 
 document.addEventListener('keydown', function (e) {
     if (e.which === 32) {
@@ -423,6 +487,7 @@ document.addEventListener('keydown', function (e) {
 
 document.querySelector(".close").addEventListener("click", function () {
     gameOverModal.style.display = "none";
+    startGameModal.style.display = 'block';
 
 });
 
