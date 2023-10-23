@@ -36,6 +36,7 @@ var pizza = {
 var bomb = {
     x: getRandomInt(0, 25) * grid,
     y: getRandomInt(0, 25) * grid
+    
 };
 
 var pizzaCount = 0;
@@ -225,6 +226,29 @@ function loop(timestamp) {
     lastTime = timestamp;
     console.log(`Kecepatan loop game ${deltaTime}ms`);
 }
+//Agar item tidak stack dengan sesama
+function initializeItem(item) {
+    let newItemX, newItemY;
+
+    do {
+        newItemX = getRandomInt(0, 25) * grid;
+        newItemY = getRandomInt(0, 25) * grid;
+    } while (
+        (newItemX === snake.x && newItemY === snake.y) ||
+        (newItemX === apple.x && newItemY === apple.y) ||
+        (newItemX === pizza.x && newItemY === pizza.y) ||
+        (newItemX === bomb.x && newItemY === bomb.y) ||
+        isCollidingWithSnake(newItemX, newItemY)
+    );
+
+    item.x = newItemX;
+    item.y = newItemY;
+}
+
+// Kemudian, gunakan fungsi ini untuk menginisialisasi item:
+initializeItem(apple);
+initializeItem(pizza);
+initializeItem(bomb);
 
 function isCollidingWithSnake(x, y) {
     // Cek apakah koordinat (x, y) bertabrakan dengan tubuh ular
@@ -295,12 +319,23 @@ function startGame() {
     snake.maxCells = 4;
     snake.dx = grid;
     snake.dy = 0;
+
+    // Periksa dan atur ulang posisi bom jika berada di posisi yang sama dengan snake
+    do {
+        bomb.x = getRandomInt(0, 25) * grid;
+        bomb.y = getRandomInt(0, 25) * grid;
+    } while (
+        (bomb.x === apple.x && bomb.y === apple.y) ||
+        (bomb.x === pizza.x && bomb.y === pizza.y) ||
+        isCollidingWithSnake(bomb.x, bomb.y)
+    );
+
     apple.x = getRandomInt(0, 25) * grid;
     apple.y = getRandomInt(0, 25) * grid;
-    // Mulai putar suara latar belakang saat permainan dimulai
+
     playBackgroundSound();
-    setInterval(updatePizza, 5000)
-    setInterval(updateBomb, 5000)
+    setInterval(updatePizza, 5000);
+    setInterval(updateBomb, 5000);
     loop();
 }
 
@@ -309,8 +344,11 @@ function gameOver() {
     // Menghentikan suara latar belakang
     document.getElementById("bgAudio").pause();
     if (score > highscore) {
-        highscore = score; // Perbarui highscore jika skor saat ini lebih tinggi
-        highscoreText.textContent = 'Highscore: ' + highscore; // Perbarui teks highscore di layar
+        highscore = score; // Perbarui high score jika skor saat ini lebih tinggi
+        highscoreText.textContent = 'Highscore: ' + highscore; // Perbarui teks high score di layar
+
+        // Simpan high score ke local storage
+        localStorage.setItem('highscore', highscore);
     }
     startButton.style.display = 'block';
     gameOverModal.style.display = 'block';
@@ -385,6 +423,7 @@ document.addEventListener('keydown', function (e) {
 
 document.querySelector(".close").addEventListener("click", function () {
     gameOverModal.style.display = "none";
+
 });
 
 // ________[Badword]________
@@ -402,6 +441,19 @@ function usernameCheck(username) {
 }
 usernameCheck(username)
 
+function updateHighscore() {
+    if (localStorage.getItem('highscore') !== null) {
+        highscore = parseInt(localStorage.getItem('highscore'));
+    } else {
+        highscore = 0;
+    }
+    highscoreText.textContent = 'Highscore: ' + highscore;
+}
+
+
+window.onload = function () {
+    updateHighscore();
+};
 
 // ARROW KEYS ON MOBILE
 var keyUp = document.getElementById('key-up');
@@ -472,3 +524,5 @@ keyRight.addEventListener("click", function () {
         snake.dy = 0;
     }
 });
+
+
