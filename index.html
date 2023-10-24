@@ -19,7 +19,8 @@
         <p>Snake Amazon</p>
     </div>
 
-    <audio id="bgAudio" src="assets/sound/backsound.mp3" loop></audio>
+    <audio id="bgm" src="assets/sound/bgm.mp3" loop></audio>
+    <audio id="bgAudio" src="assets/sound/backsound.mpeg" loop></audio>
     <audio id="eatAudio" src="assets/sound/makan.mp3"></audio>
     <audio id="bombAudio" src="assets/sound/duar.mp3"></audio>
     <audio id="CDAudio" src="assets/sound/countdown.mp3"></audio>
@@ -90,6 +91,12 @@
         </div>
     </div>
 
+    <div class="landing-page">
+        <img src="assets/bg.png" alt="bg">
+        <button onclick="toggleForm()" class="landing-page-button">Main</button>
+    </div>
+    <div class="overlay"></div>
+
     <!-- Start Game Modal -->
     <div id="startGameModal">
         <div class="start-game-modal">
@@ -100,8 +107,9 @@
                 </h1>
                 <p>Fill in the form below to start the game 🚀</p>
                 <form id="user-form">
+                    <p class="input-info" style="color: rgb(255, 82, 13);"></p>
                     <label for="name">Name</label>
-                    <input type="text" id="name" name="name" required>
+                    <input type="text" id="name" name="name" spellcheck="false" required>
 
                     <label for="level">Select Level</label>
                     <select id="level" name="level">
@@ -123,16 +131,20 @@
                 <p>Game Over :(</p>
                 <p>Top 5 Players</p>
                 <table class="top-players">
-                    <tr>
-                        <th>Name</th>
-                        <th>Level</th>
-                        <th>Score</th>
-                    </tr>
-                    <!-- <tr>
-                        <td>Hamdan</td>
-                        <td>High</td>
-                        <td>200</td>
-                    </tr> -->
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Level</th>
+                            <th>Score</th>
+                        </tr>
+                    </thead>
+                    <tbody class="top-players-data">
+                        <tr>
+                            <!-- <td>Hamdan</td>
+                            <td>High</td>
+                            <td>200</td> -->
+                        </tr>
+                    </tbody>
                 </table>
             </div>
         </div>

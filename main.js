@@ -69,6 +69,12 @@ function fadeIn(audioElement, duration, volume = 0.9) {
     }, fadeInInterval);
 }
 
+function playBgm() {
+    var bgmAudio = document.getElementById('bgm');
+    fadeIn(bgmAudio, 8000, 0.3)
+}
+playBgm()
+
 function playBackgroundSound() {
     var bgAudio = document.getElementById('bgAudio');
     fadeIn(bgAudio, 2000)
@@ -98,8 +104,11 @@ function pauseOrPlay(pause) {
         playIcon.style.display = 'block';
         pauseKey.style.display = 'none'; // on mobile
         playKey.style.display = 'block'; // on mobile
+        document.querySelector('.overlay').style.display = "block"
+        pauseIcon.style.zIndex = '1'
+        playIcon.style.zIndex = '1'
         var bgAudio = document.getElementById('bgAudio');
-        fadeIn(bgAudio, 800, 0.1)
+        fadeIn(bgAudio, 800, 0.2)
     }
     if (pause === false) {
         isPlaying = true
@@ -108,6 +117,9 @@ function pauseOrPlay(pause) {
         playIcon.style.display = 'none';
         pauseKey.style.display = 'block'; // on mobile
         playKey.style.display = 'none'; // on mobile
+        document.querySelector('.overlay').style.display = "none"
+        pauseIcon.style.zIndex = '0'
+        playIcon.style.zIndex = '0'
         var bgAudio = document.getElementById('bgAudio');
         fadeIn(bgAudio, 800, 0.9)
     }
@@ -241,6 +253,7 @@ function loop(timestamp) {
     lastTime = timestamp;
     console.log(`Kecepatan loop game ${deltaTime}ms`);
 }
+
 //Agar item tidak stack dengan sesama
 function initializeItem(item) {
     let newItemX, newItemY;
@@ -358,6 +371,7 @@ function gameOver() {
     isPlaying = false;
     // Menghentikan suara latar belakang
     document.getElementById("bgAudio").pause();
+    playBgm()
 
     // Simpan Nama, Level, dan Skor ke localStorage
     var playerData = {
@@ -367,7 +381,26 @@ function gameOver() {
     };
 
     var allPlayers = JSON.parse(localStorage.getItem('players')) || [];
-    allPlayers.push(playerData);
+
+    // Cari indeks pemain dengan nama yang sama
+    var playerIndex = allPlayers.findIndex(function (player) {
+        return player.name === playerName;
+    });
+
+    if (playerIndex !== -1) {
+        // Jika pemain dengan nama yang sama ditemukan
+        if (score > allPlayers[playerIndex].score) {
+            allPlayers[playerIndex].score = score;
+        }
+        if (playerLevel > allPlayers[playerIndex].level) {
+            allPlayers[playerIndex].level = playerLevel;
+        }
+    } else {
+        // Tambahkan pemain baru jika nama tidak ada dalam local storage
+        allPlayers.push(playerData);
+    }
+
+    // Simpan kembali data pemain ke local storage
     localStorage.setItem('players', JSON.stringify(allPlayers));
 
     if (score > highscore) {
@@ -395,16 +428,17 @@ function displayGameOver() {
     var topPlayers = allPlayers.slice(0, 5);
 
     // Dapatkan elemen untuk menampilkan data pemain
-    var tabel = document.querySelector('.top-players');
+    var tabel = document.querySelector('.top-players-data');
 
+    tabel.innerHTML = '';
     if (topPlayers.length > 0) {
         topPlayers.forEach(function (player) {
             tabel.innerHTML +=
                 `<tr>
-                <td>${player.name}</td>
-                <td>${player.level}</td>
-                <td>${player.score}</td>
-            </tr>`;
+                    <td>${player.name}</td>
+                    <td>${player.level}</td>
+                    <td>${player.score}</td>
+                </tr>`;
         });
     }
 
@@ -418,10 +452,11 @@ function startCountdown() {
     const startButton = document.getElementById('startButton');
     countdownElement.style.display = 'flex'
     gameOverModal.style.display = 'none'
-
+    document.querySelector('.landing-page').style.display = 'none'
 
     let countdown = 3;
     let countdownInterval;
+    document.getElementById("bgm").pause()
     playCDSound()
 
     countdownElement.style.fontSize = '17vh'
@@ -450,18 +485,44 @@ function startCountdown() {
     isPlaying = true
 }
 
+function toggleForm() {
+    document.getElementById('startGameModal').style.zIndex = '11'
+}
+
 startButton.addEventListener('click', function () {
-    startGameModal.style.display = 'none';
     playerName = document.getElementById('name').value; // mengambil name value
     playerLevel = document.getElementById('level').value; // mengambil level value
-    startCountdown();
+    
+    if (playerName === ''){
+        document.querySelector('.input-info').innerText = 'Anda belum memasukkan nama'
+        return
+    } else if (usernameCheck(playerName)) {
+        startGameModal.style.display = 'none';
+        startCountdown();
+    } else {
+        document.querySelector('.input-info').innerText = 'Mohon gunakan nama yang pantas'
+        return
+    }
 });
 
 document.addEventListener('keydown', function (e) {
     if (e.which === 32) {
-        e.preventDefault()
-        if (!isPlaying) {
-            startCountdown();
+        if (!isPlaying ) {
+            playerName = document.getElementById('name').value; // mengambil name value
+            if (document.activeElement === document.getElementById('name')) {
+                return;
+            }
+            if (playerName === ''){
+                document.querySelector('.input-info').innerHTML = 'Anda belum memasukkan nama'
+                return
+            } else if (usernameCheck(playerName)) {
+                document.querySelector('.input-info').innerHTML = ''
+                startGameModal.style.display = 'none';
+                startCountdown();
+            } else {
+                document.querySelector('.input-info').innerHTML = 'Mohon gunakan nama yang pantas'
+                return
+            }
         } else if (!isPaused) {
             pauseOrPlay(true)
         } else {
@@ -492,33 +553,32 @@ document.querySelector(".close").addEventListener("click", function () {
 });
 
 // ________[Badword]________
-let username = "biji kuda"
 function usernameCheck(username) {
     const lowerCaseUsername = username.toLowerCase();
     for (const badWord of badWordList) {
         if (lowerCaseUsername.includes(badWord)) {
-            console.log('mulut anda kotorr!!');
+            // console.log('mulut anda kotorr!!');
             return false;
         }
     }
-    console.log('sip namamu bagus');
+    // console.log('sip namamu bagus');
     return true;
 }
-usernameCheck(username)
+// usernameCheck(document.getElementById('name').value)
 
-function updateHighscore() {
-    if (localStorage.getItem('highscore') !== null) {
-        highscore = parseInt(localStorage.getItem('highscore'));
-    } else {
-        highscore = 0;
-    }
-    highscoreText.textContent = 'Highscore: ' + highscore;
-}
+// function updateHighscore() {
+//     if (localStorage.getItem('highscore') !== null) {
+//         highscore = parseInt(localStorage.getItem('highscore'));
+//     } else {
+//         highscore = 0;
+//     }
+//     highscoreText.textContent = 'Highscore: ' + highscore;
+// }
 
 
-window.onload = function () {
-    updateHighscore();
-};
+// window.onload = function () {
+//     updateHighscore();
+// };
 
 // ARROW KEYS ON MOBILE
 var keyUp = document.getElementById('key-up');

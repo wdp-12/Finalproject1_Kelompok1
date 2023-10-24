@@ -174,6 +174,7 @@ canvas {
     background-color: #DDE2E3;
     border-radius: 5px;
     margin-bottom: 11px;
+    padding-left: .6rem;
 }
 
 select option {
@@ -302,6 +303,44 @@ tr td {
     transform: translate(-50%, -50%);
 }
 
+.landing-page {
+    z-index: 10;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.landing-page img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+
+.landing-page-button {
+    font-family: Poppins;
+    display: block;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 5px 15px;
+    font-size: 20px;
+    border-radius: 5px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.overlay {
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+}
+
 /* END Countdown style */
 
 /* #startButton {
@@ -356,6 +395,26 @@ tr td {
 
     canvas {
         width: 100%;
+    }
+
+    .start-game-content {
+        width: 90%;
+        padding: 1rem;
+    }
+
+    #user-form {
+        width: 100%;
+    }
+
+    #name,
+    #level {
+        width: 90%;
+    }
+
+    .landing-page {
+        /* right: 20%; */
+        height: 100%;
+        display: none;
     }
 }
 
