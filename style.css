@@ -174,7 +174,6 @@ canvas {
     background-color: #DDE2E3;
     border-radius: 5px;
     margin-bottom: 11px;
-    padding-left: .6rem;
 }
 
 select option {
@@ -184,7 +183,8 @@ select option {
     border-radius: 5px;
 }
 
-#startButton {
+#startButton,
+.open-game {
     font-family: Poppins;
     display: block;
     background-color: #4CAF50;
@@ -197,7 +197,9 @@ select option {
 }
 
 #startButton:hover,
-#startButton:focus {
+#startButton:focus,
+.open-game:hover,
+.open-game:focus {
     background-color: #3b8b3e;
     cursor: pointer;
 }
@@ -305,9 +307,11 @@ tr td {
 
 .landing-page {
     z-index: 10;
-    position: absolute;
+    position: fixed;
     width: 100%;
     height: 100%;
+    /* Efek transisi */
+    transition: all 0.5s;
 }
 
 .landing-page img {
@@ -316,50 +320,54 @@ tr td {
     height: 100%;
 }
 
-.landing-page-button {
-    font-family: Poppins;
-    display: block;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 5px 15px;
-    font-size: 20px;
-    border-radius: 5px;
+.landing-page .content {
     position: absolute;
+    width: 80%;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    gap: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
-.overlay {
-    background-color: rgba(0, 0, 0, 0.5);
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    display: none;
+.landing-page .content p {
+    font-family: Poppins;
+    font-size: 90px;
+    font-weight: bold;
+    text-align: center;
+    color: #FFB900;
+    text-shadow: 0.0px 10.0px 0.02px #333, 9.8px 2.1px 0.02px #333, 4.2px -9.1px 0.02px #333, -8.0px -6.0px 0.02px #333, -7.6px 6.5px 0.02px #333, 4.8px 8.8px 0.02px #333, 9.6px -2.8px 0.02px #333, -0.7px -10.0px 0.02px #333, -9.9px -1.5px 0.02px #333, -3.5px 9.4px 0.02px #333, 8.4px 5.4px 0.02px #333, 7.1px -7.0px 0.02px #333, -5.4px -8.4px 0.02px #333, -9.4px 3.5px 0.02px #333, 1.4px 9.9px 0.02px #333, 10.0px 0.8px 0.02px #333, 2.9px -9.6px 0.02px #333, -8.7px -4.8px 0.02px #333, -6.6px 7.5px 0.02px #333, 5.9px 8.0px 0.02px #333, 9.1px -4.1px 0.02px #333, -2.1px -9.8px 0.02px #333, -10.0px -0.1px 0.02px #333, -2.2px 9.8px 0.02px #333, 9.1px 4.2px 0.02px #333, 6.1px -8.0px 0.02px #333, -6.5px -7.6px 0.02px #333, -8.8px 4.7px 0.02px #333, 2.7px 9.6px 0.02px #333, 10.0px -0.6px 0.02px #333, 1.5px -9.9px 0.02px #333, -9.3px -3.6px 0.02px #333, -5.5px 8.4px 0.02px #333, 7.0px 7.2px 0.02px #333, 8.5px -5.3px 0.02px #333, -3.4px -9.4px 0.02px #333, -9.9px 1.3px 0.02px #333, -0.8px 10.0px 0.02px #333, 9.6px 2.9px 0.02px #333, 4.9px -8.7px 0.02px #333, -7.5px -6.7px 0.02px #333, -8.1px 5.9px 0.02px #333, 4.0px 9.2px 0.02px #333, 9.8px -2.0px 0.02px #333, 0.2px -10.0px 0.02px #333, -9.7px -2.3px 0.02px #333, -4.3px 9.0px 0.02px #333, 7.9px 6.1px 0.02px #333
 }
 
-/* END Countdown style */
-
-/* #startButton {
-    display: block;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 10px 25px;
-    font-size: 20px;
-    border-radius: 5px;
-    margin-top: 10px;
+.open-game {
+    animation: pulse 1s infinite;
 }
 
-#startButton:hover,
-#startButton:focus {
-    background-color: #3b8b3e;
-    cursor: pointer;
-} */
+/* Denyut */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
 
+    50% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* RESPONSIVE BREAKPOINT */
+/* ukuran min desktop */
+@media screen and (min-width: 769px) {
+    .arrow-keys {
+        display: none;
+    }
+}
 
 
 /* RESPONSIVE BREAKPOINT */
@@ -376,7 +384,7 @@ tr td {
 /* ukuran mobile */
 @media screen and (max-width: 576px) {
     .head-container {
-        height: 100px;
+        height: 150px;
     }
 
     .head-container img {
@@ -414,27 +422,24 @@ tr td {
     .landing-page {
         height: 100%;
     }
+
+    .arrow-keys {
+        display: block;
+    }
 }
 
-.container-keys {
-    width: 200px;
-    height: 200px;
+.arrow-keys {
     margin-top: 30px;
-
-}
-
-.container-keys .arrow-keys {
-    position: fixed;
     width: 200px;
     height: 200px;
 }
 
-.container-keys .overlap-group {
+.overlap-group {
     position: relative;
     height: 200px;
 }
 
-.container-keys #key-up {
+#key-up {
     position: absolute;
     width: 132px;
     height: 92px;
@@ -442,7 +447,7 @@ tr td {
     left: 34px;
 }
 
-.container-keys #key-left {
+#key-left {
     position: absolute;
     width: 92px;
     height: 132px;
@@ -450,7 +455,7 @@ tr td {
     left: 0;
 }
 
-.container-keys #key-right {
+#key-right {
     position: absolute;
     width: 92px;
     height: 132px;
@@ -458,7 +463,7 @@ tr td {
     left: 108px;
 }
 
-.container-keys #key-down {
+#key-down {
     position: absolute;
     width: 132px;
     height: 92px;
@@ -466,8 +471,8 @@ tr td {
     left: 34px;
 }
 
-.container-keys #pause-key,
-.container-keys #play-key {
+#pause-key,
+#play-key {
     position: absolute;
     width: 70px;
     height: 70px;
