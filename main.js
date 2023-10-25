@@ -224,7 +224,7 @@ function loop(timestamp) {
             setTimeout(function () {
                 pizza.x = getRandomInt(0, 25) * grid;
                 pizza.y = getRandomInt(0, 25) * grid;
-            }, getRandomInt(5, 10) * 1000);
+            }, getRandomInt(10, 15) * 1000);
         }
 
         if (cell.x === bomb.x && cell.y === bomb.y) {
@@ -653,5 +653,4 @@ keyRight.addEventListener("click", function () {
         snake.dy = 0;
     }
 });
-
 
