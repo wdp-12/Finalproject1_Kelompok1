@@ -4,19 +4,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon" type="image/x-icon" href="assets/icon.png">
     <title>Snake</title>
 
+    <script src="assets/data/log.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+    <div class="landing-page">
+        <img src="assets/bg.png" alt="bg">
+        <div class="content">
+            <p>Snake Amazon</p>
+            <button onclick="closeLandingPage()" class="open-game">Open Game</button>
+        </div>
+    </div>
+
     <div class="head-container">
         <img id="pauseIcon" src="assets/pause.svg" alt="Pause" onclick="pauseOrPlay(true)" style="display: block;">
         <img id="playIcon" src="assets/play.svg" alt="Play" onclick="pauseOrPlay(false)" style="display: none;">
         <p>Snake Amazon</p>
     </div>
 
+    <audio id="bgm" src="assets/sound/bgm.mp3" loop></audio>
+    <audio id="bgAudio" src="assets/sound/backsound.mpeg" loop></audio>
+    <audio id="eatAudio" src="assets/sound/makan.mp3"></audio>
+    <audio id="bombAudio" src="assets/sound/duar.mp3"></audio>
+    <audio id="CDAudio" src="assets/sound/countdown.mp3"></audio>
+
     <div class="game-container">
+
         <!-- Kontainer Kiri dengan Peraturan Permainan -->
         <div class="card-l">
             <div class="card-header">
@@ -25,22 +43,28 @@
 
             <ul class="card-content">
                 <li>
-                    <img src="assets/apple.svg" alt="Logo Apel">
+                    <img src="assets/item/apple.svg" alt="Logo Apel">
                     +1 Score
                 </li>
                 <li>
-                    <img src="assets/pizza.svg" alt="Logo Pizza">
+                    <img src="assets/item/pizza.svg" alt="Logo Pizza">
                     +5 Score
                 </li>
                 <li>
-                    <img src="assets/bomb.svg" alt="Logo Bomb">
+                    <img src="assets/item/bomb.svg" alt="Logo Bomb">
                     Kill Snake
                 </li>
             </ul>
         </div>
 
         <!-- Elemen Canvas untuk Permainan -->
-        <div>
+        <div class="canvas-container">
+            <div class="score">
+                <!-- Elemen untuk Menampilkan Skor -->
+                <p id="score">Score: 0</p>
+                <!-- Elemen untuk Menampilkan Skor Tertinggi -->
+                <p id="highscore">Highscore: 0</p>
+            </div>
             <canvas width="400" height="400" id="game-canvas"></canvas>
         </div>
 
@@ -59,14 +83,43 @@
     </div>
 
     <div class="bottom-container">
-        <!-- Elemen untuk Menampilkan Skor -->
-        <p id="score">Score: 0</p>
+        <div class="arrow-keys">
+            <div class="overlap-group">
+                <img id="key-up" src="assets/arrow-keys/key-up.svg" />
+                <img id="key-left" src="assets/arrow-keys/key-left.svg" />
+                <img id="key-right" src="assets/arrow-keys/key-right.svg" />
+                <img id="key-down" src="assets/arrow-keys/key-down.svg" />
+                <img id="pause-key" src="assets/arrow-keys/pause.svg" onclick="pauseOrPlay(true)" />
+                <img id="play-key" src="assets/arrow-keys/play.svg" onclick="pauseOrPlay(false)"
+                    style="display: none;" />
+            </div>
+        </div>
+    </div>
 
-        <!-- Elemen untuk Menampilkan Skor Tertinggi -->
-        <p id="highscore">Highscore: 0</p>
+    <!-- Start Game Modal -->
+    <div id="startGameModal">
+        <div class="start-game-modal">
+            <div class="start-game-content">
+                <h1>
+                    Welcome
+                    <span style="color: #cd2900;">!</span>
+                </h1>
+                <p>Fill in the form below to start the game 🚀</p>
+                <form id="user-form">
+                    <p class="input-info" style="color: rgb(255, 82, 13);"></p>
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" spellcheck="false" required>
 
-        <!-- Tombol "Start" untuk Memulai Permainan -->
-        <button id="startButton">Start</button>
+                    <label for="level">Select Level</label>
+                    <select id="level" name="level">
+                        <option value="easy">Easy</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                    <button type="button" id="startButton">Start Game</button>
+                </form>
+            </div>
+        </div>
     </div>
 
     <!-- Game Over Modal -->
@@ -75,8 +128,30 @@
             <div class="game-over-content">
                 <span class="close">X</span>
                 <p>Game Over :(</p>
+                <p>Top 5 Players</p>
+                <table class="top-players">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Level</th>
+                            <th>Score</th>
+                        </tr>
+                    </thead>
+                    <tbody class="top-players-data">
+                        <tr>
+                            <!-- <td>Hamdan</td>
+                            <td>High</td>
+                            <td>200</td> -->
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
+    </div>
+
+    <!-- Countdown -->
+    <div class="countdown">
+        <p id="countdown"></p>
     </div>
 
 </body>

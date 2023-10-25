@@ -5,12 +5,12 @@
     padding: 0;
     border: none;
     outline: none;
-    font-family: "VT323", sans-serif;
-    font-size: 25px;
     color: #ffffff;
 }
 
 body {
+    font-family: "VT323", sans-serif;
+    font-size: 25px;
     background: #1A3A45;
     display: flex;
     flex-direction: column;
@@ -19,7 +19,7 @@ body {
 /* KONTAINER ATAS */
 .head-container {
     position: relative;
-    height: 200px;
+    height: 170px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -38,7 +38,6 @@ body {
 
 .head-container p {
     font-size: 60px;
-    margin-top: 50px;
     bottom: 0;
 }
 
@@ -48,10 +47,6 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-#score {
-    margin-top: 25px;
 }
 
 /* KONTAINER GAME */
@@ -118,7 +113,98 @@ canvas {
     border: 3px solid white;
 }
 
+.score {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 3px solid white;
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+}
 
+/* START GAME CONTAINER */
+#startGameModal {
+    /* display: none; */
+    position: fixed;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    /* Enable scroll if needed */
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.start-game-modal {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.start-game-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: Poppins;
+    font-size: 18px;
+    width: 600px;
+    height: 400px;
+    background-color: #1A3A45;
+    outline: #1e424e solid 15px;
+    border-radius: 25px;
+}
+
+#user-form {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 5px;
+}
+
+#name,
+#level {
+    font-family: Poppins;
+    font-size: 18px;
+    width: 400px;
+    height: 35px;
+    color: #1A3A45;
+    background-color: #DDE2E3;
+    border-radius: 5px;
+    margin-bottom: 11px;
+}
+
+select option {
+    font-family: Poppins;
+    color: #1A3A45;
+    background-color: #DDE2E3;
+    border-radius: 5px;
+}
+
+#startButton,
+.open-game {
+    font-family: Poppins;
+    display: block;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 5px 15px;
+    font-size: 20px;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+#startButton:hover,
+#startButton:focus,
+.open-game:hover,
+.open-game:focus {
+    background-color: #3b8b3e;
+    cursor: pointer;
+}
+
+/* GAME OVER MODAL */
 #gameOverModal {
     display: none;
     position: fixed;
@@ -143,18 +229,21 @@ canvas {
     position: relative;
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
-    border-radius: 25px;
-    gap: 30px;
-    width: 30%;
-    height: 20%;
+    align-items: center;
+    font-family: Poppins;
+    font-size: 18px;
+    width: 600px;
+    height: 400px;
     background-color: #1A3A45;
+    outline: #1e424e solid 15px;
+    border-radius: 25px;
 }
 
 .game-over-content p {
-    color: #ff3300;
+    color: #cd2900;
     font-size: 50px;
+    font-weight: bold;
 }
 
 .close {
@@ -172,19 +261,221 @@ canvas {
     cursor: pointer;
 }
 
-
-#startButton {
-    display: block;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 10px 25px;
-    font-size: 20px;
-    border-radius: 5px;
+.game-over-content p:nth-child(3) {
+    margin-top: 5px;
+    color: #ffffff;
+    font-size: 25px;
 }
 
-#startButton:hover,
-#startButton:focus {
-    background-color: #3b8b3e;
-    cursor: pointer;
+.game-over-content table {
+    margin-top: 5px;
+    width: 75%;
+}
+
+tr th {
+    border-bottom: 3px solid #fff;
+    padding: 5px;
+}
+
+tr td {
+    text-align: center;
+    padding: 5px;
+}
+
+
+/* START Countdown style */
+.countdown {
+    font-family: Poppins;
+    font-weight: bold;
+}
+
+.countdown p {
+    position: fixed;
+    /* text-align: center; */
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    top: 50%;
+    left: 50%;
+    transition: .1s;
+    background-color: rgba(0, 0, 0, 0.5);
+    font-size: 23vh;
+    transform: translate(-50%, -50%);
+}
+
+.landing-page {
+    z-index: 10;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    /* Efek transisi */
+    transition: all 0.5s;
+}
+
+.landing-page img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+
+.landing-page .content {
+    position: absolute;
+    width: 80%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    gap: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.landing-page .content p {
+    font-family: Poppins;
+    font-size: 90px;
+    font-weight: bold;
+    text-align: center;
+    color: #FFB900;
+    text-shadow: 0.0px 10.0px 0.02px #333, 9.8px 2.1px 0.02px #333, 4.2px -9.1px 0.02px #333, -8.0px -6.0px 0.02px #333, -7.6px 6.5px 0.02px #333, 4.8px 8.8px 0.02px #333, 9.6px -2.8px 0.02px #333, -0.7px -10.0px 0.02px #333, -9.9px -1.5px 0.02px #333, -3.5px 9.4px 0.02px #333, 8.4px 5.4px 0.02px #333, 7.1px -7.0px 0.02px #333, -5.4px -8.4px 0.02px #333, -9.4px 3.5px 0.02px #333, 1.4px 9.9px 0.02px #333, 10.0px 0.8px 0.02px #333, 2.9px -9.6px 0.02px #333, -8.7px -4.8px 0.02px #333, -6.6px 7.5px 0.02px #333, 5.9px 8.0px 0.02px #333, 9.1px -4.1px 0.02px #333, -2.1px -9.8px 0.02px #333, -10.0px -0.1px 0.02px #333, -2.2px 9.8px 0.02px #333, 9.1px 4.2px 0.02px #333, 6.1px -8.0px 0.02px #333, -6.5px -7.6px 0.02px #333, -8.8px 4.7px 0.02px #333, 2.7px 9.6px 0.02px #333, 10.0px -0.6px 0.02px #333, 1.5px -9.9px 0.02px #333, -9.3px -3.6px 0.02px #333, -5.5px 8.4px 0.02px #333, 7.0px 7.2px 0.02px #333, 8.5px -5.3px 0.02px #333, -3.4px -9.4px 0.02px #333, -9.9px 1.3px 0.02px #333, -0.8px 10.0px 0.02px #333, 9.6px 2.9px 0.02px #333, 4.9px -8.7px 0.02px #333, -7.5px -6.7px 0.02px #333, -8.1px 5.9px 0.02px #333, 4.0px 9.2px 0.02px #333, 9.8px -2.0px 0.02px #333, 0.2px -10.0px 0.02px #333, -9.7px -2.3px 0.02px #333, -4.3px 9.0px 0.02px #333, 7.9px 6.1px 0.02px #333
+}
+
+.open-game {
+    animation: pulse 1s infinite;
+}
+
+/* Denyut */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* RESPONSIVE BREAKPOINT */
+/* ukuran min desktop */
+@media screen and (min-width: 769px) {
+    .arrow-keys {
+        display: none;
+    }
+}
+
+
+/* RESPONSIVE BREAKPOINT */
+/* ukuran tablet */
+@media screen and (max-width: 768px) {
+
+    .card-l,
+    .card-r {
+        display: none;
+    }
+}
+
+/* RESPONSIVE BREAKPOINT */
+/* ukuran mobile */
+@media screen and (max-width: 576px) {
+    .head-container {
+        height: 150px;
+    }
+
+    .head-container img {
+        top: 15px;
+        left: 15px;
+        width: 30px;
+    }
+
+    .head-container p {
+        font-size: 50px;
+    }
+
+    .canvas-container {
+        width: 90%;
+    }
+
+    canvas {
+        width: 100%;
+    }
+
+    .start-game-content {
+        width: 90%;
+        padding: 1rem;
+    }
+
+    #user-form {
+        width: 100%;
+    }
+
+    #name,
+    #level {
+        width: 90%;
+    }
+
+    .landing-page {
+        height: 100%;
+    }
+
+    .arrow-keys {
+        display: block;
+    }
+}
+
+.arrow-keys {
+    margin-top: 30px;
+    width: 200px;
+    height: 200px;
+}
+
+.overlap-group {
+    position: relative;
+    height: 200px;
+}
+
+#key-up {
+    position: absolute;
+    width: 132px;
+    height: 92px;
+    top: 0;
+    left: 34px;
+}
+
+#key-left {
+    position: absolute;
+    width: 92px;
+    height: 132px;
+    top: 34px;
+    left: 0;
+}
+
+#key-right {
+    position: absolute;
+    width: 92px;
+    height: 132px;
+    top: 34px;
+    left: 108px;
+}
+
+#key-down {
+    position: absolute;
+    width: 132px;
+    height: 92px;
+    top: 108px;
+    left: 34px;
+}
+
+#pause-key,
+#play-key {
+    position: absolute;
+    width: 70px;
+    height: 70px;
+    top: 65px;
+    left: 65px;
 }
