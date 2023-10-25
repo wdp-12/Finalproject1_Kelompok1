@@ -412,9 +412,7 @@ tr td {
     }
 
     .landing-page {
-        /* right: 20%; */
         height: 100%;
-        display: none;
     }
 }
 
