@@ -476,7 +476,7 @@ function startCountdown() {
         }
     }
     countdownElement.style.fontSize = '23vh'
-
+    
     countdownInterval = setInterval(updateCountdown, 1000)
     startButton.disabled = true
     isPlaying = true
@@ -500,6 +500,7 @@ startButton.addEventListener('click', function () {
         document.querySelector('.input-info').innerText = 'Anda belum memasukkan nama'
         return
     } else if (usernameCheck(playerName)) {
+        document.querySelector('.input-info').innerText = ''
         startGameModal.style.display = 'none';
         startCountdown();
     } else {
