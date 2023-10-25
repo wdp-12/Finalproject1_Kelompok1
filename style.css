@@ -174,7 +174,6 @@ canvas {
     background-color: #DDE2E3;
     border-radius: 5px;
     margin-bottom: 11px;
-    padding-left: .6rem;
 }
 
 select option {
@@ -362,6 +361,14 @@ tr td {
     }
 }
 
+/* RESPONSIVE BREAKPOINT */
+/* ukuran min desktop */
+@media screen and (min-width: 769px) {
+    .arrow-keys {
+        display: none;
+    }
+}
+
 
 /* RESPONSIVE BREAKPOINT */
 /* ukuran tablet */
@@ -377,7 +384,7 @@ tr td {
 /* ukuran mobile */
 @media screen and (max-width: 576px) {
     .head-container {
-        height: 100px;
+        height: 150px;
     }
 
     .head-container img {
@@ -417,27 +424,24 @@ tr td {
         height: 100%;
         display: none;
     }
+
+    .arrow-keys {
+        display: block;
+    }
 }
 
-.container-keys {
-    width: 200px;
-    height: 200px;
+.arrow-keys {
     margin-top: 30px;
-
-}
-
-.container-keys .arrow-keys {
-    position: fixed;
     width: 200px;
     height: 200px;
 }
 
-.container-keys .overlap-group {
+.overlap-group {
     position: relative;
     height: 200px;
 }
 
-.container-keys #key-up {
+#key-up {
     position: absolute;
     width: 132px;
     height: 92px;
@@ -445,7 +449,7 @@ tr td {
     left: 34px;
 }
 
-.container-keys #key-left {
+#key-left {
     position: absolute;
     width: 92px;
     height: 132px;
@@ -453,7 +457,7 @@ tr td {
     left: 0;
 }
 
-.container-keys #key-right {
+#key-right {
     position: absolute;
     width: 92px;
     height: 132px;
@@ -461,7 +465,7 @@ tr td {
     left: 108px;
 }
 
-.container-keys #key-down {
+#key-down {
     position: absolute;
     width: 132px;
     height: 92px;
@@ -469,8 +473,8 @@ tr td {
     left: 34px;
 }
 
-.container-keys #pause-key,
-.container-keys #play-key {
+#pause-key,
+#play-key {
     position: absolute;
     width: 70px;
     height: 70px;
