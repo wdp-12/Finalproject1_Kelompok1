@@ -39,7 +39,7 @@ var pizza = {
 var bomb = {
     x: getRandomInt(0, 25) * grid,
     y: getRandomInt(0, 25) * grid
-    
+
 };
 
 var pizzaCount = 0;
@@ -458,7 +458,6 @@ function startCountdown() {
     const startButton = document.getElementById('startButton');
     countdownElement.style.display = 'flex'
     gameOverModal.style.display = 'none'
-    document.querySelector('.landing-page').style.display = 'none'
 
     let countdown = 3;
     let countdownInterval;
@@ -491,16 +490,22 @@ function startCountdown() {
     isPlaying = true
 }
 
-function toggleForm() {
-    document.getElementById('startGameModal').style.zIndex = '11'
+function closeLandingPage() {
+    var landingPage = document.querySelector('.landing-page');
+    landingPage.style.opacity = '0';
+    // setelah 0.5s ubah ke none
+    // 500 => samakan dengan efek transisi di css
+    setTimeout(function () {
+        landingPage.style.display = 'none';
+    }, 500);
 }
 
 startButton.addEventListener('click', function () {
     clickSfx()
     playerName = document.getElementById('name').value; // mengambil name value
     playerLevel = document.getElementById('level').value; // mengambil level value
-    
-    if (playerName === ''){
+
+    if (playerName === '') {
         document.querySelector('.input-info').innerText = 'Anda belum memasukkan nama'
         return
     } else if (usernameCheck(playerName)) {
@@ -515,12 +520,12 @@ startButton.addEventListener('click', function () {
 
 document.addEventListener('keydown', function (e) {
     if (e.which === 32) {
-        if (!isPlaying ) {
+        if (!isPlaying) {
             playerName = document.getElementById('name').value; // mengambil name value
             if (document.activeElement === document.getElementById('name')) {
                 return;
             }
-            if (playerName === ''){
+            if (playerName === '') {
                 document.querySelector('.input-info').innerHTML = 'Anda belum memasukkan nama'
                 return
             } else if (usernameCheck(playerName)) {

@@ -13,6 +13,14 @@
 </head>
 
 <body>
+    <div class="landing-page">
+        <img src="assets/bg.png" alt="bg">
+        <div class="content">
+            <p>Snake Amazon</p>
+            <button onclick="closeLandingPage()" class="open-game">Open Game</button>
+        </div>
+    </div>
+
     <div class="head-container">
         <img id="pauseIcon" src="assets/pause.svg" alt="Pause" onclick="pauseOrPlay(true)" style="display: block;">
         <img id="playIcon" src="assets/play.svg" alt="Play" onclick="pauseOrPlay(false)" style="display: none;">
@@ -27,7 +35,7 @@
     <audio id="clickSfx" src="assets/sound/click.mp3"></audio>
 
     <div class="game-container">
-        
+
         <!-- Kontainer Kiri dengan Peraturan Permainan -->
         <div class="card-l">
             <div class="card-header">
@@ -76,25 +84,17 @@
     </div>
 
     <div class="bottom-container">
-
-        <div class="container-keys">
-            <div class="arrow-keys">
-                <div class="overlap-group">
-                    <img id="key-up" src="assets/arrow-keys/key-up.svg" />
-                    <img id="key-left" src="assets/arrow-keys/key-left.svg" />
-                    <img id="key-right" src="assets/arrow-keys/key-right.svg" />
-                    <img id="key-down" src="assets/arrow-keys/key-down.svg" />
-                    <img id="pause-key" src="assets/arrow-keys/pause.svg" onclick="pauseOrPlay(true)" />
-                    <img id="play-key" src="assets/arrow-keys/play.svg" onclick="pauseOrPlay(false)"
-                        style="display: none;" />
-                </div>
+        <div class="arrow-keys">
+            <div class="overlap-group">
+                <img id="key-up" src="assets/arrow-keys/key-up.svg" />
+                <img id="key-left" src="assets/arrow-keys/key-left.svg" />
+                <img id="key-right" src="assets/arrow-keys/key-right.svg" />
+                <img id="key-down" src="assets/arrow-keys/key-down.svg" />
+                <img id="pause-key" src="assets/arrow-keys/pause.svg" onclick="pauseOrPlay(true)" />
+                <img id="play-key" src="assets/arrow-keys/play.svg" onclick="pauseOrPlay(false)"
+                    style="display: none;" />
             </div>
         </div>
-    </div>
-
-    <div class="landing-page">
-        <img src="assets/bg.png" alt="bg">
-        <button onclick="toggleForm()" class="landing-page-button">Main</button>
     </div>
 
     <!-- Start Game Modal -->
