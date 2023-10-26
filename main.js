@@ -490,7 +490,7 @@ function startCountdown() {
         }
     }
     countdownElement.style.fontSize = '23vh'
-    
+
     countdownInterval = setInterval(updateCountdown, 1000)
     startButton.disabled = true
     isPlaying = true
@@ -543,7 +543,7 @@ document.addEventListener('keydown', function (e) {
                 return
             } else if (usernameCheck(playerName)) {
                 document.querySelector('.input-info').innerHTML = ''
-                
+
                 document.querySelector('.start-game-content').style.transform = 'scale(0)'
                 document.querySelector('.start-game-content').style.opacity = '0.4'
                 setTimeout(() => {
@@ -582,7 +582,7 @@ document.querySelector(".close").addEventListener("click", function () {
     clickSfx()
     document.querySelector('.game-over-content').style.transform = 'scale(0)'
     document.querySelector('.game-over-content').style.opacity = '0'
-    
+
     startGameModal.style.display = 'block';
     document.querySelector('.start-game-content').style.transform = 'scale(0)'
     document.querySelector('.start-game-content').style.opacity = '0.4'
@@ -592,6 +592,25 @@ document.querySelector(".close").addEventListener("click", function () {
         document.querySelector('.start-game-content').style.opacity = '1'
     }, 200)
 
+});
+
+// ________[Preloader]________
+document.onreadystatechange = function () {
+    if (document.readyState === "loading") {
+        document.querySelector(".loading-animation").style.display = "block";
+    } else {
+        setTimeout(() => {
+            document.querySelector(".loading-animation").style.opacity = "0";
+            setTimeout(() => {
+                document.querySelector(".loading-animation").style.display = "none";
+            }, 2000);
+        }, 1200);
+    }
+}
+window.addEventListener("load", function () {
+    setTimeout(() => {
+        document.querySelector(".loading-animation").style.display = "none";
+    }, 2000);
 });
 
 // ________[Badword]________
