@@ -637,6 +637,8 @@ document.onreadystatechange = function () {
             document.querySelector(".loading-animation").style.opacity = "0";
             setTimeout(() => {
                 document.querySelector(".loading-animation").style.display = "none";
+                document.querySelector(".ring").innerHTML = ''
+                console.log(document.querySelector(".ring"))
             }, 2000);
         }, 1200);
     }
