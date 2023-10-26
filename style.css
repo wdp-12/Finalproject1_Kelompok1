@@ -174,8 +174,13 @@ canvas {
     background-color: #DDE2E3;
     border-radius: 5px;
     margin-bottom: 11px;
-    padding-left: .6rem;
+    padding-left: .7rem;
 }
+
+#level {
+    width: 100%;
+}
+
 
 select option {
     font-family: Poppins;

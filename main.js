@@ -96,6 +96,12 @@ function playCDSound() {
     CDAudio.volume = 0.6
 }
 
+function clickSfx() {
+    var clickSfx = document.getElementById('clickSfx');
+    clickSfx.play();
+    clickSfx.volume = 0.5
+}
+
 function pauseOrPlay(pause) {
     if (pause === true) {
         isPlaying = true
@@ -104,11 +110,11 @@ function pauseOrPlay(pause) {
         playIcon.style.display = 'block';
         pauseKey.style.display = 'none'; // on mobile
         playKey.style.display = 'block'; // on mobile
-        document.querySelector('.overlay').style.display = "block"
         pauseIcon.style.zIndex = '1'
         playIcon.style.zIndex = '1'
         var bgAudio = document.getElementById('bgAudio');
         fadeIn(bgAudio, 800, 0.2)
+        clickSfx()
     }
     if (pause === false) {
         isPlaying = true
@@ -117,11 +123,11 @@ function pauseOrPlay(pause) {
         playIcon.style.display = 'none';
         pauseKey.style.display = 'block'; // on mobile
         playKey.style.display = 'none'; // on mobile
-        document.querySelector('.overlay').style.display = "none"
         pauseIcon.style.zIndex = '0'
         playIcon.style.zIndex = '0'
         var bgAudio = document.getElementById('bgAudio');
         fadeIn(bgAudio, 800, 0.9)
+        clickSfx()
     }
 }
 
@@ -490,6 +496,7 @@ function toggleForm() {
 }
 
 startButton.addEventListener('click', function () {
+    clickSfx()
     playerName = document.getElementById('name').value; // mengambil name value
     playerLevel = document.getElementById('level').value; // mengambil level value
     
@@ -499,7 +506,7 @@ startButton.addEventListener('click', function () {
     } else if (usernameCheck(playerName)) {
         document.querySelector('.input-info').innerText = ''
         startGameModal.style.display = 'none';
-        startCountdown();
+        setTimeout(startCountdown(), 600)
     } else {
         document.querySelector('.input-info').innerText = 'Mohon gunakan nama yang pantas'
         return
