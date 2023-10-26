@@ -115,6 +115,12 @@ function pauseOrPlay(pause) {
         var bgAudio = document.getElementById('bgAudio');
         fadeIn(bgAudio, 800, 0.2)
         clickSfx()
+
+        // Tampilkan other menu
+        document.querySelector('.music-mute-icon').style.display = 'block'
+        document.querySelector('.sound-mute-icon').style.display = 'block'
+        document.querySelector('#replayIcon').style.display = 'block'
+        document.querySelector('#homeIcon').style.display = 'block'
     }
     if (pause === false) {
         isPlaying = true
@@ -128,6 +134,34 @@ function pauseOrPlay(pause) {
         var bgAudio = document.getElementById('bgAudio');
         fadeIn(bgAudio, 800, 0.9)
         clickSfx()
+
+        // Sembunyikan other menu
+        document.querySelector('.music-mute-icon').style.display = 'none'
+        document.querySelector('.sound-mute-icon').style.display = 'none'
+        document.querySelector('#replayIcon').style.display = 'none'
+        document.querySelector('#homeIcon').style.display = 'none'
+    }
+}
+
+function muteMusic(mute) {
+    if (mute === true) {
+        document.querySelector('#musicIcon').style.display = 'none'
+        document.querySelector('#musicSlashIcon').style.display = 'block'
+    }
+    if (mute === false) {
+        document.querySelector('#musicIcon').style.display = 'block'
+        document.querySelector('#musicSlashIcon').style.display = 'none'
+    }
+}
+
+function muteSound(mute) {
+    if (mute === true) {
+        document.querySelector('#soundIcon').style.display = 'none'
+        document.querySelector('#soundSlashIcon').style.display = 'block'
+    }
+    if (mute === false) {
+        document.querySelector('#soundIcon').style.display = 'block'
+        document.querySelector('#soundSlashIcon').style.display = 'none'
     }
 }
 
@@ -490,7 +524,7 @@ function startCountdown() {
         }
     }
     countdownElement.style.fontSize = '23vh'
-    
+
     countdownInterval = setInterval(updateCountdown, 1000)
     startButton.disabled = true
     isPlaying = true
