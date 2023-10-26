@@ -77,7 +77,7 @@ playBgm()
 
 function playBackgroundSound() {
     var bgAudio = document.getElementById('bgAudio');
-    fadeIn(bgAudio, 2000)
+    fadeIn(bgAudio, 2000, 0.7)
 }
 
 function playEatSound() {
@@ -93,7 +93,13 @@ function playBombSound() {
 function playCDSound() {
     var CDAudio = document.getElementById('CDAudio');
     CDAudio.play();
-    CDAudio.volume = 0.6
+    CDAudio.volume = 0.5
+}
+
+function clickSfx() {
+    var clickSfx = document.getElementById('clickSfx');
+    clickSfx.play();
+    clickSfx.volume = 0.4
 }
 
 function pauseOrPlay(pause) {
@@ -108,6 +114,7 @@ function pauseOrPlay(pause) {
         playIcon.style.zIndex = '1'
         var bgAudio = document.getElementById('bgAudio');
         fadeIn(bgAudio, 800, 0.2)
+        clickSfx()
 
         // Tampilkan other menu
         document.querySelector('.music-mute-icon').style.display = 'block'
@@ -126,6 +133,7 @@ function pauseOrPlay(pause) {
         playIcon.style.zIndex = '0'
         var bgAudio = document.getElementById('bgAudio');
         fadeIn(bgAudio, 800, 0.9)
+        clickSfx()
 
         // Sembunyikan other menu
         document.querySelector('.music-mute-icon').style.display = 'none'
@@ -476,6 +484,12 @@ function displayGameOver() {
 
     // Tampilkan modal Game Over
     gameOverModal.style.display = 'block';
+    document.querySelector('.game-over-content').style.transform = 'scale(0)'
+    document.querySelector('.game-over-content').style.opacity = '0'
+    setTimeout(() => {
+        document.querySelector('.game-over-content').style.transform = 'scale(1)'
+        document.querySelector('.game-over-content').style.opacity = '1'
+    }, 1)
 }
 
 
@@ -517,6 +531,7 @@ function startCountdown() {
 }
 
 function closeLandingPage() {
+    clickSfx()
     var landingPage = document.querySelector('.landing-page');
     landingPage.style.opacity = '0';
     // setelah 0.5s ubah ke none
@@ -527,6 +542,7 @@ function closeLandingPage() {
 }
 
 startButton.addEventListener('click', function () {
+    clickSfx()
     playerName = document.getElementById('name').value; // mengambil name value
     playerLevel = document.getElementById('level').value; // mengambil level value
 
@@ -535,8 +551,14 @@ startButton.addEventListener('click', function () {
         return
     } else if (usernameCheck(playerName)) {
         document.querySelector('.input-info').innerText = ''
-        startGameModal.style.display = 'none';
-        startCountdown();
+
+        document.querySelector('.start-game-content').style.transform = 'scale(0)'
+        document.querySelector('.start-game-content').style.opacity = '0.4'
+        setTimeout(() => {
+            startGameModal.style.display = 'none';
+        }, 200)
+
+        startCountdown()
     } else {
         document.querySelector('.input-info').innerText = 'Mohon gunakan nama yang pantas'
         return
@@ -555,7 +577,13 @@ document.addEventListener('keydown', function (e) {
                 return
             } else if (usernameCheck(playerName)) {
                 document.querySelector('.input-info').innerHTML = ''
-                startGameModal.style.display = 'none';
+                
+                document.querySelector('.start-game-content').style.transform = 'scale(0)'
+                document.querySelector('.start-game-content').style.opacity = '0.4'
+                setTimeout(() => {
+                    startGameModal.style.display = 'none';
+                }, 200)
+
                 startCountdown();
             } else {
                 document.querySelector('.input-info').innerHTML = 'Mohon gunakan nama yang pantas'
@@ -585,8 +613,18 @@ document.addEventListener('keydown', function (e) {
 });
 
 document.querySelector(".close").addEventListener("click", function () {
-    gameOverModal.style.display = "none";
+    clickSfx()
+    document.querySelector('.game-over-content').style.transform = 'scale(0)'
+    document.querySelector('.game-over-content').style.opacity = '0'
+    
     startGameModal.style.display = 'block';
+    document.querySelector('.start-game-content').style.transform = 'scale(0)'
+    document.querySelector('.start-game-content').style.opacity = '0.4'
+    setTimeout(() => {
+        gameOverModal.style.display = 'none'
+        document.querySelector('.start-game-content').style.transform = 'scale(1)'
+        document.querySelector('.start-game-content').style.opacity = '1'
+    }, 200)
 
 });
 

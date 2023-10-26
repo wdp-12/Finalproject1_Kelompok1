@@ -175,6 +175,7 @@ canvas {
     background-color: #1A3A45;
     outline: #1e424e solid 15px;
     border-radius: 25px;
+    transition: all .2s;
 }
 
 #user-form {
@@ -195,7 +196,13 @@ canvas {
     background-color: #DDE2E3;
     border-radius: 5px;
     margin-bottom: 11px;
+    padding-left: .7rem;
 }
+
+#level {
+    width: 100%;
+}
+
 
 select option {
     font-family: Poppins;
@@ -259,6 +266,7 @@ select option {
     background-color: #1A3A45;
     outline: #1e424e solid 15px;
     border-radius: 25px;
+    transition: all .2s;
 }
 
 .game-over-content p {
