@@ -28,8 +28,27 @@
     </div>
 
     <div class="head-container">
-        <img id="pauseIcon" src="assets/pause.svg" alt="Pause" onclick="pauseOrPlay(true)" style="display: block;">
-        <img id="playIcon" src="assets/play.svg" alt="Play" onclick="pauseOrPlay(false)" style="display: none;">
+        <div class="icon">
+            <div class="pause-play-icon">
+                <img id="pauseIcon" src="assets/pause.svg" alt="Pause" onclick="pauseOrPlay(true)"
+                    style="display: block;">
+                <img id="playIcon" src="assets/play.svg" alt="Play" onclick="pauseOrPlay(false)" style="display: none;">
+            </div>
+            <div class="music-mute-icon" style="display: none;">
+                <img id="musicIcon" src="assets/music.svg" alt="Music" onclick="muteMusic(true)"
+                    style="display: block;">
+                <img id="musicSlashIcon" src="assets/music-slash.svg" alt="Music Slash" onclick="muteMusic(false)"
+                    style="display: none;">
+            </div>
+            <div class="sound-mute-icon" style="display: none;">
+                <img id="soundIcon" src="assets/sound.svg" alt="Sound" onclick="muteSound(true)"
+                    style="display: block;">
+                <img id="soundSlashIcon" src="assets/sound-slash.svg" alt="Sound Slash" onclick="muteSound(false)"
+                    style="display: none;">
+            </div>
+            <img id="replayIcon" src="assets/replay.svg" alt="Replay" onclick="" style="display: none;">
+            <img id="homeIcon" src="assets/home.svg" alt="Home" onclick="" style="display: none;">
+        </div>
         <p>Snake Amazon</p>
     </div>
 
