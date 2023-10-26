@@ -25,15 +25,25 @@ body {
     justify-content: center;
 }
 
-.head-container img {
+.head-container .icon {
     position: absolute;
     top: 30px;
     left: 30px;
-    width: 50px;
+    display: flex;
+    gap: 15px;
+}
+
+.head-container img {
+    width: 40px;
+    background-color: #fff;
+    border-radius: 100%;
+    outline: #0D1D23 solid 5px;
+
 }
 
 .head-container img:hover {
     cursor: pointer;
+    background-color: #e2e2e2;
 }
 
 .head-container p {
