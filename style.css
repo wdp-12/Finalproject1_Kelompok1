@@ -201,6 +201,7 @@ canvas {
 
 #level {
     width: 100%;
+    cursor: pointer;
 }
 
 
@@ -439,7 +440,7 @@ tr td {
     animation: animateC 2s linear infinite;
 }
 
-span {
+.spinner {
     display: block;
     position: absolute;
     top: calc(50% - 2px);
@@ -451,7 +452,7 @@ span {
     animation: animate 2s linear infinite;
 }
 
-span:before {
+.spinner:before {
     content: '';
     position: absolute;
     width: 16px;
