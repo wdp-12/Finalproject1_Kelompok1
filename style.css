@@ -177,7 +177,6 @@ canvas {
     background-color: #1A3A45;
     outline: #1e424e solid 15px;
     border-radius: 25px;
-    transition: all 0.2s;
 }
 
 #user-form {
