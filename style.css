@@ -10,7 +10,7 @@
 
 body {
     font-family: "VT323", sans-serif;
-    font-size: 25px;
+    font-size: 24px;
     background: #1A3A45;
     display: flex;
     flex-direction: column;
@@ -19,10 +19,6 @@ body {
 /* KONTAINER ATAS */
 .head-container {
     position: relative;
-    height: 170px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .head-container .icon {
@@ -47,8 +43,9 @@ body {
 }
 
 .head-container p {
-    font-size: 60px;
-    bottom: 0;
+    text-align: center;
+    margin: 45px;
+    font-size: 2.5em;
 }
 
 /* KONTAINER BAWAH */
@@ -142,8 +139,9 @@ canvas {
     padding-bottom: 5px;
 }
 
-/* START GAME CONTAINER */
-#startGameModal {
+/* START GAME & GAME OVER CONTAINER */
+#startGameModal,
+#gameOverModal {
     /* display: none; */
     position: fixed;
     z-index: 1;
@@ -153,9 +151,11 @@ canvas {
     overflow: auto;
     background-color: rgb(0, 0, 0);
     background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
 }
 
-.start-game-modal {
+.start-game-modal,
+.game-over-modal {
     width: 100%;
     height: 100%;
     display: flex;
@@ -163,13 +163,15 @@ canvas {
     align-items: center;
 }
 
-.start-game-content {
+.start-game-content,
+.game-over-content {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin: 30px;
     font-family: Poppins;
-    font-size: 18px;
+    font-size: 0.75em;
     width: 600px;
     height: 400px;
     background-color: #1A3A45;
@@ -188,14 +190,12 @@ canvas {
 #name,
 #level {
     font-family: Poppins;
-    font-size: 18px;
+    font-size: 1em;
     width: 400px;
     height: 35px;
     color: #1A3A45;
-    background-color: #DDE2E3;
     border-radius: 5px;
     margin-bottom: 11px;
-    padding-left: .7rem;
 }
 
 #level {
@@ -235,43 +235,14 @@ select option {
 /* GAME OVER MODAL */
 #gameOverModal {
     display: none;
-    position: fixed;
-    z-index: 1;
-    width: 100%;
-    height: 100%;
-    /* Enable scroll if needed */
-    overflow: auto;
-    background-color: rgb(0, 0, 0);
-    background-color: rgba(0, 0, 0, 0.5);
-}
-
-.game-over-modal {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 .game-over-content {
     position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    font-family: Poppins;
-    font-size: 18px;
-    width: 600px;
-    height: 400px;
-    background-color: #1A3A45;
-    outline: #1e424e solid 15px;
-    border-radius: 25px;
 }
 
-.game-over-content p {
+.game-over-content h1 {
     color: #cd2900;
-    font-size: 50px;
-    font-weight: bold;
 }
 
 .close {
@@ -289,10 +260,11 @@ select option {
     cursor: pointer;
 }
 
-.game-over-content p:nth-child(3) {
+.game-over-content p {
     margin-top: 5px;
+    font-weight: 600;
     color: #ffffff;
-    font-size: 25px;
+    font-size: 1.5em;
 }
 
 .game-over-content table {
@@ -327,8 +299,9 @@ tr td {
     height: 100%;
     top: 50%;
     left: 50%;
-    transition: .1s;
+    transition: all 0.1s;
     background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(3px);
     font-size: 23vh;
     transform: translate(-50%, -50%);
 }
@@ -351,7 +324,7 @@ tr td {
 
 .landing-page .content {
     position: absolute;
-    width: 80%;
+    width: 100%;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -364,7 +337,7 @@ tr td {
 
 .landing-page .content p {
     font-family: Poppins;
-    font-size: 90px;
+    font-size: 3.7em;
     font-weight: bold;
     text-align: center;
     color: #FFB900;
@@ -500,27 +473,92 @@ tr td {
     .card-r {
         display: none;
     }
+
+    .arrow-keys {
+        display: block;
+    }
+
+    /* HOME / Landing Page */
+    .landing-page img {
+        position: relative;
+        object-position: -300px 0px;
+    }
+
+    .landing-page .content p {
+        font-size: 2.5em;
+    }
 }
 
 /* RESPONSIVE BREAKPOINT */
 /* ukuran mobile */
 @media screen and (max-width: 576px) {
-    .head-container {
-        height: 150px;
+
+    /* HOME / Landing Page */
+    .landing-page img {
+        position: relative;
+        object-position: -480px 0px;
+    }
+
+    .landing-page .content p {
+        font-size: 2em;
+    }
+
+    .open-game {
+        font-size: 0.75em;
+    }
+
+    /* START GAME MODAL */
+    .start-game-content,
+    .game-over-content {
+        width: 100%;
+        height: 380px;
+        margin: 20px;
+        outline: #1e424e solid 10px;
+        font-size: 0.6em;
+    }
+
+    #name,
+    #level {
+        font-size: 1em;
+        width: 100%;
+    }
+
+    select option {
+        font-size: 0.75em;
+    }
+
+    #startButton {
+        font-size: 1em;
+    }
+
+    /* GAME OVER MODAL */
+    .close {
+        top: 5px;
+        right: 15px;
+    }
+
+    /* DIDALAM GAME */
+    .head-container .icon {
+        top: 15px;
+        left: 15px;
+        gap: 7px;
     }
 
     .head-container img {
-        top: 15px;
-        left: 15px;
         width: 30px;
+        outline: #0D1D23 solid 3px;
     }
 
     .head-container p {
-        font-size: 50px;
+        display: none;
     }
 
+    /* CANVAS */
     .canvas-container {
-        width: 90%;
+        margin-top: 75px;
+        width: 85%;
+        padding-bottom: 8px;
+        padding-right: 15px;
     }
 
     canvas {
@@ -538,16 +576,9 @@ tr td {
 
     #name,
     #level {
-        width: 90%;
+        width: 100%;
     }
 
-    .landing-page {
-        height: 100%;
-    }
-
-    .arrow-keys {
-        display: block;
-    }
 }
 
 .arrow-keys {
@@ -558,7 +589,6 @@ tr td {
 
 .overlap-group {
     position: relative;
-    height: 200px;
 }
 
 #key-up {
