@@ -93,7 +93,7 @@ function playBombSound() {
 function playCDSound() {
     var CDAudio = document.getElementById('CDAudio');
     CDAudio.play();
-    CDAudio.volume = 0.5
+    CDAudio.volume = 0.4
 }
 
 function clickSfx() {
@@ -132,7 +132,7 @@ function pauseOrPlay(pause) {
         pauseIcon.style.zIndex = '0'
         playIcon.style.zIndex = '0'
         var bgAudio = document.getElementById('bgAudio');
-        fadeIn(bgAudio, 800, 0.9)
+        fadeIn(bgAudio, 800, 0.7)
         clickSfx()
 
         // Sembunyikan other menu
@@ -484,12 +484,13 @@ function displayGameOver() {
 
     // Tampilkan modal Game Over
     gameOverModal.style.display = 'block';
+    // contoh penggunaan transisi menampilkan modal dg fungsi modalShowTransition()
+    // perkecil element modal dari style defaultnya 
     document.querySelector('.game-over-content').style.transform = 'scale(0)'
     document.querySelector('.game-over-content').style.opacity = '0'
-    setTimeout(() => {
-        document.querySelector('.game-over-content').style.transform = 'scale(1)'
-        document.querySelector('.game-over-content').style.opacity = '1'
-    }, 1)
+    // (element, scale,   opacity, delay)
+    // (element, default, default, 1    ) gunakan 1 untuk tanpa delay
+    modalShowTransition(document.querySelector('.game-over-content'), 1)
 }
 
 
@@ -497,7 +498,6 @@ function startCountdown() {
     const countdownElement = document.getElementById('countdown');
     const startButton = document.getElementById('startButton');
     countdownElement.style.display = 'flex'
-    gameOverModal.style.display = 'none'
 
     let countdown = 3;
     let countdownInterval;
@@ -547,20 +547,21 @@ startButton.addEventListener('click', function () {
     playerLevel = document.getElementById('level').value; // mengambil level value
 
     if (playerName === '') {
-        document.querySelector('.input-info').innerText = 'Anda belum memasukkan nama'
+        document.querySelector('.input-info').innerText = 'Anda belum memasukkan nama.'
         return
     } else if (usernameCheck(playerName)) {
         document.querySelector('.input-info').innerText = ''
 
-        document.querySelector('.start-game-content').style.transform = 'scale(0)'
-        document.querySelector('.start-game-content').style.opacity = '0.4'
+        modalHideTransition(document.querySelector('.start-game-content'), 1)
         setTimeout(() => {
             startGameModal.style.display = 'none';
         }, 200)
 
-        startCountdown()
+        setTimeout(() => {
+            startCountdown();
+        }, 200);
     } else {
-        document.querySelector('.input-info').innerText = 'Mohon gunakan nama yang pantas'
+        document.querySelector('.input-info').innerText = `Nama '${playerName}' mengandung kata tidak pantas.`
         return
     }
 });
@@ -573,20 +574,27 @@ document.addEventListener('keydown', function (e) {
                 return;
             }
             if (playerName === '') {
-                document.querySelector('.input-info').innerHTML = 'Anda belum memasukkan nama'
+                document.querySelector('.input-info').innerHTML = 'Anda belum memasukkan nama.'
                 return
             } else if (usernameCheck(playerName)) {
                 document.querySelector('.input-info').innerHTML = ''
 
-                document.querySelector('.start-game-content').style.transform = 'scale(0)'
-                document.querySelector('.start-game-content').style.opacity = '0.4'
+                modalHideTransition(document.querySelector('.start-game-content'), 1)
                 setTimeout(() => {
                     startGameModal.style.display = 'none';
                 }, 200)
-
-                startCountdown();
+                if (startGameModal.style.display = 'none') {
+                    modalHideTransition(document.querySelector('.game-over-content'), 1)
+                    setTimeout(() => {
+                        gameOverModal.style.display = 'none';
+                    }, 200)
+                }
+                
+                setTimeout(() => {
+                    startCountdown();
+                }, 200);
             } else {
-                document.querySelector('.input-info').innerHTML = 'Mohon gunakan nama yang pantas'
+                document.querySelector('.input-info').innerHTML = `Nama ${playerName} mengandung kata tidak pantas.`
                 return
             }
         } else if (!isPaused) {
@@ -614,19 +622,33 @@ document.addEventListener('keydown', function (e) {
 
 document.querySelector(".close").addEventListener("click", function () {
     clickSfx()
-    document.querySelector('.game-over-content').style.transform = 'scale(0)'
-    document.querySelector('.game-over-content').style.opacity = '0'
+    modalHideTransition(document.querySelector('.game-over-content'))
 
-    startGameModal.style.display = 'block';
     document.querySelector('.start-game-content').style.transform = 'scale(0)'
-    document.querySelector('.start-game-content').style.opacity = '0.4'
+    document.querySelector('.start-game-content').style.opacity = '0'
     setTimeout(() => {
         gameOverModal.style.display = 'none'
-        document.querySelector('.start-game-content').style.transform = 'scale(1)'
-        document.querySelector('.start-game-content').style.opacity = '1'
+        startGameModal.style.display = 'block';
+        modalShowTransition(document.querySelector('.start-game-content'), 1)
     }, 200)
 
 });
+
+function modalHideTransition(element, delay=1, scale='scale(0)', opacity='0', animationDuration=0.2) {
+    element.style.transition = `all ${animationDuration}s`
+    setTimeout(() => {
+        element.style.transform = scale
+        element.style.opacity = opacity
+    }, delay)
+}
+
+function modalShowTransition(element, delay=200, scale='scale(1)', opacity='1', animationDuration=0.2) {
+    element.style.transition = `all ${animationDuration}s`
+    setTimeout(() => {
+        element.style.transform = scale
+        element.style.opacity = opacity
+    }, delay)
+}
 
 // ________[Preloader]________
 document.onreadystatechange = function () {
@@ -638,7 +660,6 @@ document.onreadystatechange = function () {
             setTimeout(() => {
                 document.querySelector(".loading-animation").style.display = "none";
                 document.querySelector(".ring").innerHTML = ''
-                console.log(document.querySelector(".ring"))
             }, 2000);
         }, 1200);
     }
