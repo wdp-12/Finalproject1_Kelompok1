@@ -12,6 +12,8 @@ var playKey = document.getElementById("play-key"); // on mobile
 var closeModal = document.getElementsByClassName("close")[0];
 var playerName; // untuk menyimpan nama pleyer
 var playerLevel; // untuk menyimpan level pleyer
+var soundMuted = false; // Cek status mute sound
+var musicMuted
 
 var grid = 16;
 
@@ -81,19 +83,25 @@ function playBackgroundSound() {
 }
 
 function playEatSound() {
-    var eatAudio = document.getElementById('eatAudio');
-    eatAudio.play();
+    if (!soundMuted) {
+        var eatAudio = document.getElementById('eatAudio');
+        eatAudio.play();
+    }
 }
 
 function playBombSound() {
-    var bombAudio = document.getElementById('bombAudio');
-    bombAudio.play();
+    if (!soundMuted) {
+        var bombAudio = document.getElementById('bombAudio');
+        bombAudio.play();
+    }
 }
 
 function playCDSound() {
-    var CDAudio = document.getElementById('CDAudio');
-    CDAudio.play();
-    CDAudio.volume = 0.4
+    if (!soundMuted) {
+        var CDAudio = document.getElementById('CDAudio');
+        CDAudio.play();
+        CDAudio.volume = 0.4;
+    }
 }
 
 function clickSfx() {
@@ -112,8 +120,6 @@ function pauseOrPlay(pause) {
         playKey.style.display = 'block'; // on mobile
         pauseIcon.style.zIndex = '1'
         playIcon.style.zIndex = '1'
-        var bgAudio = document.getElementById('bgAudio');
-        fadeIn(bgAudio, 800, 0.2)
         clickSfx()
 
         // Tampilkan other menu
@@ -131,8 +137,6 @@ function pauseOrPlay(pause) {
         playKey.style.display = 'none'; // on mobile
         pauseIcon.style.zIndex = '0'
         playIcon.style.zIndex = '0'
-        var bgAudio = document.getElementById('bgAudio');
-        fadeIn(bgAudio, 800, 0.7)
         clickSfx()
 
         // Sembunyikan other menu
@@ -147,14 +151,20 @@ function muteMusic(mute) {
     if (mute === true) {
         document.querySelector('#musicIcon').style.display = 'none'
         document.querySelector('#musicSlashIcon').style.display = 'block'
+        var bgAudio = document.getElementById('bgAudio');
+        bgAudio.pause(); // Matikan musik
+        musicMuted = true;
     }
     if (mute === false) {
         document.querySelector('#musicIcon').style.display = 'block'
         document.querySelector('#musicSlashIcon').style.display = 'none'
+        musicMuted = false; // Atur status musik menjadi unmute
+        playBackgroundSound();
     }
 }
 
 function muteSound(mute) {
+    soundMuted = mute;
     if (mute === true) {
         document.querySelector('#soundIcon').style.display = 'none'
         document.querySelector('#soundSlashIcon').style.display = 'block'
@@ -401,6 +411,7 @@ function startGame() {
     apple.x = getRandomInt(0, 25) * grid;
     apple.y = getRandomInt(0, 25) * grid;
 
+    musicMuted = false; // Atur status musik menjadi unmute saat permainan dimulai
     playBackgroundSound();
     setInterval(updatePizza, 5000);
     setInterval(updateBomb, 5000);
@@ -589,7 +600,7 @@ document.addEventListener('keydown', function (e) {
                         gameOverModal.style.display = 'none';
                     }, 200)
                 }
-                
+
                 setTimeout(() => {
                     startCountdown();
                 }, 200);
@@ -634,7 +645,7 @@ document.querySelector(".close").addEventListener("click", function () {
 
 });
 
-function modalHideTransition(element, delay=1, scale='scale(0)', opacity='0', animationDuration=0.2) {
+function modalHideTransition(element, delay = 1, scale = 'scale(0)', opacity = '0', animationDuration = 0.2) {
     element.style.transition = `all ${animationDuration}s`
     setTimeout(() => {
         element.style.transform = scale
@@ -642,7 +653,7 @@ function modalHideTransition(element, delay=1, scale='scale(0)', opacity='0', an
     }, delay)
 }
 
-function modalShowTransition(element, delay=200, scale='scale(1)', opacity='1', animationDuration=0.2) {
+function modalShowTransition(element, delay = 200, scale = 'scale(1)', opacity = '1', animationDuration = 0.2) {
     element.style.transition = `all ${animationDuration}s`
     setTimeout(() => {
         element.style.transform = scale
