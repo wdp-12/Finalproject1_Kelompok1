@@ -105,6 +105,35 @@ function pauseOrPlay(pause) {
     }
 }
 
+// Mengulang kembali permainan
+function replayGame() {
+    isPlaying = false;
+    modalHideTransition(document.querySelector('.start-game-content'));
+    setTimeout(() => {
+        gameOverModal.style.display = 'none';
+        startGameModal.style.display = 'block';
+        modalShowTransition(document.querySelector('.start-game-content'), 1);
+    }, 200);
+    isPaused = false;
+    pauseIcon.style.display = 'block';
+    playIcon.style.display = 'none';
+    document.querySelector('#replayIcon').style.display = 'none';
+    playBackgroundSound();
+    clickSfx();
+    return;
+}
+
+// Mengembalikan permainan ke landing page
+function returnToLandingPage() {
+    window.location.href = 'index.html';
+}
+clickSfx()
+var homeGame = document.getElementById('homeIcon');
+homeGame.addEventListener('click', function() {
+    returnToLandingPage()
+});
+
+
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
 }
