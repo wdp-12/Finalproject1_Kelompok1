@@ -30,8 +30,7 @@
     <div class="head-container">
         <div class="icon">
             <div class="pause-play-icon">
-                <img id="pauseIcon" src="assets/pause.svg" alt="Pause" onclick="pauseOrPlay(true)"
-                    style="display: block;">
+                <img id="pauseIcon" src="assets/pause.svg" alt="Pause" onclick="pauseOrPlay(true)" style="display: block;">
                 <img id="playIcon" src="assets/play.svg" alt="Play" onclick="pauseOrPlay(false)" style="display: none;">
             </div>
             <div class="music-mute-icon" style="display: none;">
@@ -46,7 +45,7 @@
                 <img id="soundSlashIcon" src="assets/sound-slash.svg" alt="Sound Slash" onclick="muteSound(false)"
                     style="display: none;">
             </div>
-            <img id="replayIcon" src="assets/replay.svg" alt="Replay" onclick="" style="display: none;">
+            <img id="replayIcon" src="assets/replay.svg" alt="Replay" onclick="replayGame()" style="display: none;">
             <img id="homeIcon" src="assets/home.svg" alt="Home" onclick="" style="display: none;">
         </div>
         <p>Snake Amazon</p>
@@ -54,10 +53,10 @@
 
     <audio id="bgm" src="assets/sound/bgm.mp3" loop></audio>
     <audio id="bgAudio" src="assets/sound/backsound.mpeg" loop></audio>
-    <audio id="eatAudio" src="assets/sound/makan.mp3"></audio>
-    <audio id="bombAudio" src="assets/sound/duar.mp3"></audio>
-    <audio id="CDAudio" src="assets/sound/countdown.mp3"></audio>
-    <audio id="clickSfx" src="assets/sound/click.mp3"></audio>
+    <audio id="eatAudio" class="sound-effect" src="assets/sound/makan.mp3"></audio>
+    <audio id="bombAudio" class="sound-effect" src="assets/sound/duar.mp3"></audio>
+    <audio id="CDAudio" class="sound-effect" src="assets/sound/countdown.mp3"></audio>
+    <audio id="clickSfx" class="sound-effect" src="assets/sound/click.mp3"></audio>
 
     <div class="game-container">
 
