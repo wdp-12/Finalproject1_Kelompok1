@@ -196,6 +196,7 @@ canvas {
     color: #1A3A45;
     border-radius: 5px;
     margin-bottom: 11px;
+    padding: 0 .5em;
 }
 
 #level {
@@ -517,11 +518,19 @@ tr td {
         font-size: 0.6em;
     }
 
-    #name,
+    /* #name,
     #level {
         font-size: 1em;
-        width: 100%;
+        padding: 0 10px;
     }
+
+    #name {
+        width: 10px;
+    }
+
+    #level {
+        width: 100%;
+    } */
 
     select option {
         font-size: 0.75em;
@@ -573,8 +582,11 @@ tr td {
     #user-form {
         width: 100%;
     }
-
-    #name,
+    
+    #name {
+        width: 95%;
+    }
+    
     #level {
         width: 100%;
     }

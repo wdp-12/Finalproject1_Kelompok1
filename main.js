@@ -426,14 +426,13 @@ function gameOver() {
     var playerIndex = allPlayers.findIndex(function (player) {
         return player.name === playerName;
     });
-
+    
+    // Jika pemain dengan nama yang sama ditemukan
     if (playerIndex !== -1) {
-        // Jika pemain dengan nama yang sama ditemukan
-        if (score > allPlayers[playerIndex].score) {
+        if (playerLevel !== allPlayers[playerIndex].level) {
+            allPlayers.push(playerData);
+        } else if (score > allPlayers[playerIndex].score) {
             allPlayers[playerIndex].score = score;
-        }
-        if (playerLevel > allPlayers[playerIndex].level) {
-            allPlayers[playerIndex].level = playerLevel;
         }
     } else {
         // Tambahkan pemain baru jika nama tidak ada dalam local storage
@@ -545,9 +544,9 @@ startButton.addEventListener('click', function () {
     clickSfx()
     playerName = document.getElementById('name').value; // mengambil name value
     playerLevel = document.getElementById('level').value; // mengambil level value
-
+    
     if (playerName === '') {
-        document.querySelector('.input-info').innerText = 'Anda belum memasukkan nama.'
+        document.querySelector('.input-info').innerText = 'You have not entered a name.'
         return
     } else if (usernameCheck(playerName)) {
         document.querySelector('.input-info').innerText = ''
@@ -561,7 +560,7 @@ startButton.addEventListener('click', function () {
             startCountdown();
         }, 200);
     } else {
-        document.querySelector('.input-info').innerText = `Nama '${playerName}' mengandung kata tidak pantas.`
+        document.querySelector('.input-info').innerText = `The name '${playerName}' contains bad words.`
         return
     }
 });
@@ -570,11 +569,14 @@ document.addEventListener('keydown', function (e) {
     if (e.which === 32) {
         if (!isPlaying) {
             playerName = document.getElementById('name').value; // mengambil name value
+            playerLevel = document.getElementById('level').value; // mengambil level value
+
             if (document.activeElement === document.getElementById('name')) {
                 return;
             }
+            
             if (playerName === '') {
-                document.querySelector('.input-info').innerHTML = 'Anda belum memasukkan nama.'
+                document.querySelector('.input-info').innerHTML = 'You have not entered a name.'
                 return
             } else if (usernameCheck(playerName)) {
                 document.querySelector('.input-info').innerHTML = ''
@@ -594,7 +596,7 @@ document.addEventListener('keydown', function (e) {
                     startCountdown();
                 }, 200);
             } else {
-                document.querySelector('.input-info').innerHTML = `Nama ${playerName} mengandung kata tidak pantas.`
+                document.querySelector('.input-info').innerHTML = `The name '${playerName}' contains bad words.`
                 return
             }
         } else if (!isPaused) {
@@ -655,6 +657,13 @@ document.onreadystatechange = function () {
     if (document.readyState === "loading") {
         document.querySelector(".loading-animation").style.display = "block";
     } else {
+        if (localStorage.getItem('players') === null) {
+            let allPlayers = JSON.parse(localStorage.getItem('players')) || [];
+            for (const data of leaderboardContent) {
+                allPlayers.push(data)
+            }
+            localStorage.setItem('players', JSON.stringify(allPlayers));
+        }
         setTimeout(() => {
             document.querySelector(".loading-animation").style.opacity = "0";
             setTimeout(() => {
