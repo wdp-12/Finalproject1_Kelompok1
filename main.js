@@ -482,10 +482,12 @@ function gameOver() {
         }
     } else {
         // Tambahkan pemain baru jika nama tidak ada dalam local storage
-        allPlayers.push(playerData);
+        if (playerName !== undefined) {
+            allPlayers.push(playerData);
+            console.log('tidak guest');
+        }
     }
 
-    // Simpan kembali data pemain ke local storage
     localStorage.setItem('players', JSON.stringify(allPlayers));
 
     if (score > highscore) {
@@ -750,6 +752,31 @@ document.addEventListener('keydown', function (e) {
         }
     }
 });
+
+
+// ________[Start game as Guest function]________
+document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.key === 'm') {
+        clickSfx()
+        playerName = document.getElementById('name').value; // mengambil name value
+        playerLevel = document.getElementById('level').value; // mengambil level value
+        document.querySelector('.input-info').innerHTML = ''
+
+        modalHideTransition(document.querySelector('.start-game-content'), 1)
+        setTimeout(() => {
+            startGameModal.style.display = 'none';
+        }, 200)
+        if (startGameModal.style.display = 'none') {
+            modalHideTransition(document.querySelector('.game-over-content'), 1)
+            setTimeout(() => {
+                gameOverModal.style.display = 'none';
+            }, 200)
+        }
+        setTimeout(() => {
+            startCountdown();
+        }, 200);
+    }
+})
 
 
 // ________[Close Gameover modal function]________
