@@ -157,6 +157,7 @@ canvas {
     text-align: center;
     width: 30%;
     font-size: 80%;
+    transition: all .6s ease-in-out;
 }
 
 .news-content p {

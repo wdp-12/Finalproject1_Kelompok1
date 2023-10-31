@@ -414,19 +414,31 @@ function updateBomb() {
     }
 }
 
+// ________[News modal function]________
+var modal = document.querySelector(".news-modal");
+modal.style.top = '-15px'
+modal.style.left = '-250px'
+modal.style.scale = '0'
 function newsDisplay() {
-    var modal = document.getElementById("newsModal");
-    modal.style.display = "block";
     clickSfx()
+    document.querySelector('#newsModal').style.display = "block";
+    setTimeout(() => {
+        modal.style.top = '15%'
+        modal.style.left = '25%'
+        modal.style.scale = '1'
+    }, 20);
 }
 
-// Menutup display news
 function closeNews() {
-    var modal = document.getElementById("newsModal");
-    modal.style.display = "none";
     clickSfx()
+    modal.style.top = '-15px'
+    modal.style.left = '-250px'
+    modal.style.scale = '0'
+    setTimeout(() => {
+        document.querySelector('#newsModal').style.display = "none";
+    }, 600);
 }
-document.getElementById("closeNews").addEventListener("click", closeNews);
+
 
 // ________[Start Game function]________
 function startGame() {
