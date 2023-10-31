@@ -13,6 +13,10 @@ var playKey = document.getElementById("play-key"); // on mobile
 var closeModal = document.getElementsByClassName("close")[0];
 var playerName; // untuk menyimpan nama pleyer
 var playerLevel; // untuk menyimpan level pleyer
+var musicMuteIcon = document.querySelector('.music-mute-icon')
+var soundMuteIcon = document.querySelector('.sound-mute-icon')
+var replayIcon = document.querySelector('#replayIcon')
+var homeIcon = document.querySelector('#homeIcon')
 
 var grid = 16;
 
@@ -74,7 +78,6 @@ function playBgm() {
     var bgmAudio = document.getElementById('bgm');
     fadeIn(bgmAudio, 8000, 0.3)
 }
-playBgm() // auto play bgm
 
 function playBackgroundSound() {
     var bgAudio = document.getElementById('bgAudio');
@@ -103,6 +106,7 @@ function clickSfx() {
     clickSfx.volume = 0.4
 }
 
+
 // ________[Pause & Play gameloop handler]________
 function pauseOrPlay(pause) {
     if (pause === true) {
@@ -115,14 +119,24 @@ function pauseOrPlay(pause) {
         pauseIcon.style.zIndex = '1'
         playIcon.style.zIndex = '1'
         var bgAudio = document.getElementById('bgAudio');
-        fadeIn(bgAudio, 800, 0.2)
+        fadeIn(bgAudio, 1000, 0.1)
         clickSfx()
-
-        // Tampilkan other menu
-        document.querySelector('.music-mute-icon').style.display = 'block'
-        document.querySelector('.sound-mute-icon').style.display = 'block'
-        document.querySelector('#replayIcon').style.display = 'block'
-        document.querySelector('#homeIcon').style.display = 'block'
+        
+        // Efek transisi
+        musicMuteIcon.style.transform = 'translateX(-55px)';
+        soundMuteIcon.style.transform = 'translateX(-110px)';
+        replayIcon.style.transform = 'translateX(-165px)';
+        homeIcon.style.transform = 'translateX(-220px)';
+        musicMuteIcon.style.display = 'block';
+        soundMuteIcon.style.display = 'block';
+        replayIcon.style.display = 'block';
+        homeIcon.style.display = 'block';
+        setTimeout(() => {
+            musicMuteIcon.style.transform = 'translateX(0)';
+            soundMuteIcon.style.transform = 'translateX(0)';
+            replayIcon.style.transform = 'translateX(0)';
+            homeIcon.style.transform = 'translateX(0)';
+        }, 1);
     }
     if (pause === false) {
         isPlaying = true
@@ -137,11 +151,21 @@ function pauseOrPlay(pause) {
         fadeIn(bgAudio, 800, 0.7)
         clickSfx()
 
-        // Sembunyikan other menu
-        document.querySelector('.music-mute-icon').style.display = 'none'
-        document.querySelector('.sound-mute-icon').style.display = 'none'
-        document.querySelector('#replayIcon').style.display = 'none'
-        document.querySelector('#homeIcon').style.display = 'none'
+        // Efek transisi
+        musicMuteIcon.style.transform = 'translateX(0)';
+        soundMuteIcon.style.transform = 'translateX(0)';
+        replayIcon.style.transform = 'translateX(0)';
+        homeIcon.style.transform = 'translateX(0)';
+        musicMuteIcon.style.display = 'block';
+        soundMuteIcon.style.display = 'block';
+        replayIcon.style.display = 'block';
+        homeIcon.style.display = 'block';
+        setTimeout(() => {
+            musicMuteIcon.style.transform = 'translateX(-55px)';
+            soundMuteIcon.style.transform = 'translateX(-110px)';
+            replayIcon.style.transform = 'translateX(-165px)';
+            homeIcon.style.transform = 'translateX(-220px)';
+        }, 1);
     }
 }
 
@@ -452,7 +476,10 @@ function replayGame() {
     isPaused = false;
     pauseIcon.style.display = 'block';
     playIcon.style.display = 'none';
-    document.querySelector('#replayIcon').style.display = 'none';
+    document.querySelector('.music-mute-icon').style.display = 'none'
+    document.querySelector('.sound-mute-icon').style.display = 'none'
+    document.querySelector('#replayIcon').style.display = 'none'
+    document.querySelector('#homeIcon').style.display = 'none'
     playBackgroundSound();
     clickSfx();
     return;
@@ -856,6 +883,9 @@ window.addEventListener("load", function () {
         }
         localStorage.setItem('players', JSON.stringify(allPlayers));
     }
+    setTimeout(() => {
+        playBgm()
+    }, 5000); // auto play bgm setelah 8 detik
     setTimeout(() => {
         document.querySelector(".loading-animation").style.opacity = "0";
         setTimeout(() => {

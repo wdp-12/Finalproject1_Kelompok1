@@ -269,6 +269,27 @@ select option {
     cursor: pointer;
 }
 
+/* Icon pause dan teman2 */
+.pause-play-icon {
+    z-index: 1;
+}
+
+.music-mute-icon {
+    transition: all .4s ease-in-out;
+}
+
+.sound-mute-icon {
+    transition: all .4s ease-in-out;
+}
+
+#replayIcon {
+    transition: all .4s ease-in-out;
+}
+
+#homeIcon {
+    transition: all .4s ease-in-out;
+}
+
 /* GAME OVER MODAL */
 #gameOverModal {
     display: none;
@@ -398,6 +419,7 @@ tr td {
 .countdown {
     font-family: Poppins;
     font-weight: bold;
+    z-index: 2;
 }
 
 .countdown p {
