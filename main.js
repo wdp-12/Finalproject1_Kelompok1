@@ -554,25 +554,31 @@ document.getElementById('leaderboardIcon').addEventListener('click', () => {
 function updateLeaderboardContent(level) {
     let selectedLevel = level;
     let tabel = document.querySelector('#topByLevel');
-
+    tabel.style.opacity = '0'
+    tabel.style.visibility = 'hidden'
+    
     let allPlayers = JSON.parse(localStorage.getItem('players')) || [];
     let topPlayers = allPlayers.filter(player => player.level === selectedLevel);
     topPlayers.sort(function (a, b) {
         return b.score - a.score;
     });
     var top5Players = topPlayers.slice(0, 5);
-
-    tabel.innerHTML = '';
-    if (top5Players.length > 0) {
-        top5Players.forEach(function (player) {
-            tabel.innerHTML +=
+    
+    setTimeout(() => {
+        tabel.innerHTML = '';
+        if (top5Players.length > 0) {
+            top5Players.forEach(function (player) {
+                tabel.innerHTML +=
                 `<tr>
-                    <td>${player.name}</td>
-                    <td>${player.level}</td>
-                    <td>${player.score}</td>
+                <td>${player.name}</td>
+                <td>${player.level}</td>
+                <td>${player.score}</td>
                 </tr>`;
-        });
-    }
+            });
+        }
+        tabel.style.opacity = '1';
+        tabel.style.visibility = 'visible'
+    }, 300);
 }
 
 // ________[Button leaderboard handler]________
@@ -581,11 +587,11 @@ function showLevel(level) {
     const easy = document.getElementById('leaderEasy');
     const medium = document.getElementById('leaderMedium');
     const high = document.getElementById('leaderHigh');
-    easy.style.borderBottom = 'none';
+    easy.style.borderBottom = '3px solid rgba(255, 255, 255, 0.2)';
     easy.style.backgroundColor = 'rgba(0, 0, 0, 0)';
-    medium.style.borderBottom = 'none';
+    medium.style.borderBottom = '3px solid rgba(255, 255, 255, 0.2)';
     medium.style.backgroundColor = 'rgba(0, 0, 0, 0)';
-    high.style.borderBottom = 'none';
+    high.style.borderBottom = '3px solid rgba(255, 255, 255, 0.2)';
     high.style.backgroundColor = 'rgba(0, 0, 0, 0)';
 
     if (level === 'easy') {
@@ -973,7 +979,7 @@ document.body.addEventListener('mouseleave', function (event) {
     })
 });
 
-function myFunction(x) {
+function mediaDetection(x) {
     if (x.matches) {
         circles.forEach(function (circle) {
             circle.style.display = 'none'
@@ -996,5 +1002,5 @@ function myFunction(x) {
 }
 
 var x = window.matchMedia("(max-width: 769px)")
-myFunction(x)
-x.addEventListener('change', myFunction)
+mediaDetection(x)
+x.addEventListener('change', mediaDetection)

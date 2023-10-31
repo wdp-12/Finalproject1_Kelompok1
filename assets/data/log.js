@@ -62,7 +62,7 @@ const leaderboardContent = [
         "score": 18
     },
     {
-        "name": "cape bang",
+        "name": "done bang",
         "level": "easy",
         "score": 15
     },
