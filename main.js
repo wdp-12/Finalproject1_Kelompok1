@@ -123,19 +123,19 @@ function pauseOrPlay(pause) {
         clickSfx()
         
         // Efek transisi
-        musicMuteIcon.style.transform = 'translateX(-55px)';
-        soundMuteIcon.style.transform = 'translateX(-110px)';
-        replayIcon.style.transform = 'translateX(-165px)';
-        homeIcon.style.transform = 'translateX(-220px)';
+        musicMuteIcon.style.transform = 'translateX(-55px) rotate(-180deg)';
+        soundMuteIcon.style.transform = 'translateX(-110px) rotate(-180deg)';
+        replayIcon.style.transform = 'translateX(-165px) rotate(-180deg)';
+        homeIcon.style.transform = 'translateX(-220px) rotate(-180deg)';
         musicMuteIcon.style.display = 'block';
         soundMuteIcon.style.display = 'block';
         replayIcon.style.display = 'block';
         homeIcon.style.display = 'block';
         setTimeout(() => {
-            musicMuteIcon.style.transform = 'translateX(0)';
-            soundMuteIcon.style.transform = 'translateX(0)';
-            replayIcon.style.transform = 'translateX(0)';
-            homeIcon.style.transform = 'translateX(0)';
+            musicMuteIcon.style.transform = 'translateX(0) rotate(0)';
+            soundMuteIcon.style.transform = 'translateX(0) rotate(0)';
+            replayIcon.style.transform = 'translateX(0) rotate(0)';
+            homeIcon.style.transform = 'translateX(0) rotate(0)';
         }, 1);
     }
     if (pause === false) {
@@ -152,19 +152,19 @@ function pauseOrPlay(pause) {
         clickSfx()
 
         // Efek transisi
-        musicMuteIcon.style.transform = 'translateX(0)';
-        soundMuteIcon.style.transform = 'translateX(0)';
-        replayIcon.style.transform = 'translateX(0)';
-        homeIcon.style.transform = 'translateX(0)';
+        musicMuteIcon.style.transform = 'translateX(0) rotate(0)';
+        soundMuteIcon.style.transform = 'translateX(0) rotate(0)';
+        replayIcon.style.transform = 'translateX(0) rotate(0)';
+        homeIcon.style.transform = 'translateX(0) rotate(0)';
         musicMuteIcon.style.display = 'block';
         soundMuteIcon.style.display = 'block';
         replayIcon.style.display = 'block';
         homeIcon.style.display = 'block';
         setTimeout(() => {
-            musicMuteIcon.style.transform = 'translateX(-55px)';
-            soundMuteIcon.style.transform = 'translateX(-110px)';
-            replayIcon.style.transform = 'translateX(-165px)';
-            homeIcon.style.transform = 'translateX(-220px)';
+            musicMuteIcon.style.transform = 'translateX(-55px) rotate(-180deg)';
+            soundMuteIcon.style.transform = 'translateX(-110px) rotate(-180deg)';
+            replayIcon.style.transform = 'translateX(-165px) rotate(-180deg)';
+            homeIcon.style.transform = 'translateX(-220px) rotate(-180deg)';
         }, 1);
     }
 }
