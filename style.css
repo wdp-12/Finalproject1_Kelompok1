@@ -141,7 +141,8 @@ canvas {
 
 /* START GAME & GAME OVER CONTAINER */
 #startGameModal,
-#gameOverModal {
+#gameOverModal,
+#leaderboard {
     /* display: none; */
     position: fixed;
     z-index: 1;
@@ -155,7 +156,8 @@ canvas {
 }
 
 .start-game-modal,
-.game-over-modal {
+.game-over-modal,
+.leaderboard-modal {
     width: 100%;
     height: 100%;
     display: flex;
@@ -164,7 +166,8 @@ canvas {
 }
 
 .start-game-content,
-.game-over-content {
+.game-over-content,
+.leaderboard-content {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -246,6 +249,31 @@ select option {
     color: #cd2900;
 }
 
+.game-over-content p {
+    margin-top: 5px;
+    font-weight: 600;
+    color: #ffffff;
+    font-size: 1.5em;
+}
+
+.game-over-content table {
+    margin-top: 5px;
+    width: 75%;
+}
+
+#leaderboardIcon {
+    position: absolute;
+    width: 2em;
+    top: 15px;
+    left: 20px;
+    cursor: pointer;
+    padding: .5em;
+}
+
+#leaderboardIcon:hover {
+    background-color: rgba(0, 98, 110, 0.5);
+}
+
 .close {
     position: absolute;
     color: #aaaaaa;
@@ -261,16 +289,55 @@ select option {
     cursor: pointer;
 }
 
-.game-over-content p {
-    margin-top: 5px;
-    font-weight: 600;
-    color: #ffffff;
-    font-size: 1.5em;
+/* LEADERBOARD MODAL */
+#leaderboard {
+    display: none;
 }
 
-.game-over-content table {
-    margin-top: 5px;
+.leaderboard-content{
+    position: relative;
+}
+
+.leaderboard-content h1 {
+    color: #cd2900;
+}
+
+.closeLeaderboard {
+    position: absolute;
+    color: #aaaaaa;
+    font-size: 28px;
+    font-weight: bold;
+    top: 15px;
+    right: 20px;
+}
+
+.closeLeaderboard:hover,
+.closeLeaderboard:focus {
+    color: #727272;
+    cursor: pointer;
+}
+
+.level-navigation {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.level-navigation button {
+    margin: 0 5px;
+    padding: .4em 1em;
+    color: #fff;
+    background: none;
+    font-weight: bold;
+    font-size: 18px;
+    cursor: pointer;
+    border-top-right-radius: 12px;
+}
+
+.leaderboard-content table {
+    /* margin-top: 5px; */
     width: 75%;
+    padding: .5em 1em;
 }
 
 tr th {
@@ -546,6 +613,18 @@ tr td {
         right: 15px;
     }
 
+    #leaderboardIcon {
+        top: 10px;
+        left: 15px;
+        padding: 0;
+        width: 2.3em;
+    }
+
+    .closeLeaderboard {
+        top: 5px;
+        right: 15px;
+    }
+
     /* DIDALAM GAME */
     .head-container .icon {
         top: 15px;
@@ -577,6 +656,10 @@ tr td {
     .start-game-content {
         width: 90%;
         padding: 1rem;
+    }
+
+    .leaderboard-content table {
+        width: 95%;
     }
 
     #user-form {
@@ -642,4 +725,16 @@ tr td {
     height: 70px;
     top: 65px;
     left: 65px;
+}
+
+.circle-cursor {
+    height: .7em;
+    width: .7em;
+    border-radius: 24px;
+    background-color: black;
+    position: fixed; 
+    top: -4em;
+    left: -4em;
+    pointer-events: none;
+    z-index: 99999999;
 }

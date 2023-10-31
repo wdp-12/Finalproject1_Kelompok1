@@ -13,6 +13,17 @@
 </head>
 
 <body>
+    <div class="circle-cursor"></div>
+    <div class="circle-cursor"></div>
+    <div class="circle-cursor"></div>
+    <div class="circle-cursor"></div>
+    <div class="circle-cursor"></div>
+    <div class="circle-cursor"></div>
+    <div class="circle-cursor"></div>
+    <div class="circle-cursor"></div>
+    <div class="circle-cursor"></div>
+    <div class="circle-cursor"></div>
+    
     <div class="loading-animation">
         <div class="ring">Loading
             <span class="spinner"></span>
@@ -35,18 +46,18 @@
             </div>
             <div class="music-mute-icon" style="display: none;">
                 <img id="musicIcon" src="assets/music.svg" alt="Music" onclick="muteMusic(true)"
-                    style="display: block;">
+                    style="display: block;" title="Music on">
                 <img id="musicSlashIcon" src="assets/music-slash.svg" alt="Music Slash" onclick="muteMusic(false)"
-                    style="display: none;">
+                    style="display: none;" title="Music off">
             </div>
             <div class="sound-mute-icon" style="display: none;">
                 <img id="soundIcon" src="assets/sound.svg" alt="Sound" onclick="muteSound(true)"
-                    style="display: block;">
+                    style="display: block;" title="Sfx on">
                 <img id="soundSlashIcon" src="assets/sound-slash.svg" alt="Sound Slash" onclick="muteSound(false)"
-                    style="display: none;">
+                    style="display: none;" title="Sfx off">
             </div>
-            <img id="replayIcon" src="assets/replay.svg" alt="Replay" onclick="replayGame()" style="display: none;">
-            <img id="homeIcon" src="assets/home.svg" alt="Home" onclick="" style="display: none;">
+            <img id="replayIcon" src="assets/replay.svg" alt="Replay" onclick="replayGame()" style="display: none;" title="Replay current game">
+            <img id="homeIcon" src="assets/home.svg" alt="Home" onclick="returnToLandingPage()" style="display: none;" title="Back to Homepage">
         </div>
         <p>Snake Amazon</p>
     </div>
@@ -133,13 +144,13 @@
                 <form id="user-form">
                     <p class="input-info" style="color: rgb(255, 82, 13);"></p>
                     <label for="name">Name</label>
-                    <input type="text" id="name" name="name" spellcheck="false" required>
+                    <input type="text" id="name" name="name" spellcheck="false" required title="Input your name here sir...">
 
                     <label for="level">Select Level</label>
-                    <select id="level" name="level">
-                        <option value="easy">Easy</option>
-                        <option value="medium">Medium</option>
-                        <option value="high">High</option>
+                    <select id="level" name="level" title="Choose your level">
+                        <option value="easy" title="Easy game for fun">Easy</option>
+                        <option value="medium" title="Normal person">Medium</option>
+                        <option value="high" title="God mode">High</option>
                     </select>
                     <button type="button" id="startButton">Start Game</button>
                 </form>
@@ -153,6 +164,7 @@
             <div class="game-over-content">
                 <span class="close">X</span>
                 <h1>Game Over :(</h1>
+
                 <p>Top 5 Players</p>
                 <table class="top-players">
                     <thead>
@@ -190,10 +202,65 @@
                         </tr>
                     </tbody>
                 </table>
+                
+                <div class="bottom-btn-gameover">
+                    <img id="leaderboardIcon" src="assets/trophy.svg" title="See Others Top 5 Players"/>
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- Leaderboard -->
+    <div id="leaderboard" style="display: none;">
+        <div class="leaderboard-modal">
+            <div class="leaderboard-content">
+                <span class="closeLeaderboard">X</span>
+                <h1>Top 5 Players</h1>
+                <div class="level-navigation">
+                    <button id="leaderEasy" onclick="showLevel('easy')" style="border-bottom: 3px solid #fff; background-color: rgba(0, 0, 0, 0.2);">Easy</button>
+                    <button id="leaderMedium" onclick="showLevel('medium')">Medium</button>
+                    <button id="leaderHigh" onclick="showLevel('high')">High</button>
+                </div>
+                <table class="top-players">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Level</th>
+                            <th>Score</th>
+                        </tr>
+                    </thead>
+                    <tbody id="topByLevel">
+                        <tr>
+                            <td>Hamdan</td>
+                            <td>High</td>
+                            <td>200</td>
+                        </tr>
+                        <tr>
+                            <td>Hamdan</td>
+                            <td>High</td>
+                            <td>200</td>
+                        </tr>
+                        <tr>
+                            <td>Hamdan</td>
+                            <td>High</td>
+                            <td>200</td>
+                        </tr>
+                        <tr>
+                            <td>Hamdan</td>
+                            <td>High</td>
+                            <td>200</td>
+                        </tr>
+                        <tr>
+                            <td>Hamdan</td>
+                            <td>High</td>
+                            <td>200</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
     <!-- Countdown -->
     <div class="countdown">
         <p id="countdown"></p>
