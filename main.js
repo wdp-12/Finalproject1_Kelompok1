@@ -550,6 +550,7 @@ document.getElementById('leaderboardIcon').addEventListener('click', () => {
     }, 300)
 })
 
+
 // ________[Leaderboard content handler]________
 function updateLeaderboardContent(level) {
     let selectedLevel = level;
@@ -581,6 +582,7 @@ function updateLeaderboardContent(level) {
     }, 300);
 }
 
+
 // ________[Button leaderboard handler]________
 function showLevel(level) {
     clickSfx()
@@ -608,6 +610,7 @@ function showLevel(level) {
         high.style.backgroundColor = 'rgba(0, 0, 0, 0.2)'
     }
 }
+
 
 // ________[Countdown before startgame function]________
 function startCountdown() {
@@ -645,6 +648,7 @@ function startCountdown() {
     startButton.disabled = true
     isPlaying = true
 }
+
 
 // ________[Close Landing Page function]________
 function closeLandingPage() {
@@ -687,6 +691,7 @@ startButton.addEventListener('click', function () {
         return
     }
 });
+
 
 // ________[Start Game with Space key handle]________
 document.addEventListener('keydown', function (e) {
@@ -746,6 +751,7 @@ document.addEventListener('keydown', function (e) {
     }
 });
 
+
 // ________[Close Gameover modal function]________
 document.querySelector(".close").addEventListener("click", function () {
     clickSfx()
@@ -759,6 +765,7 @@ document.querySelector(".close").addEventListener("click", function () {
         modalShowTransition(document.querySelector('.start-game-content'), 1)
     }, 300)
 });
+
 
 // ________[Close Leaderboard modal function]________
 document.querySelector(".closeLeaderboard").addEventListener("click", function () {
@@ -774,6 +781,7 @@ document.querySelector(".closeLeaderboard").addEventListener("click", function (
     }, 300)
 
 });
+
 
 // ________[Modal handler function (hide/show modal)]________
 function modalHideTransition(element, delay = 1, scale = 'scale(0)', opacity = '0', animationDuration = 0.2) {
@@ -792,50 +800,20 @@ function modalShowTransition(element, delay = 200, scale = 'scale(1)', opacity =
     }, delay)
 }
 
+
 // ________[Preloader]________
-// document.onreadystatechange = function () {
-//     if (document.readyState === "loading") {
-//         document.querySelector(".loading-animation").style.display = "block";
-//     } else {
-//         let getData = JSON.parse(localStorage.getItem('players'))
-//         let addition = []
-//         for (const i in getData) {
-//             addition.push(getData[i].name)
-//         }
-//         if (!addition.includes('Sonic')) {
-//             let allPlayers = JSON.parse(localStorage.getItem('players')) || [];
-//             for (const data of leaderboardContent) {
-//                 allPlayers.push(data)
-//             }
-//             localStorage.setItem('players', JSON.stringify(allPlayers));
-//         }
-//         setTimeout(() => {
-//             document.querySelector(".loading-animation").style.opacity = "0";
-//             setTimeout(() => {
-//                 document.querySelector(".loading-animation").style.display = "none";
-//                 document.querySelector(".ring").innerHTML = ''
-//             }, 2000);
-//         }, 1200);
-//     }
-// }
 window.addEventListener("load", function () {
-    let getData = JSON.parse(localStorage.getItem('players'));
-    let addition = [];
-    
-    if (getData) {
-        for (const i in getData) {
-            addition.push(getData[i].name);
+    let getData = JSON.parse(localStorage.getItem('players'))
+    let addition = []
+    for (const i in getData) {
+        addition.push(getData[i].name)
+    }
+    if (!addition.includes('Sonic')) {
+        let allPlayers = JSON.parse(localStorage.getItem('players')) || [];
+        for (const data of leaderboardContent) {
+            allPlayers.push(data)
         }
-
-        if (!addition.includes('Sonic')) {
-            let allPlayers = JSON.parse(localStorage.getItem('players')) || [];
-
-            for (const data of leaderboardContent) {
-                allPlayers.push(data);
-            }
-
-            localStorage.setItem('players', JSON.stringify(allPlayers));
-        }
+        localStorage.setItem('players', JSON.stringify(allPlayers));
     }
     setTimeout(() => {
         document.querySelector(".loading-animation").style.opacity = "0";
@@ -860,6 +838,7 @@ function usernameCheck(username) {
     return true;
 }
 // usernameCheck(document.getElementById('name').value)
+
 
 // ARROW KEYS ON MOBILE
 var keyUp = document.getElementById('key-up');
@@ -1027,6 +1006,7 @@ function mediaDetection(x) {
 var x = window.matchMedia("(max-width: 769px)")
 mediaDetection(x)
 x.addEventListener('change', mediaDetection)
+
 
 // ________[Slide controller]________
 let initialX = null;
