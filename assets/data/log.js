@@ -4,12 +4,12 @@ const leaderboardContent = [
     {
         "name": "Sonic",
         "level": "high",
-        "score": 697
+        "score": 17
     },
     {
         "name": "Kak ros",
         "level": "high",
-        "score": 67
+        "score": 23
     },
     {
         "name": "Toni sehat",
@@ -39,7 +39,7 @@ const leaderboardContent = [
     {
         "name": "Toni",
         "level": "medium",
-        "score": 152
+        "score": 12
     },
     {
         "name": "Yanti resing",
@@ -69,11 +69,11 @@ const leaderboardContent = [
     {
         "name": "akun gg",
         "level": "easy",
-        "score": 342
+        "score": 6
     },
     {
         "name": "sepuh",
         "level": "easy",
-        "score": 59
+        "score": 22
     }
 ]

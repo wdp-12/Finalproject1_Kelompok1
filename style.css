@@ -157,6 +157,7 @@ canvas {
     text-align: center;
     width: 30%;
     font-size: 80%;
+    transition: all .6s ease-in-out;
 }
 
 .news-content p {
@@ -267,6 +268,27 @@ select option {
 .open-game:focus {
     background-color: #3b8b3e;
     cursor: pointer;
+}
+
+/* Icon pause dan teman2 */
+.pause-play-icon {
+    z-index: 1;
+}
+
+.music-mute-icon {
+    transition: all .4s ease-in-out;
+}
+
+.sound-mute-icon {
+    transition: all .4s ease-in-out;
+}
+
+#replayIcon {
+    transition: all .4s ease-in-out;
+}
+
+#homeIcon {
+    transition: all .4s ease-in-out;
 }
 
 /* GAME OVER MODAL */
@@ -398,6 +420,7 @@ tr td {
 .countdown {
     font-family: Poppins;
     font-weight: bold;
+    z-index: 2;
 }
 
 .countdown p {
