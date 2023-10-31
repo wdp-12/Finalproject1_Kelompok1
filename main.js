@@ -383,6 +383,22 @@ function updateBomb() {
     }
 }
 
+// Menampilkan display news
+function newsDisplay() {
+    var modal = document.getElementById("newsModal");
+    modal.style.display = "block";
+    clickSfx()
+}
+
+// Menutup display news
+function closeNews() {
+    var modal = document.getElementById("newsModal");
+    modal.style.display = "none";
+    clickSfx()
+}
+document.getElementById("closeNews").addEventListener("click", closeNews);
+
+// ________[Start Game function]________
 function startGame() {
     isPlaying = true;
     canvas.style.display = 'block';
