@@ -793,36 +793,59 @@ function modalShowTransition(element, delay = 200, scale = 'scale(1)', opacity =
 }
 
 // ________[Preloader]________
-document.onreadystatechange = function () {
-    if (document.readyState === "loading") {
-        document.querySelector(".loading-animation").style.display = "block";
-    } else {
-        let getData = JSON.parse(localStorage.getItem('players'))
-        let addition = []
+// document.onreadystatechange = function () {
+//     if (document.readyState === "loading") {
+//         document.querySelector(".loading-animation").style.display = "block";
+//     } else {
+//         let getData = JSON.parse(localStorage.getItem('players'))
+//         let addition = []
+//         for (const i in getData) {
+//             addition.push(getData[i].name)
+//         }
+//         if (!addition.includes('Sonic')) {
+//             let allPlayers = JSON.parse(localStorage.getItem('players')) || [];
+//             for (const data of leaderboardContent) {
+//                 allPlayers.push(data)
+//             }
+//             localStorage.setItem('players', JSON.stringify(allPlayers));
+//         }
+//         setTimeout(() => {
+//             document.querySelector(".loading-animation").style.opacity = "0";
+//             setTimeout(() => {
+//                 document.querySelector(".loading-animation").style.display = "none";
+//                 document.querySelector(".ring").innerHTML = ''
+//             }, 2000);
+//         }, 1200);
+//     }
+// }
+window.addEventListener("load", function () {
+    let getData = JSON.parse(localStorage.getItem('players'));
+    let addition = [];
+    
+    if (getData) {
         for (const i in getData) {
-            addition.push(getData[i].name)
+            addition.push(getData[i].name);
         }
+
         if (!addition.includes('Sonic')) {
             let allPlayers = JSON.parse(localStorage.getItem('players')) || [];
+
             for (const data of leaderboardContent) {
-                allPlayers.push(data)
+                allPlayers.push(data);
             }
+
             localStorage.setItem('players', JSON.stringify(allPlayers));
         }
-        setTimeout(() => {
-            document.querySelector(".loading-animation").style.opacity = "0";
-            setTimeout(() => {
-                document.querySelector(".loading-animation").style.display = "none";
-                document.querySelector(".ring").innerHTML = ''
-            }, 2000);
-        }, 1200);
     }
-}
-window.addEventListener("load", function () {
     setTimeout(() => {
-        document.querySelector(".loading-animation").style.display = "none";
-    }, 2000);
-});
+        document.querySelector(".loading-animation").style.opacity = "0";
+        setTimeout(() => {
+            document.querySelector(".loading-animation").style.display = "none";
+            document.querySelector(".ring").innerHTML = ''
+        }, 2000);
+    }, 1200);
+})
+
 
 // ________[Badword]________
 function usernameCheck(username) {
@@ -909,7 +932,7 @@ keyRight.addEventListener("click", function () {
 });
 
 
-// Cursor effect if (screen > 769px)
+// ________[Cursor effect if (screen > 769px)]________
 const coords = { x: 0, y: 0 };
 const circles = document.querySelectorAll(".circle-cursor");
 
@@ -1004,3 +1027,59 @@ function mediaDetection(x) {
 var x = window.matchMedia("(max-width: 769px)")
 mediaDetection(x)
 x.addEventListener('change', mediaDetection)
+
+// ________[Slide controller]________
+let initialX = null;
+let initialY = null;
+
+document.addEventListener('touchstart', function(event) {
+    initialX = event.touches[0].clientX;
+    initialY = event.touches[0].clientY;
+});
+
+document.addEventListener('touchmove', function(event) {
+    if (initialX === null || initialY === null) {
+        return;
+    }
+
+    const currentX = event.touches[0].clientX;
+    const currentY = event.touches[0].clientY;
+
+    const diffX = initialX - currentX;
+    const diffY = initialY - currentY;
+
+    if (Math.abs(diffX) > Math.abs(diffY)) {
+        if (diffX > 0) {
+            // console.log('Geser ke kiri terdeteksi');
+            if (snake.dx === 0) {
+                snake.dx = -grid;
+                snake.dy = 0;
+            }
+        } else {
+            // console.log('Geser ke kanan terdeteksi');
+            if (snake.dx === 0) {
+                snake.dx = grid;
+                snake.dy = 0;
+            }
+        }
+    } else {
+        if (diffY > 0) {
+            // console.log('Geser ke atas terdeteksi');
+            if (snake.dy === 0) {
+                snake.dy = -grid;
+                snake.dx = 0;
+            }
+        } else {
+            // console.log('Geser ke bawah terdeteksi');
+            if (snake.dy === 0) {
+                snake.dy = grid;
+                snake.dx = 0;
+            }
+        }
+    }
+});
+
+document.addEventListener('touchend', function(event) {
+    initialX = null;
+    initialY = null;
+});
