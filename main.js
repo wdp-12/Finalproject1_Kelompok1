@@ -121,7 +121,7 @@ function pauseOrPlay(pause) {
         var bgAudio = document.getElementById('bgAudio');
         fadeIn(bgAudio, 1000, 0.1)
         clickSfx()
-        
+
         // Efek transisi
         musicMuteIcon.style.transform = 'translateX(-55px) rotate(-180deg)';
         soundMuteIcon.style.transform = 'translateX(-110px) rotate(-180deg)';
@@ -415,28 +415,24 @@ function updateBomb() {
 }
 
 // ________[News modal function]________
-var modal = document.querySelector(".news-modal");
-modal.style.top = '-15px'
-modal.style.left = '-250px'
-modal.style.scale = '0'
+var newsContent = document.querySelector('.news-content')
+newsContent.style.transform = 'scale(0)';
+newsContent.style.transformOrigin = 'left top';
+
 function newsDisplay() {
     clickSfx()
-    document.querySelector('#newsModal').style.display = "block";
+    newsContent.style.display = "block";
     setTimeout(() => {
-        modal.style.top = '15%'
-        modal.style.left = '25%'
-        modal.style.scale = '1'
-    }, 20);
+        newsContent.style.transform = 'scale(1)';
+    }, 300);
 }
 
 function closeNews() {
-    clickSfx()
-    modal.style.top = '-15px'
-    modal.style.left = '-250px'
-    modal.style.scale = '0'
+    clickSfx();
+    newsContent.style.transform = 'scale(0)';
     setTimeout(() => {
-        document.querySelector('#newsModal').style.display = "none";
-    }, 600);
+        newsContent.style.display = "none";
+    }, 300);
 }
 
 
@@ -612,20 +608,20 @@ function updateLeaderboardContent(level) {
     let tabel = document.querySelector('#topByLevel');
     tabel.style.opacity = '0'
     tabel.style.visibility = 'hidden'
-    
+
     let allPlayers = JSON.parse(localStorage.getItem('players')) || [];
     let topPlayers = allPlayers.filter(player => player.level === selectedLevel);
     topPlayers.sort(function (a, b) {
         return b.score - a.score;
     });
     var top5Players = topPlayers.slice(0, 5);
-    
+
     setTimeout(() => {
         tabel.innerHTML = '';
         if (top5Players.length > 0) {
             top5Players.forEach(function (player) {
                 tabel.innerHTML +=
-                `<tr>
+                    `<tr>
                 <td>${player.name}</td>
                 <td>${player.level}</td>
                 <td>${player.score}</td>
@@ -1095,12 +1091,12 @@ x.addEventListener('change', mediaDetection)
 let initialX = null;
 let initialY = null;
 
-document.addEventListener('touchstart', function(event) {
+document.addEventListener('touchstart', function (event) {
     initialX = event.touches[0].clientX;
     initialY = event.touches[0].clientY;
 });
 
-document.addEventListener('touchmove', function(event) {
+document.addEventListener('touchmove', function (event) {
     if (initialX === null || initialY === null) {
         return;
     }
@@ -1142,7 +1138,7 @@ document.addEventListener('touchmove', function(event) {
     }
 });
 
-document.addEventListener('touchend', function(event) {
+document.addEventListener('touchend', function (event) {
     initialX = null;
     initialY = null;
 });
