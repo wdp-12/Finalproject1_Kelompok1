@@ -739,12 +739,13 @@ startButton.addEventListener('click', function () {
     playerName = document.getElementById('name').value; // mengambil name value
     playerLevel = document.getElementById('level').value; // mengambil level value
 
+    document.querySelector('.input-info').innerText = ''
     if (playerName === '') {
         document.querySelector('.input-info').innerText = 'You have not entered a name.'
         return
+    } else if (playerName.length > 20) {
+        document.querySelector('.input-info').innerText = 'The maximum of name length is 20 characters.'
     } else if (usernameCheck(playerName)) {
-        document.querySelector('.input-info').innerText = ''
-
         modalHideTransition(document.querySelector('.start-game-content'), 1)
         setTimeout(() => {
             startGameModal.style.display = 'none';
