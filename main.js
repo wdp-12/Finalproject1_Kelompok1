@@ -11,8 +11,9 @@ var playIcon = document.getElementById("playIcon");
 var pauseKey = document.getElementById("pause-key"); // on mobile
 var playKey = document.getElementById("play-key"); // on mobile
 var closeModal = document.getElementsByClassName("close")[0];
-var playerName; // untuk menyimpan nama pleyer
-var playerLevel; // untuk menyimpan level pleyer
+var playerName = ""; // untuk menyimpan nama pleyer
+var subPlayerName = ""; // menyimpan nama (pendek) player
+var playerLevel = ""; // untuk menyimpan level pleyer
 var musicMuteIcon = document.querySelector('.music-mute-icon')
 var soundMuteIcon = document.querySelector('.sound-mute-icon')
 var replayIcon = document.querySelector('#replayIcon')
@@ -79,6 +80,7 @@ function playBgm() {
     fadeIn(bgmAudio, 8000, 0.3)
 }
 
+// SOUND & MUSIC
 function playBackgroundSound() {
     var bgAudio = document.getElementById('bgAudio');
     fadeIn(bgAudio, 2000, 0.7)
@@ -290,7 +292,7 @@ function loop(timestamp) {
             // apple.x = getRandomInt(0, 25) * grid;
             // apple.y = getRandomInt(0, 25) * grid;
             score++;
-            scoreText.textContent = 'Score: ' + score;
+            scoreText.textContent = `Score (${subPlayerName}):  ${score}`;
             playEatSound(); // Mainkan suara saat memakan apel
         }
 
@@ -300,7 +302,7 @@ function loop(timestamp) {
             // pizza.y = getRandomInt(0, 25) * grid;
             // updatePizza()
             score += 5;
-            scoreText.textContent = 'Score: ' + score;
+            scoreText.textContent = `Score (${subPlayerName}):  ${score}`;
             pizzaCount = 0;
             playEatSound(); // Mainkan suara saat memakan pizza
             pizza.x = -grid;
@@ -445,7 +447,7 @@ function startGame() {
     pizzaCount = 0;
     bombCount = 0;
     score = 0;
-    scoreText.textContent = 'Score: 0';
+    scoreText.textContent = `Score (${subPlayerName}):  ${score}`;
     snake.x = 160;
     snake.y = 160;
     snake.cells = [];
@@ -722,6 +724,12 @@ startButton.addEventListener('click', function () {
     clickSfx()
     playerName = document.getElementById('name').value; // mengambil name value
     playerLevel = document.getElementById('level').value; // mengambil level value
+    // nama pendek player (5 huruf)
+    var maxLength = 6;
+    subPlayerName = playerName;
+    if (playerName.length > maxLength) {
+        subPlayerName = playerName.substring(0, 5) + '.';
+    };
 
     if (playerName === '') {
         document.querySelector('.input-info').innerText = 'You have not entered a name.'
