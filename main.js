@@ -415,28 +415,24 @@ function updateBomb() {
 }
 
 // ________[News modal function]________
-var modal = document.querySelector(".news-modal");
-modal.style.top = '-15px'
-modal.style.left = '-250px'
-modal.style.scale = '0'
+var newsContent = document.querySelector('.news-content')
+newsContent.style.transform = 'scale(0)';
+newsContent.style.transformOrigin = 'left top';
+
 function newsDisplay() {
     clickSfx()
-    document.querySelector('#newsModal').style.display = "block";
+    newsContent.style.display = "block";
     setTimeout(() => {
-        modal.style.top = '15%'
-        modal.style.left = '25%'
-        modal.style.scale = '1'
-    }, 20);
+        newsContent.style.transform = 'scale(1)';
+    }, 300);
 }
 
 function closeNews() {
-    clickSfx()
-    modal.style.top = '-15px'
-    modal.style.left = '-250px'
-    modal.style.scale = '0'
+    clickSfx();
+    newsContent.style.transform = 'scale(0)';
     setTimeout(() => {
-        document.querySelector('#newsModal').style.display = "none";
-    }, 600);
+        newsContent.style.display = "none";
+    }, 300);
 }
 
 
