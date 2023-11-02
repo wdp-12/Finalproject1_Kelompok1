@@ -1,6 +1,7 @@
 var canvas = document.getElementById('game-canvas');
 var context = canvas.getContext('2d');
 var startButton = document.getElementById('startButton');
+var guestButton = document.getElementById('guestMode')
 var startGameModal = document.getElementById('startGameModal')
 var gameOverModal = document.getElementById('gameOverModal');
 var leaderboardModal = document.getElementById('leaderboard');
@@ -508,6 +509,9 @@ function gameOver() {
     document.getElementById("bgAudio").pause();
     playBgm()
 
+    // ubah nama (pendek) player spt semula
+    subPlayerName = '';
+
     // Simpan Nama, Level, dan Skor ke localStorage
     var playerData = {
         name: playerName,
@@ -812,27 +816,26 @@ document.addEventListener('keydown', function (e) {
 
 
 // ________[Start game as Guest function]________
-document.addEventListener('keydown', (e) => {
-    if (e.ctrlKey && e.key === 'm') {
-        clickSfx()
-        playerName = document.getElementById('name').value; // mengambil name value
-        playerLevel = document.getElementById('level').value; // mengambil level value
-        document.querySelector('.input-info').innerHTML = ''
+guestButton.addEventListener('click', function () {
+    clickSfx()
+    playerName = document.getElementById('name').value; // mengambil name value
+    playerLevel = document.getElementById('level').value; // mengambil level value
+    document.querySelector('.input-info').innerHTML = ''
+    subPlayerName = 'Guest';
 
-        modalHideTransition(document.querySelector('.start-game-content'), 1)
+    modalHideTransition(document.querySelector('.start-game-content'), 1)
+    setTimeout(() => {
+        startGameModal.style.display = 'none';
+    }, 200)
+    if (startGameModal.style.display = 'none') {
+        modalHideTransition(document.querySelector('.game-over-content'), 1)
         setTimeout(() => {
-            startGameModal.style.display = 'none';
+            gameOverModal.style.display = 'none';
         }, 200)
-        if (startGameModal.style.display = 'none') {
-            modalHideTransition(document.querySelector('.game-over-content'), 1)
-            setTimeout(() => {
-                gameOverModal.style.display = 'none';
-            }, 200)
-        }
-        setTimeout(() => {
-            startCountdown();
-        }, 200);
     }
+    setTimeout(() => {
+        startCountdown();
+    }, 200);
 })
 
 
