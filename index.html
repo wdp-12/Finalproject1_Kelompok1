@@ -23,7 +23,7 @@
     <div class="circle-cursor"></div>
     <div class="circle-cursor"></div>
     <div class="circle-cursor"></div>
-    
+
     <div class="loading-animation">
         <div class="ring">Loading
             <span class="spinner"></span>
@@ -31,21 +31,18 @@
     </div>
 
     <div class="landing-page">
-        <img src="assets/bg.png" alt="bg">
+        <img class="bg-cover" src="assets/bg.png" alt="bg">
         <div class="content">
             <p>Snake Amazon</p>
             <button onclick="closeLandingPage()" class="open-game">Open Game</button>
         </div>
-        <div class="icon-news">
+        <div class="news">
             <img id="newsIcon" src="assets/news.svg" alt="News" onclick="newsDisplay()">
-            <div id="newsModal">
-                <div class="news-modal">
-                    <div class="news-content">
-                        <span id="closeNews" class="close-button" onclick="closeNews">X</span>
-                        <h2>Snake Amazon News</h1>
-                        <p>Snake Amazon is now available in a website version optimized exclusively for tablet and mobile devices 💖✨</p>
-                    </div>
-                </div>
+            <div class="news-content">
+                <span id="closeNews" class="close-button" onclick="closeNews()">X</span>
+                <h3>Snake Amazon News</h3>
+                <p>Snake Amazon is now available in a website version optimized exclusively for tablet and
+                    mobile devices 💖✨</p>
             </div>
         </div>
     </div>
@@ -53,23 +50,26 @@
     <div class="head-container">
         <div class="icon">
             <div class="pause-play-icon">
-                <img id="pauseIcon" src="assets/pause.svg" alt="Pause" onclick="pauseOrPlay(true)" style="display: block;">
+                <img id="pauseIcon" src="assets/pause.svg" alt="Pause" onclick="pauseOrPlay(true)"
+                    style="display: block;">
                 <img id="playIcon" src="assets/play.svg" alt="Play" onclick="pauseOrPlay(false)" style="display: none;">
             </div>
             <div class="music-mute-icon" style="display: none;">
-                <img id="musicIcon" src="assets/music.svg" alt="Music" onclick="muteMusic(true)"
-                    style="display: block;" title="Music on">
+                <img id="musicIcon" src="assets/music.svg" alt="Music" onclick="muteMusic(true)" style="display: block;"
+                    title="Music on">
                 <img id="musicSlashIcon" src="assets/music-slash.svg" alt="Music Slash" onclick="muteMusic(false)"
                     style="display: none;" title="Music off">
             </div>
             <div class="sound-mute-icon" style="display: none;">
-                <img id="soundIcon" src="assets/sound.svg" alt="Sound" onclick="muteSound(true)"
-                    style="display: block;" title="Sfx on">
+                <img id="soundIcon" src="assets/sound.svg" alt="Sound" onclick="muteSound(true)" style="display: block;"
+                    title="Sfx on">
                 <img id="soundSlashIcon" src="assets/sound-slash.svg" alt="Sound Slash" onclick="muteSound(false)"
                     style="display: none;" title="Sfx off">
             </div>
-            <img id="replayIcon" src="assets/replay.svg" alt="Replay" onclick="replayGame()" style="display: none;" title="Replay current game">
-            <img id="homeIcon" src="assets/home.svg" alt="Home" onclick="returnToLandingPage()" style="display: none;" title="Back to Homepage">
+            <img id="replayIcon" src="assets/replay.svg" alt="Replay" onclick="replayGame()" style="display: none;"
+                title="Replay current game">
+            <img id="homeIcon" src="assets/home.svg" alt="Home" onclick="returnToLandingPage()" style="display: none;"
+                title="Back to Homepage">
         </div>
         <p>Snake Amazon</p>
     </div>
@@ -156,7 +156,8 @@
                 <form id="user-form">
                     <p class="input-info" style="color: rgb(255, 82, 13);"></p>
                     <label for="name">Name</label>
-                    <input type="text" id="name" name="name" spellcheck="false" required title="Input your name here sir...">
+                    <input type="text" id="name" name="name" spellcheck="false" required
+                        title="Input your name here sir...">
 
                     <label for="level">Select Level</label>
                     <select id="level" name="level" title="Choose your level">
@@ -214,9 +215,9 @@
                         </tr>
                     </tbody>
                 </table>
-                
+
                 <div class="bottom-btn-gameover">
-                    <img id="leaderboardIcon" src="assets/trophy.svg" title="See Others Top 5 Players"/>
+                    <img id="leaderboardIcon" src="assets/trophy.svg" title="See Others Top 5 Players" />
                 </div>
             </div>
         </div>
@@ -229,9 +230,12 @@
                 <span class="closeLeaderboard">X</span>
                 <h1>Top 5 Players</h1>
                 <div class="level-navigation">
-                    <button id="leaderEasy" onclick="showLevel('easy')" style="border-bottom: 3px solid #fff; background-color: rgba(0, 0, 0, 0.2);">Easy</button>
-                    <button id="leaderMedium" onclick="showLevel('medium')" style="border-bottom: 3px solid rgba(255, 255, 255, 0.2);">Medium</button>
-                    <button id="leaderHigh" onclick="showLevel('high')" style="border-bottom: 3px solid rgba(255, 255, 255, 0.2);">High</button>
+                    <button id="leaderEasy" onclick="showLevel('easy')"
+                        style="border-bottom: 3px solid #fff; background-color: rgba(0, 0, 0, 0.2);">Easy</button>
+                    <button id="leaderMedium" onclick="showLevel('medium')"
+                        style="border-bottom: 3px solid rgba(255, 255, 255, 0.2);">Medium</button>
+                    <button id="leaderHigh" onclick="showLevel('high')"
+                        style="border-bottom: 3px solid rgba(255, 255, 255, 0.2);">High</button>
                 </div>
                 <table class="top-players">
                     <thead>
@@ -272,7 +276,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- Countdown -->
     <div class="countdown">
         <p id="countdown"></p>

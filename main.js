@@ -13,6 +13,10 @@ var playKey = document.getElementById("play-key"); // on mobile
 var closeModal = document.getElementsByClassName("close")[0];
 var playerName; // untuk menyimpan nama pleyer
 var playerLevel; // untuk menyimpan level pleyer
+var musicMuteIcon = document.querySelector('.music-mute-icon')
+var soundMuteIcon = document.querySelector('.sound-mute-icon')
+var replayIcon = document.querySelector('#replayIcon')
+var homeIcon = document.querySelector('#homeIcon')
 
 var grid = 16;
 
@@ -74,7 +78,6 @@ function playBgm() {
     var bgmAudio = document.getElementById('bgm');
     fadeIn(bgmAudio, 8000, 0.3)
 }
-playBgm() // auto play bgm
 
 function playBackgroundSound() {
     var bgAudio = document.getElementById('bgAudio');
@@ -103,6 +106,7 @@ function clickSfx() {
     clickSfx.volume = 0.4
 }
 
+
 // ________[Pause & Play gameloop handler]________
 function pauseOrPlay(pause) {
     if (pause === true) {
@@ -115,14 +119,24 @@ function pauseOrPlay(pause) {
         pauseIcon.style.zIndex = '1'
         playIcon.style.zIndex = '1'
         var bgAudio = document.getElementById('bgAudio');
-        fadeIn(bgAudio, 800, 0.2)
+        fadeIn(bgAudio, 1000, 0.1)
         clickSfx()
 
-        // Tampilkan other menu
-        document.querySelector('.music-mute-icon').style.display = 'block'
-        document.querySelector('.sound-mute-icon').style.display = 'block'
-        document.querySelector('#replayIcon').style.display = 'block'
-        document.querySelector('#homeIcon').style.display = 'block'
+        // Efek transisi
+        musicMuteIcon.style.transform = 'translateX(-55px) rotate(-180deg)';
+        soundMuteIcon.style.transform = 'translateX(-110px) rotate(-180deg)';
+        replayIcon.style.transform = 'translateX(-165px) rotate(-180deg)';
+        homeIcon.style.transform = 'translateX(-220px) rotate(-180deg)';
+        musicMuteIcon.style.display = 'block';
+        soundMuteIcon.style.display = 'block';
+        replayIcon.style.display = 'block';
+        homeIcon.style.display = 'block';
+        setTimeout(() => {
+            musicMuteIcon.style.transform = 'translateX(0) rotate(0)';
+            soundMuteIcon.style.transform = 'translateX(0) rotate(0)';
+            replayIcon.style.transform = 'translateX(0) rotate(0)';
+            homeIcon.style.transform = 'translateX(0) rotate(0)';
+        }, 1);
     }
     if (pause === false) {
         isPlaying = true
@@ -137,11 +151,21 @@ function pauseOrPlay(pause) {
         fadeIn(bgAudio, 800, 0.7)
         clickSfx()
 
-        // Sembunyikan other menu
-        document.querySelector('.music-mute-icon').style.display = 'none'
-        document.querySelector('.sound-mute-icon').style.display = 'none'
-        document.querySelector('#replayIcon').style.display = 'none'
-        document.querySelector('#homeIcon').style.display = 'none'
+        // Efek transisi
+        musicMuteIcon.style.transform = 'translateX(0) rotate(0)';
+        soundMuteIcon.style.transform = 'translateX(0) rotate(0)';
+        replayIcon.style.transform = 'translateX(0) rotate(0)';
+        homeIcon.style.transform = 'translateX(0) rotate(0)';
+        musicMuteIcon.style.display = 'block';
+        soundMuteIcon.style.display = 'block';
+        replayIcon.style.display = 'block';
+        homeIcon.style.display = 'block';
+        setTimeout(() => {
+            musicMuteIcon.style.transform = 'translateX(-55px) rotate(-180deg)';
+            soundMuteIcon.style.transform = 'translateX(-110px) rotate(-180deg)';
+            replayIcon.style.transform = 'translateX(-165px) rotate(-180deg)';
+            homeIcon.style.transform = 'translateX(-220px) rotate(-180deg)';
+        }, 1);
     }
 }
 
@@ -390,19 +414,27 @@ function updateBomb() {
     }
 }
 
+// ________[News modal function]________
+var newsContent = document.querySelector('.news-content')
+newsContent.style.transform = 'scale(0)';
+newsContent.style.transformOrigin = 'left top';
+
 function newsDisplay() {
-    var modal = document.getElementById("newsModal");
-    modal.style.display = "block";
     clickSfx()
+    newsContent.style.display = "block";
+    setTimeout(() => {
+        newsContent.style.transform = 'scale(1)';
+    }, 300);
 }
 
-// Menutup display news
 function closeNews() {
-    var modal = document.getElementById("newsModal");
-    modal.style.display = "none";
-    clickSfx()
+    clickSfx();
+    newsContent.style.transform = 'scale(0)';
+    setTimeout(() => {
+        newsContent.style.display = "none";
+    }, 300);
 }
-document.getElementById("closeNews").addEventListener("click", closeNews);
+
 
 // ________[Start Game function]________
 function startGame() {
@@ -452,7 +484,10 @@ function replayGame() {
     isPaused = false;
     pauseIcon.style.display = 'block';
     playIcon.style.display = 'none';
-    document.querySelector('#replayIcon').style.display = 'none';
+    document.querySelector('.music-mute-icon').style.display = 'none'
+    document.querySelector('.sound-mute-icon').style.display = 'none'
+    document.querySelector('#replayIcon').style.display = 'none'
+    document.querySelector('#homeIcon').style.display = 'none'
     playBackgroundSound();
     clickSfx();
     return;
@@ -496,10 +531,12 @@ function gameOver() {
         }
     } else {
         // Tambahkan pemain baru jika nama tidak ada dalam local storage
-        allPlayers.push(playerData);
+        if (playerName !== undefined) {
+            allPlayers.push(playerData);
+            console.log('tidak guest');
+        }
     }
 
-    // Simpan kembali data pemain ke local storage
     localStorage.setItem('players', JSON.stringify(allPlayers));
 
     if (score > highscore) {
@@ -564,26 +601,27 @@ document.getElementById('leaderboardIcon').addEventListener('click', () => {
     }, 300)
 })
 
+
 // ________[Leaderboard content handler]________
 function updateLeaderboardContent(level) {
     let selectedLevel = level;
     let tabel = document.querySelector('#topByLevel');
     tabel.style.opacity = '0'
     tabel.style.visibility = 'hidden'
-    
+
     let allPlayers = JSON.parse(localStorage.getItem('players')) || [];
     let topPlayers = allPlayers.filter(player => player.level === selectedLevel);
     topPlayers.sort(function (a, b) {
         return b.score - a.score;
     });
     var top5Players = topPlayers.slice(0, 5);
-    
+
     setTimeout(() => {
         tabel.innerHTML = '';
         if (top5Players.length > 0) {
             top5Players.forEach(function (player) {
                 tabel.innerHTML +=
-                `<tr>
+                    `<tr>
                 <td>${player.name}</td>
                 <td>${player.level}</td>
                 <td>${player.score}</td>
@@ -594,6 +632,7 @@ function updateLeaderboardContent(level) {
         tabel.style.visibility = 'visible'
     }, 300);
 }
+
 
 // ________[Button leaderboard handler]________
 function showLevel(level) {
@@ -622,6 +661,7 @@ function showLevel(level) {
         high.style.backgroundColor = 'rgba(0, 0, 0, 0.2)'
     }
 }
+
 
 // ________[Countdown before startgame function]________
 function startCountdown() {
@@ -659,6 +699,7 @@ function startCountdown() {
     startButton.disabled = true
     isPlaying = true
 }
+
 
 // ________[Close Landing Page function]________
 function closeLandingPage() {
@@ -701,6 +742,7 @@ startButton.addEventListener('click', function () {
         return
     }
 });
+
 
 // ________[Start Game with Space key handle]________
 document.addEventListener('keydown', function (e) {
@@ -760,6 +802,32 @@ document.addEventListener('keydown', function (e) {
     }
 });
 
+
+// ________[Start game as Guest function]________
+document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.key === 'm') {
+        clickSfx()
+        playerName = document.getElementById('name').value; // mengambil name value
+        playerLevel = document.getElementById('level').value; // mengambil level value
+        document.querySelector('.input-info').innerHTML = ''
+
+        modalHideTransition(document.querySelector('.start-game-content'), 1)
+        setTimeout(() => {
+            startGameModal.style.display = 'none';
+        }, 200)
+        if (startGameModal.style.display = 'none') {
+            modalHideTransition(document.querySelector('.game-over-content'), 1)
+            setTimeout(() => {
+                gameOverModal.style.display = 'none';
+            }, 200)
+        }
+        setTimeout(() => {
+            startCountdown();
+        }, 200);
+    }
+})
+
+
 // ________[Close Gameover modal function]________
 document.querySelector(".close").addEventListener("click", function () {
     clickSfx()
@@ -773,6 +841,7 @@ document.querySelector(".close").addEventListener("click", function () {
         modalShowTransition(document.querySelector('.start-game-content'), 1)
     }, 300)
 });
+
 
 // ________[Close Leaderboard modal function]________
 document.querySelector(".closeLeaderboard").addEventListener("click", function () {
@@ -788,6 +857,7 @@ document.querySelector(".closeLeaderboard").addEventListener("click", function (
     }, 300)
 
 });
+
 
 // ________[Modal handler function (hide/show modal)]________
 function modalHideTransition(element, delay = 1, scale = 'scale(0)', opacity = '0', animationDuration = 0.2) {
@@ -806,37 +876,33 @@ function modalShowTransition(element, delay = 200, scale = 'scale(1)', opacity =
     }, delay)
 }
 
+
 // ________[Preloader]________
-document.onreadystatechange = function () {
-    if (document.readyState === "loading") {
-        document.querySelector(".loading-animation").style.display = "block";
-    } else {
-        let getData = JSON.parse(localStorage.getItem('players'))
-        let addition = []
-        for (const i in getData) {
-            addition.push(getData[i].name)
-        }
-        if (!addition.includes('Sonic')) {
-            let allPlayers = JSON.parse(localStorage.getItem('players')) || [];
-            for (const data of leaderboardContent) {
-                allPlayers.push(data)
-            }
-            localStorage.setItem('players', JSON.stringify(allPlayers));
-        }
-        setTimeout(() => {
-            document.querySelector(".loading-animation").style.opacity = "0";
-            setTimeout(() => {
-                document.querySelector(".loading-animation").style.display = "none";
-                document.querySelector(".ring").innerHTML = ''
-            }, 2000);
-        }, 1200);
-    }
-}
 window.addEventListener("load", function () {
+    let getData = JSON.parse(localStorage.getItem('players'))
+    let addition = []
+    for (const i in getData) {
+        addition.push(getData[i].name)
+    }
+    if (!addition.includes('Sonic')) {
+        let allPlayers = JSON.parse(localStorage.getItem('players')) || [];
+        for (const data of leaderboardContent) {
+            allPlayers.push(data)
+        }
+        localStorage.setItem('players', JSON.stringify(allPlayers));
+    }
     setTimeout(() => {
-        document.querySelector(".loading-animation").style.display = "none";
-    }, 2000);
-});
+        playBgm()
+    }, 5000); // auto play bgm setelah 8 detik
+    setTimeout(() => {
+        document.querySelector(".loading-animation").style.opacity = "0";
+        setTimeout(() => {
+            document.querySelector(".loading-animation").style.display = "none";
+            document.querySelector(".ring").innerHTML = ''
+        }, 2000);
+    }, 1200);
+})
+
 
 // ________[Badword]________
 function usernameCheck(username) {
@@ -851,6 +917,7 @@ function usernameCheck(username) {
     return true;
 }
 // usernameCheck(document.getElementById('name').value)
+
 
 // ARROW KEYS ON MOBILE
 var keyUp = document.getElementById('key-up');
@@ -923,7 +990,7 @@ keyRight.addEventListener("click", function () {
 });
 
 
-// Cursor effect if (screen > 769px)
+// ________[Cursor effect if (screen > 769px)]________
 const coords = { x: 0, y: 0 };
 const circles = document.querySelectorAll(".circle-cursor");
 
@@ -1018,3 +1085,60 @@ function mediaDetection(x) {
 var x = window.matchMedia("(max-width: 769px)")
 mediaDetection(x)
 x.addEventListener('change', mediaDetection)
+
+
+// ________[Slide controller]________
+let initialX = null;
+let initialY = null;
+
+document.addEventListener('touchstart', function (event) {
+    initialX = event.touches[0].clientX;
+    initialY = event.touches[0].clientY;
+});
+
+document.addEventListener('touchmove', function (event) {
+    if (initialX === null || initialY === null) {
+        return;
+    }
+
+    const currentX = event.touches[0].clientX;
+    const currentY = event.touches[0].clientY;
+
+    const diffX = initialX - currentX;
+    const diffY = initialY - currentY;
+
+    if (Math.abs(diffX) > Math.abs(diffY)) {
+        if (diffX > 0) {
+            // console.log('Geser ke kiri terdeteksi');
+            if (snake.dx === 0) {
+                snake.dx = -grid;
+                snake.dy = 0;
+            }
+        } else {
+            // console.log('Geser ke kanan terdeteksi');
+            if (snake.dx === 0) {
+                snake.dx = grid;
+                snake.dy = 0;
+            }
+        }
+    } else {
+        if (diffY > 0) {
+            // console.log('Geser ke atas terdeteksi');
+            if (snake.dy === 0) {
+                snake.dy = -grid;
+                snake.dx = 0;
+            }
+        } else {
+            // console.log('Geser ke bawah terdeteksi');
+            if (snake.dy === 0) {
+                snake.dy = grid;
+                snake.dx = 0;
+            }
+        }
+    }
+});
+
+document.addEventListener('touchend', function (event) {
+    initialX = null;
+    initialY = null;
+});
