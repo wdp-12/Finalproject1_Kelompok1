@@ -137,7 +137,6 @@ canvas {
     border-bottom: 3px solid white;
     margin-bottom: 10px;
     padding-bottom: 5px;
-    word-spacing: -5px;
 }
 
 /* START GAME & GAME OVER CONTAINER */
@@ -216,22 +215,7 @@ select option {
     border-radius: 5px;
 }
 
-/* Start Game & Guest Mode Button */
-form div:last-child {
-    display: flex;
-    gap: 15px;
-    margin-top: 10px;
-}
-
-form div:last-child span {
-    width: 3px;
-    height: 100%;
-    border-radius: 50px;
-    background-color: #fff;
-}
-
 #startButton,
-#guestMode,
 .open-game {
     font-family: Poppins;
     display: block;
@@ -241,6 +225,7 @@ form div:last-child span {
     padding: 5px 15px;
     font-size: 20px;
     border-radius: 5px;
+    margin-top: 10px;
 }
 
 #startButton:hover,
@@ -248,16 +233,6 @@ form div:last-child span {
 .open-game:hover,
 .open-game:focus {
     background-color: #3b8b3e;
-    cursor: pointer;
-}
-
-#guestMode {
-    background-color: #44869c;
-}
-
-#guestMode:hover,
-#guestMode:focus {
-    background-color: #3f798d;
     cursor: pointer;
 }
 
@@ -768,17 +743,25 @@ tr td {
         font-size: 0.6em;
     }
 
+    /* #name,
+    #level {
+        font-size: 1em;
+        padding: 0 10px;
+    }
+
+    #name {
+        width: 10px;
+    }
+
+    #level {
+        width: 100%;
+    } */
+
     select option {
         font-size: 0.75em;
     }
 
-    /* Start Game & Guest Mode Button */
-    form div:last-child {
-        gap: 13px;
-    }
-
-    #startButton,
-    #guestMode {
+    #startButton {
         font-size: 1em;
     }
 
@@ -826,10 +809,6 @@ tr td {
 
     canvas {
         width: 100%;
-    }
-
-    .score {
-        font-size: 0.95em;
     }
 
     .start-game-content {
