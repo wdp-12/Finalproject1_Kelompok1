@@ -123,10 +123,19 @@ function pauseOrPlay(pause) {
         clickSfx()
 
         // Efek transisi
-        musicMuteIcon.style.transform = 'translateX(-55px) rotate(-180deg)';
-        soundMuteIcon.style.transform = 'translateX(-110px) rotate(-180deg)';
-        replayIcon.style.transform = 'translateX(-165px) rotate(-180deg)';
-        homeIcon.style.transform = 'translateX(-220px) rotate(-180deg)';
+
+        if (window.matchMedia("(max-width: 769px)").matches) {
+            musicMuteIcon.style.transform = 'translateX(-37px) rotate(-180deg)';
+            soundMuteIcon.style.transform = 'translateX(-74px) rotate(-180deg)';
+            replayIcon.style.transform = 'translateX(-111px) rotate(-180deg)';
+            homeIcon.style.transform = 'translateX(-148px) rotate(-180deg)';
+        } else {
+            musicMuteIcon.style.transform = 'translateX(-55px) rotate(-180deg)';
+            soundMuteIcon.style.transform = 'translateX(-110px) rotate(-180deg)';
+            replayIcon.style.transform = 'translateX(-165px) rotate(-180deg)';
+            homeIcon.style.transform = 'translateX(-220px) rotate(-180deg)';
+        }
+        
         musicMuteIcon.style.display = 'block';
         soundMuteIcon.style.display = 'block';
         replayIcon.style.display = 'block';
@@ -161,10 +170,17 @@ function pauseOrPlay(pause) {
         replayIcon.style.display = 'block';
         homeIcon.style.display = 'block';
         setTimeout(() => {
-            musicMuteIcon.style.transform = 'translateX(-55px) rotate(-180deg)';
-            soundMuteIcon.style.transform = 'translateX(-110px) rotate(-180deg)';
-            replayIcon.style.transform = 'translateX(-165px) rotate(-180deg)';
-            homeIcon.style.transform = 'translateX(-220px) rotate(-180deg)';
+            if (window.matchMedia("(max-width: 769px)").matches) {
+                musicMuteIcon.style.transform = 'translateX(-37px) rotate(-180deg)';
+                soundMuteIcon.style.transform = 'translateX(-74px) rotate(-180deg)';
+                replayIcon.style.transform = 'translateX(-111px) rotate(-180deg)';
+                homeIcon.style.transform = 'translateX(-148px) rotate(-180deg)';
+            } else {
+                musicMuteIcon.style.transform = 'translateX(-55px) rotate(-180deg)';
+                soundMuteIcon.style.transform = 'translateX(-110px) rotate(-180deg)';
+                replayIcon.style.transform = 'translateX(-165px) rotate(-180deg)';
+                homeIcon.style.transform = 'translateX(-220px) rotate(-180deg)';
+            }
         }, 1);
     }
 }
@@ -829,7 +845,7 @@ document.addEventListener('keydown', (e) => {
 
 
 // ________[Close Gameover modal function]________
-document.querySelector(".close").addEventListener("click", function () {
+function closeGameOver() {
     clickSfx()
     modalHideTransition(document.querySelector('.game-over-content'))
 
@@ -840,11 +856,11 @@ document.querySelector(".close").addEventListener("click", function () {
         startGameModal.style.display = 'block';
         modalShowTransition(document.querySelector('.start-game-content'), 1)
     }, 300)
-});
+}
 
 
 // ________[Close Leaderboard modal function]________
-document.querySelector(".closeLeaderboard").addEventListener("click", function () {
+function closeLeaderboard() {
     clickSfx()
     modalHideTransition(document.querySelector('.leaderboard-content'))
 
@@ -856,7 +872,7 @@ document.querySelector(".closeLeaderboard").addEventListener("click", function (
         modalShowTransition(document.querySelector('.game-over-content'), 1)
     }, 300)
 
-});
+}
 
 
 // ________[Modal handler function (hide/show modal)]________

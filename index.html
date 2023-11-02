@@ -175,7 +175,7 @@
     <div id="gameOverModal">
         <div class="game-over-modal">
             <div class="game-over-content">
-                <span class="close">X</span>
+                <span class="close" onclick="closeGameOver()">X</span>
                 <h1>Game Over :(</h1>
 
                 <p>Top 5 Players</p>
@@ -227,7 +227,7 @@
     <div id="leaderboard" style="display: none;">
         <div class="leaderboard-modal">
             <div class="leaderboard-content">
-                <span class="closeLeaderboard">X</span>
+                <span class="closeLeaderboard" onclick="closeLeaderboard()">X</span>
                 <h1>Top 5 Players</h1>
                 <div class="level-navigation">
                     <button id="leaderEasy" onclick="showLevel('easy')"
