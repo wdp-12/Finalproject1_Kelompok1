@@ -126,10 +126,19 @@ function pauseOrPlay(pause) {
         clickSfx()
 
         // Efek transisi
-        musicMuteIcon.style.transform = 'translateX(-55px) rotate(-180deg)';
-        soundMuteIcon.style.transform = 'translateX(-110px) rotate(-180deg)';
-        replayIcon.style.transform = 'translateX(-165px) rotate(-180deg)';
-        homeIcon.style.transform = 'translateX(-220px) rotate(-180deg)';
+
+        if (window.matchMedia("(max-width: 769px)").matches) {
+            musicMuteIcon.style.transform = 'translateX(-37px) rotate(-180deg)';
+            soundMuteIcon.style.transform = 'translateX(-74px) rotate(-180deg)';
+            replayIcon.style.transform = 'translateX(-111px) rotate(-180deg)';
+            homeIcon.style.transform = 'translateX(-148px) rotate(-180deg)';
+        } else {
+            musicMuteIcon.style.transform = 'translateX(-55px) rotate(-180deg)';
+            soundMuteIcon.style.transform = 'translateX(-110px) rotate(-180deg)';
+            replayIcon.style.transform = 'translateX(-165px) rotate(-180deg)';
+            homeIcon.style.transform = 'translateX(-220px) rotate(-180deg)';
+        }
+        
         musicMuteIcon.style.display = 'block';
         soundMuteIcon.style.display = 'block';
         replayIcon.style.display = 'block';
@@ -159,16 +168,25 @@ function pauseOrPlay(pause) {
         soundMuteIcon.style.transform = 'translateX(0) rotate(0)';
         replayIcon.style.transform = 'translateX(0) rotate(0)';
         homeIcon.style.transform = 'translateX(0) rotate(0)';
-        musicMuteIcon.style.display = 'block';
-        soundMuteIcon.style.display = 'block';
-        replayIcon.style.display = 'block';
-        homeIcon.style.display = 'block';
         setTimeout(() => {
-            musicMuteIcon.style.transform = 'translateX(-55px) rotate(-180deg)';
-            soundMuteIcon.style.transform = 'translateX(-110px) rotate(-180deg)';
-            replayIcon.style.transform = 'translateX(-165px) rotate(-180deg)';
-            homeIcon.style.transform = 'translateX(-220px) rotate(-180deg)';
+            if (window.matchMedia("(max-width: 769px)").matches) {
+                musicMuteIcon.style.transform = 'translateX(-37px) rotate(-180deg)';
+                soundMuteIcon.style.transform = 'translateX(-74px) rotate(-180deg)';
+                replayIcon.style.transform = 'translateX(-111px) rotate(-180deg)';
+                homeIcon.style.transform = 'translateX(-148px) rotate(-180deg)';
+            } else {
+                musicMuteIcon.style.transform = 'translateX(-55px) rotate(-180deg)';
+                soundMuteIcon.style.transform = 'translateX(-110px) rotate(-180deg)';
+                replayIcon.style.transform = 'translateX(-165px) rotate(-180deg)';
+                homeIcon.style.transform = 'translateX(-220px) rotate(-180deg)';
+            }
         }, 1);
+        setTimeout(() => {
+            musicMuteIcon.style.display = 'none';
+            soundMuteIcon.style.display = 'none';
+            replayIcon.style.display = 'none';
+            homeIcon.style.display = 'none';
+        }, 400);
     }
 }
 
@@ -336,7 +354,7 @@ function loop(timestamp) {
     // Trace game loop speed
     const deltaTime = Math.ceil(timestamp - lastTime);
     lastTime = timestamp;
-    console.log(`Kecepatan loop game ${deltaTime}ms`);
+    // console.log(`Kecepatan loop game ${deltaTime}ms, treshold: ${countThreshold}, pizza ${pizzaCount}, bomb ${bombCount}`);
 }
 
 //Agar item tidak stack dengan sesama
@@ -374,9 +392,12 @@ function isCollidingWithSnake(x, y) {
 }
 
 function updatePizza() {
+    if (!isPlaying) {
+        return
+    }
     pizzaCount++;
 
-    if (pizzaCount >= 4) {
+    if (pizzaCount >= getRandomInt(4, 8)) {
         var newPizzaX, newPizzaY;
 
         do {
@@ -396,9 +417,12 @@ function updatePizza() {
 }
 
 function updateBomb() {
+    if (!isPlaying) {
+        return
+    }
     bombCount++;
 
-    if (bombCount >= 5) {
+    if (bombCount >= getRandomInt(5, 9)) {
         var newBombX, newBombY;
 
         do {
@@ -470,29 +494,49 @@ function startGame() {
     apple.y = getRandomInt(0, 25) * grid;
 
     playBackgroundSound();
-    setInterval(updatePizza, 5000);
-    setInterval(updateBomb, 5000);
+    setInterval(updatePizza, 2000);
+    setInterval(updateBomb, 2000);
     loop();
 }
 
 // Mengulang kembali permainan
 function replayGame() {
     isPlaying = false;
-    modalHideTransition(document.querySelector('.start-game-content'));
+
+    document.querySelector('.start-game-content').style.transform = 'scale(0)'
+    document.querySelector('.start-game-content').style.opacity = '0'
+    startGameModal.style.display = 'block'
     setTimeout(() => {
-        gameOverModal.style.display = 'none';
-        startGameModal.style.display = 'block';
         modalShowTransition(document.querySelector('.start-game-content'), 1);
     }, 200);
     isPaused = false;
     pauseIcon.style.display = 'block';
     playIcon.style.display = 'none';
-    document.querySelector('.music-mute-icon').style.display = 'none'
-    document.querySelector('.sound-mute-icon').style.display = 'none'
-    document.querySelector('#replayIcon').style.display = 'none'
-    document.querySelector('#homeIcon').style.display = 'none'
-    playBackgroundSound();
-    clickSfx();
+    musicMuteIcon.style.transform = 'translateX(0) rotate(0)';
+    soundMuteIcon.style.transform = 'translateX(0) rotate(0)';
+    replayIcon.style.transform = 'translateX(0) rotate(0)';
+    homeIcon.style.transform = 'translateX(0) rotate(0)';
+    setTimeout(() => {
+        if (window.matchMedia("(max-width: 769px)").matches) {
+            musicMuteIcon.style.transform = 'translateX(-37px) rotate(-180deg)';
+            soundMuteIcon.style.transform = 'translateX(-74px) rotate(-180deg)';
+            replayIcon.style.transform = 'translateX(-111px) rotate(-180deg)';
+            homeIcon.style.transform = 'translateX(-148px) rotate(-180deg)';
+        } else {
+            musicMuteIcon.style.transform = 'translateX(-55px) rotate(-180deg)';
+            soundMuteIcon.style.transform = 'translateX(-110px) rotate(-180deg)';
+            replayIcon.style.transform = 'translateX(-165px) rotate(-180deg)';
+            homeIcon.style.transform = 'translateX(-220px) rotate(-180deg)';
+        }
+    }, 1);
+    setTimeout(() => {
+        musicMuteIcon.style.display = 'none';
+        soundMuteIcon.style.display = 'none';
+        replayIcon.style.display = 'none';
+        homeIcon.style.display = 'none';
+    }, 400);
+    document.getElementById("bgAudio").pause();
+    playBgm()
     return;
 }
 
@@ -519,6 +563,45 @@ function gameOver() {
         score: score
     };
 
+    if (playerName === 'Guest') {
+        var allPlayers = JSON.parse(localStorage.getItem('players')) || [];
+
+        // opsi 1
+        if (score > highscore) {
+            highscore = score; // Perbarui high score jika skor saat ini lebih tinggi
+            highscoreText.textContent = 'Highscore: ' + highscore; // Perbarui teks high score di layar
+
+            // Simpan high score ke local storage
+            localStorage.setItem('highscore', highscore);
+        }
+
+        var allPlayers = JSON.parse(localStorage.getItem('players')) || [];
+        allPlayers.sort(function (a, b) {
+            return b.score - a.score;
+        });
+        var topPlayers = allPlayers.slice(0, 5);
+        
+        var tabel = document.querySelector('.top-players-data');
+
+        tabel.innerHTML = '';
+        if (topPlayers.length > 0) {
+            topPlayers.forEach(function (player) {
+                tabel.innerHTML +=
+                    `<tr>
+                        <td>${player.name}</td>
+                        <td>${player.level}</td>
+                        <td>${player.score}</td>
+                    </tr>`;
+            });
+        }
+
+        gameOverModal.style.display = 'block';
+        document.querySelector('.game-over-content').style.transform = 'scale(0)'
+        document.querySelector('.game-over-content').style.opacity = '0'
+        modalShowTransition(document.querySelector('.game-over-content'), 1)
+        return
+    }
+    
     var allPlayers = JSON.parse(localStorage.getItem('players')) || [];
 
     // Cari indeks pemain dengan nama yang sama
@@ -529,22 +612,23 @@ function gameOver() {
     // Jika pemain dengan nama yang sama ditemukan
     if (playerIndex !== -1) {
         if (score > allPlayers[playerIndex].score) {
-            allPlayers[playerIndex].score = score;
-        }
-        if (playerLevel !== allPlayers[playerIndex].level) {
-            // allPlayers[playerIndex].level = playerLevel;
-            allPlayers.push(playerData);
+            if (playerLevel === allPlayers[playerIndex].level) {
+                allPlayers[playerIndex].score = score;
+            } else {
+                allPlayers.push(playerData);
+            }
         }
     } else {
         // Tambahkan pemain baru jika nama tidak ada dalam local storage
         if (playerName !== undefined) {
             allPlayers.push(playerData);
-            console.log('tidak guest');
+            // console.log('tidak guest');
         }
     }
 
     localStorage.setItem('players', JSON.stringify(allPlayers));
 
+    // opsi 1
     if (score > highscore) {
         highscore = score; // Perbarui high score jika skor saat ini lebih tinggi
         highscoreText.textContent = 'Highscore: ' + highscore; // Perbarui teks high score di layar
@@ -553,18 +637,12 @@ function gameOver() {
         localStorage.setItem('highscore', highscore);
     }
 
-    // Ambil data pemain dari localStorage
     var allPlayers = JSON.parse(localStorage.getItem('players')) || [];
-
-    // Urutkan pemain berdasarkan skor (descending)
     allPlayers.sort(function (a, b) {
         return b.score - a.score;
     });
-
-    // Batasi hasil ke 5 pemain teratas
     var topPlayers = allPlayers.slice(0, 5);
-
-    // Dapatkan elemen untuk menampilkan data pemain
+    
     var tabel = document.querySelector('.top-players-data');
 
     tabel.innerHTML = '';
@@ -585,8 +663,8 @@ function gameOver() {
     // perkecil element modal dari style defaultnya 
     document.querySelector('.game-over-content').style.transform = 'scale(0)'
     document.querySelector('.game-over-content').style.opacity = '0'
-    // (element, scale,   opacity, delay)
-    // (element, default, default, 1    ) gunakan 1 untuk tanpa delay
+    // parameter => (element, delay  ,scale   , opacity)
+    // parameter => (element, 1      , default, default) gunakan 1 untuk tanpa delay
     modalShowTransition(document.querySelector('.game-over-content'), 1)
 }
 
@@ -668,6 +746,19 @@ function showLevel(level) {
     }
 }
 
+// ________[Highscore (all players)]________
+// opsi 2
+// function getTopHighscore(level) {
+//     let allPlayers = JSON.parse(localStorage.getItem('players')) || [];
+//     let topPlayers = allPlayers.filter(player => player.level === level);
+//     topPlayers.sort(function (a, b) {
+//         return b.score - a.score;
+//     });
+//     let content = `Highscore: ${topPlayers[0].score}(${topPlayers[0].name})`
+//     // console.log(content);
+//     highscoreText.textContent = content
+// }
+
 
 // ________[Countdown before startgame function]________
 function startCountdown() {
@@ -679,6 +770,14 @@ function startCountdown() {
     let countdownInterval;
     document.getElementById("bgm").pause()
     playCDSound()
+
+    // console.log(localStorage.getItem('highscore'));
+    if (localStorage.getItem('highscore') !== null) {
+        highscoreText.textContent = `Highscore: ${localStorage.getItem('highscore')}`
+    }
+
+    // opsi 2
+    // getTopHighscore(playerLevel)
 
     countdownElement.style.fontSize = '17vh'
     countdownElement.style.color = 'white'
@@ -732,15 +831,16 @@ startButton.addEventListener('click', function () {
     var maxLength = 6;
     subPlayerName = playerName;
     if (playerName.length > maxLength) {
-        subPlayerName = playerName.substring(0, 5) + '.';
+        subPlayerName = playerName.substring(0, 5) + '..';
     };
 
+    document.querySelector('.input-info').innerText = ''
     if (playerName === '') {
         document.querySelector('.input-info').innerText = 'You have not entered a name.'
         return
+    } else if (playerName.length > 12) {
+        document.querySelector('.input-info').innerText = 'The maximum of name length is 12 characters.'
     } else if (usernameCheck(playerName)) {
-        document.querySelector('.input-info').innerText = ''
-
         modalHideTransition(document.querySelector('.start-game-content'), 1)
         setTimeout(() => {
             startGameModal.style.display = 'none';
@@ -767,11 +867,13 @@ document.addEventListener('keydown', function (e) {
                 return;
             }
 
+            document.querySelector('.input-info').innerHTML = ''
             if (playerName === '') {
                 document.querySelector('.input-info').innerHTML = 'You have not entered a name.'
                 return
+            } else if (playerName.length > 12) {
+                document.querySelector('.input-info').innerText = 'The maximum of name length is 12 characters.'
             } else if (usernameCheck(playerName)) {
-                document.querySelector('.input-info').innerHTML = ''
 
                 modalHideTransition(document.querySelector('.start-game-content'), 1)
                 setTimeout(() => {
@@ -822,17 +924,13 @@ guestButton.addEventListener('click', function () {
     playerLevel = document.getElementById('level').value; // mengambil level value
     document.querySelector('.input-info').innerHTML = ''
     subPlayerName = 'Guest';
+    playerName = 'Guest';
 
     modalHideTransition(document.querySelector('.start-game-content'), 1)
     setTimeout(() => {
         startGameModal.style.display = 'none';
     }, 200)
-    if (startGameModal.style.display = 'none') {
-        modalHideTransition(document.querySelector('.game-over-content'), 1)
-        setTimeout(() => {
-            gameOverModal.style.display = 'none';
-        }, 200)
-    }
+
     setTimeout(() => {
         startCountdown();
     }, 200);
@@ -840,7 +938,7 @@ guestButton.addEventListener('click', function () {
 
 
 // ________[Close Gameover modal function]________
-document.querySelector(".close").addEventListener("click", function () {
+function closeGameOver() {
     clickSfx()
     modalHideTransition(document.querySelector('.game-over-content'))
 
@@ -851,11 +949,11 @@ document.querySelector(".close").addEventListener("click", function () {
         startGameModal.style.display = 'block';
         modalShowTransition(document.querySelector('.start-game-content'), 1)
     }, 300)
-});
+}
 
 
 // ________[Close Leaderboard modal function]________
-document.querySelector(".closeLeaderboard").addEventListener("click", function () {
+function closeLeaderboard() {
     clickSfx()
     modalHideTransition(document.querySelector('.leaderboard-content'))
 
@@ -867,7 +965,7 @@ document.querySelector(".closeLeaderboard").addEventListener("click", function (
         modalShowTransition(document.querySelector('.game-over-content'), 1)
     }, 300)
 
-});
+}
 
 
 // ________[Modal handler function (hide/show modal)]________
@@ -1153,3 +1251,10 @@ document.addEventListener('touchend', function (event) {
     initialX = null;
     initialY = null;
 });
+
+
+// -----------<({HIGHSCORE DI POJOK KANAN BOARD})>-----------
+// |No_____| Nama______________________|Filter_____| Keyword (ctrl+f)_____|
+// [opsi 1]| highscore per sesi main   |           | opsi 1
+// [opsi 2]| highscore seluruh pemain  |(by level) | opsi 2
+// [opsi 3]| highscore per nama pemain |(by level) | belom

@@ -14,6 +14,9 @@ body {
     background: #1A3A45;
     display: flex;
     flex-direction: column;
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
 }
 
 /* KONTAINER ATAS */
