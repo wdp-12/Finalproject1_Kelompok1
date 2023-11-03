@@ -248,8 +248,13 @@ function eatInteractive(gridx, gridy, point) {
                 +${point} point
         </span>`
     let interactive = document.getElementById(`${randomID}`)
-    parent.style.left = `${gridx}px`
-    parent.style.top = `${gridy}px`
+    if (window.matchMedia("(max-width: 769px)").matches) {
+        parent.style.left = `${gridx-44}px`
+        parent.style.top = `${gridy-50}px`
+    } else {
+        parent.style.left = `${gridx}px`
+        parent.style.top = `${gridy}px`
+    }
     parent.style.display = 'inline'
     setTimeout(() => {
         interactive.style.opacity = '0'
@@ -382,7 +387,7 @@ function loop(timestamp) {
     // Track the game loop speed
     const deltaTime = Math.ceil(timestamp - lastTime);
     lastTime = timestamp;
-    console.log(`Kecepatan loop game ${deltaTime}ms, treshold: ${countThreshold}, pizza ${pizzaCount}, bomb ${bombCount}`);
+    // console.log(`Kecepatan loop game ${deltaTime}ms, treshold: ${countThreshold}, pizza ${pizzaCount}, bomb ${bombCount}`);
     // console.log(`Kecepatan loop game ${deltaTime}ms, x=${snake.cells[0].x} y=${snake.cells[0].y}`);
 }
 
@@ -441,7 +446,7 @@ function updatePizza() {
         pizza.x = newPizzaX;
         pizza.y = newPizzaY;
         pizzaCount = 0;
-        console.log('pizza pindah');
+        // console.log('pizza pindah');
     }
 }
 
@@ -466,7 +471,7 @@ function updateBomb() {
         bomb.x = newBombX;
         bomb.y = newBombY;
         bombCount = 0;
-        console.log('bom pindah');
+        // console.log('bom pindah');
     }
 }
 
@@ -650,6 +655,8 @@ function gameOver() {
             } else {
                 allPlayers.push(playerData);
             }
+        } else if (playerLevel !== allPlayers[playerIndex].level) {
+            allPlayers.push(playerData);
         }
     } else {
         // Tambahkan pemain baru jika nama tidak ada dalam local storage
