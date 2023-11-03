@@ -354,7 +354,7 @@ function loop(timestamp) {
     // Trace game loop speed
     const deltaTime = Math.ceil(timestamp - lastTime);
     lastTime = timestamp;
-    console.log(`Kecepatan loop game ${deltaTime}ms`);
+    // console.log(`Kecepatan loop game ${deltaTime}ms, treshold: ${countThreshold}, pizza ${pizzaCount}, bomb ${bombCount}`);
 }
 
 //Agar item tidak stack dengan sesama
@@ -392,9 +392,12 @@ function isCollidingWithSnake(x, y) {
 }
 
 function updatePizza() {
+    if (!isPlaying) {
+        return
+    }
     pizzaCount++;
 
-    if (pizzaCount >= 4) {
+    if (pizzaCount >= getRandomInt(4, 8)) {
         var newPizzaX, newPizzaY;
 
         do {
@@ -414,9 +417,12 @@ function updatePizza() {
 }
 
 function updateBomb() {
+    if (!isPlaying) {
+        return
+    }
     bombCount++;
 
-    if (bombCount >= 5) {
+    if (bombCount >= getRandomInt(5, 9)) {
         var newBombX, newBombY;
 
         do {
@@ -488,8 +494,8 @@ function startGame() {
     apple.y = getRandomInt(0, 25) * grid;
 
     playBackgroundSound();
-    setInterval(updatePizza, 5000);
-    setInterval(updateBomb, 5000);
+    setInterval(updatePizza, 2000);
+    setInterval(updateBomb, 2000);
     loop();
 }
 
@@ -557,6 +563,45 @@ function gameOver() {
         score: score
     };
 
+    if (playerName === 'Guest') {
+        var allPlayers = JSON.parse(localStorage.getItem('players')) || [];
+
+        // opsi 1
+        if (score > highscore) {
+            highscore = score; // Perbarui high score jika skor saat ini lebih tinggi
+            highscoreText.textContent = 'Highscore: ' + highscore; // Perbarui teks high score di layar
+
+            // Simpan high score ke local storage
+            localStorage.setItem('highscore', highscore);
+        }
+
+        var allPlayers = JSON.parse(localStorage.getItem('players')) || [];
+        allPlayers.sort(function (a, b) {
+            return b.score - a.score;
+        });
+        var topPlayers = allPlayers.slice(0, 5);
+        
+        var tabel = document.querySelector('.top-players-data');
+
+        tabel.innerHTML = '';
+        if (topPlayers.length > 0) {
+            topPlayers.forEach(function (player) {
+                tabel.innerHTML +=
+                    `<tr>
+                        <td>${player.name}</td>
+                        <td>${player.level}</td>
+                        <td>${player.score}</td>
+                    </tr>`;
+            });
+        }
+
+        gameOverModal.style.display = 'block';
+        document.querySelector('.game-over-content').style.transform = 'scale(0)'
+        document.querySelector('.game-over-content').style.opacity = '0'
+        modalShowTransition(document.querySelector('.game-over-content'), 1)
+        return
+    }
+    
     var allPlayers = JSON.parse(localStorage.getItem('players')) || [];
 
     // Cari indeks pemain dengan nama yang sama
@@ -618,8 +663,8 @@ function gameOver() {
     // perkecil element modal dari style defaultnya 
     document.querySelector('.game-over-content').style.transform = 'scale(0)'
     document.querySelector('.game-over-content').style.opacity = '0'
-    // (element, scale,   opacity, delay)
-    // (element, default, default, 1    ) gunakan 1 untuk tanpa delay
+    // parameter => (element, delay  ,scale   , opacity)
+    // parameter => (element, 1      , default, default) gunakan 1 untuk tanpa delay
     modalShowTransition(document.querySelector('.game-over-content'), 1)
 }
 
@@ -786,15 +831,15 @@ startButton.addEventListener('click', function () {
     var maxLength = 6;
     subPlayerName = playerName;
     if (playerName.length > maxLength) {
-        subPlayerName = playerName.substring(0, 5) + '.';
+        subPlayerName = playerName.substring(0, 5) + '..';
     };
 
     document.querySelector('.input-info').innerText = ''
     if (playerName === '') {
         document.querySelector('.input-info').innerText = 'You have not entered a name.'
         return
-    } else if (playerName.length > 20) {
-        document.querySelector('.input-info').innerText = 'The maximum of name length is 20 characters.'
+    } else if (playerName.length > 12) {
+        document.querySelector('.input-info').innerText = 'The maximum of name length is 12 characters.'
     } else if (usernameCheck(playerName)) {
         modalHideTransition(document.querySelector('.start-game-content'), 1)
         setTimeout(() => {
@@ -822,11 +867,13 @@ document.addEventListener('keydown', function (e) {
                 return;
             }
 
+            document.querySelector('.input-info').innerHTML = ''
             if (playerName === '') {
                 document.querySelector('.input-info').innerHTML = 'You have not entered a name.'
                 return
+            } else if (playerName.length > 12) {
+                document.querySelector('.input-info').innerText = 'The maximum of name length is 12 characters.'
             } else if (usernameCheck(playerName)) {
-                document.querySelector('.input-info').innerHTML = ''
 
                 modalHideTransition(document.querySelector('.start-game-content'), 1)
                 setTimeout(() => {
@@ -877,17 +924,13 @@ guestButton.addEventListener('click', function () {
     playerLevel = document.getElementById('level').value; // mengambil level value
     document.querySelector('.input-info').innerHTML = ''
     subPlayerName = 'Guest';
+    playerName = 'Guest';
 
     modalHideTransition(document.querySelector('.start-game-content'), 1)
     setTimeout(() => {
         startGameModal.style.display = 'none';
     }, 200)
-    if (startGameModal.style.display = 'none') {
-        modalHideTransition(document.querySelector('.game-over-content'), 1)
-        setTimeout(() => {
-            gameOverModal.style.display = 'none';
-        }, 200)
-    }
+
     setTimeout(() => {
         startCountdown();
     }, 200);
