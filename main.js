@@ -231,6 +231,37 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
 }
 
+// ________[Interactive eat item]________
+function eatInteractive(gridx, gridy, point) {
+    let randomID = Math.random()*getRandomInt(1, 100)
+    let parent = document.querySelector('#interactive')
+    // parent.style.display = 'none'
+    parent.innerHTML = `
+        <span id="${randomID}" 
+        style="
+            position: absolute;
+            width: auto;
+            color: rgb(100, 255, 53); 
+            opacity: 0.9; 
+            transition: opacity 2s, transform 2s; 
+            transform: translateY(0);">
+                +${point} point
+        </span>`
+    let interactive = document.getElementById(`${randomID}`)
+    if (window.matchMedia("(max-width: 769px)").matches) {
+        parent.style.left = `${gridx-44}px`
+        parent.style.top = `${gridy-50}px`
+    } else {
+        parent.style.left = `${gridx}px`
+        parent.style.top = `${gridy}px`
+    }
+    parent.style.display = 'inline'
+    setTimeout(() => {
+        interactive.style.opacity = '0'
+        interactive.style.transform = 'translateY(-50px)'
+    }, 1);
+}
+
 let lastTime = 0; // Time var comparer
 
 // ________[Game loop function]________
@@ -243,7 +274,7 @@ function loop(timestamp) {
     requestAnimationFrame(loop);
 
     // nilai default kecepatan ular
-    let countThreshold = 15;
+    let countThreshold = 0;
 
     // Menyesuaikan countThreshold berdasarkan level
     if (playerLevel === "easy") {
@@ -313,6 +344,7 @@ function loop(timestamp) {
             score++;
             scoreText.textContent = `Score (${subPlayerName}):  ${score}`;
             playEatSound(); // Mainkan suara saat memakan apel
+            eatInteractive(snake.cells[0].x, snake.cells[0].y, 1)
         }
 
         if (cell.x === pizza.x && cell.y === pizza.y) {
@@ -324,6 +356,7 @@ function loop(timestamp) {
             scoreText.textContent = `Score (${subPlayerName}):  ${score}`;
             pizzaCount = 0;
             playEatSound(); // Mainkan suara saat memakan pizza
+            eatInteractive(snake.cells[0].x, snake.cells[0].y, 5)
             pizza.x = -grid;
             pizza.y = -grid;
             setTimeout(function () {
@@ -351,10 +384,11 @@ function loop(timestamp) {
     bombImage.src = 'assets/item/bomb.svg';
     context.drawImage(bombImage, bomb.x, bomb.y, grid - 1, grid - 1);
 
-    // Trace game loop speed
+    // Track the game loop speed
     const deltaTime = Math.ceil(timestamp - lastTime);
     lastTime = timestamp;
     // console.log(`Kecepatan loop game ${deltaTime}ms, treshold: ${countThreshold}, pizza ${pizzaCount}, bomb ${bombCount}`);
+    // console.log(`Kecepatan loop game ${deltaTime}ms, x=${snake.cells[0].x} y=${snake.cells[0].y}`);
 }
 
 //Agar item tidak stack dengan sesama
@@ -392,12 +426,12 @@ function isCollidingWithSnake(x, y) {
 }
 
 function updatePizza() {
+    pizzaCount++;
     if (!isPlaying) {
         return
     }
-    pizzaCount++;
 
-    if (pizzaCount >= getRandomInt(4, 8)) {
+    if (pizzaCount >= getRandomInt(8, 15)) {
         var newPizzaX, newPizzaY;
 
         do {
@@ -417,12 +451,12 @@ function updatePizza() {
 }
 
 function updateBomb() {
+    bombCount++;
     if (!isPlaying) {
         return
     }
-    bombCount++;
 
-    if (bombCount >= getRandomInt(5, 9)) {
+    if (bombCount >= getRandomInt(10, 20)) {
         var newBombX, newBombY;
 
         do {
@@ -464,6 +498,8 @@ function closeNews() {
 
 
 // ________[Start Game function]________
+let updatePizzaInterval
+let updateBombInterval
 function startGame() {
     isPlaying = true;
     canvas.style.display = 'block';
@@ -494,8 +530,8 @@ function startGame() {
     apple.y = getRandomInt(0, 25) * grid;
 
     playBackgroundSound();
-    setInterval(updatePizza, 2000);
-    setInterval(updateBomb, 2000);
+    updatePizzaInterval = setInterval(updatePizza, 1000);
+    updateBombInterval = setInterval(updateBomb, 1000);
     loop();
 }
 
@@ -549,12 +585,11 @@ function returnToLandingPage() {
 // Game over
 function gameOver() {
     isPlaying = false;
+    clearInterval(updatePizzaInterval)
+    clearInterval(updateBombInterval)
     // Menghentikan suara latar belakang
     document.getElementById("bgAudio").pause();
     playBgm()
-
-    // ubah nama (pendek) player spt semula
-    subPlayerName = '';
 
     // Simpan Nama, Level, dan Skor ke localStorage
     var playerData = {
@@ -563,7 +598,7 @@ function gameOver() {
         score: score
     };
 
-    if (playerName === 'Guest') {
+    if (subPlayerName === 'Guest') {
         var allPlayers = JSON.parse(localStorage.getItem('players')) || [];
 
         // opsi 1
@@ -601,6 +636,9 @@ function gameOver() {
         modalShowTransition(document.querySelector('.game-over-content'), 1)
         return
     }
+
+    // ubah nama (pendek) player spt semula
+    subPlayerName = '';
     
     var allPlayers = JSON.parse(localStorage.getItem('players')) || [];
 
@@ -617,6 +655,8 @@ function gameOver() {
             } else {
                 allPlayers.push(playerData);
             }
+        } else if (playerLevel !== allPlayers[playerIndex].level) {
+            allPlayers.push(playerData);
         }
     } else {
         // Tambahkan pemain baru jika nama tidak ada dalam local storage
@@ -867,6 +907,17 @@ document.addEventListener('keydown', function (e) {
                 return;
             }
 
+            if (gameOverModal.style.display === 'block') {
+                modalHideTransition(document.querySelector('.game-over-content'), 1)
+                setTimeout(() => {
+                    gameOverModal.style.display = 'none';
+                }, 200)
+
+                setTimeout(() => {
+                    startCountdown();
+                }, 200);
+            }
+            
             document.querySelector('.input-info').innerHTML = ''
             if (playerName === '') {
                 document.querySelector('.input-info').innerHTML = 'You have not entered a name.'
@@ -879,12 +930,6 @@ document.addEventListener('keydown', function (e) {
                 setTimeout(() => {
                     startGameModal.style.display = 'none';
                 }, 200)
-                if (startGameModal.style.display = 'none') {
-                    modalHideTransition(document.querySelector('.game-over-content'), 1)
-                    setTimeout(() => {
-                        gameOverModal.style.display = 'none';
-                    }, 200)
-                }
 
                 setTimeout(() => {
                     startCountdown();
@@ -924,7 +969,6 @@ guestButton.addEventListener('click', function () {
     playerLevel = document.getElementById('level').value; // mengambil level value
     document.querySelector('.input-info').innerHTML = ''
     subPlayerName = 'Guest';
-    playerName = 'Guest';
 
     modalHideTransition(document.querySelector('.start-game-content'), 1)
     setTimeout(() => {
@@ -1245,7 +1289,9 @@ document.addEventListener('touchmove', function (event) {
             }
         }
     }
-});
+
+    event.preventDefault()
+}, { passive: false });
 
 document.addEventListener('touchend', function (event) {
     initialX = null;
