@@ -39,7 +39,7 @@
         <div class="news">
             <img id="newsIcon" src="assets/news.svg" alt="News" onclick="newsDisplay()">
             <div class="news-content">
-                <span id="closeNews" class="close-button" onclick="closeNews()">X</span>
+                <span id="closeNews" class="close-button" onclick="closeNews()" aria-disabled="true">X</span>
                 <h3>Snake Amazon News</h3>
                 <p>Snake Amazon is now available in a website version optimized exclusively for tablet and
                     mobile devices 💖✨</p>
@@ -99,6 +99,10 @@
                     +5 Score
                 </li>
                 <li>
+                    <img src="assets/item/golden-apple.svg" alt="Logo Golden Apel">
+                    +10 - 50 Score
+                </li>
+                <li>
                     <img src="assets/item/bomb.svg" alt="Logo Bomb">
                     Kill Snake
                 </li>
@@ -109,10 +113,12 @@
         <div class="canvas-container">
             <div class="score">
                 <!-- Elemen untuk Menampilkan Skor -->
-                <p id="score">Score: 0</p>
+                <p id="score">Score (): 0</p>
                 <!-- Elemen untuk Menampilkan Skor Tertinggi -->
                 <p id="highscore">Highscore: 0</p>
+                <!-- Interaktif saat ular makan -->
             </div>
+            <p id="interactive" style="display: none; position: relative;"></p>
             <canvas width="400" height="400" id="game-canvas"></canvas>
         </div>
 
@@ -165,7 +171,11 @@
                         <option value="medium" title="Normal person">Medium</option>
                         <option value="high" title="God mode">High</option>
                     </select>
-                    <button type="button" id="startButton">Start Game</button>
+                    <div>
+                        <button type="button" id="startButton">Start Game</button>
+                        <span></span>
+                        <button type="button" id="guestMode">Guest Mode</button>
+                    </div>
                 </form>
             </div>
         </div>
@@ -175,7 +185,7 @@
     <div id="gameOverModal">
         <div class="game-over-modal">
             <div class="game-over-content">
-                <span class="close">X</span>
+                <span class="close" onclick="closeGameOver()" aria-disabled="true">X</span>
                 <h1>Game Over :(</h1>
 
                 <p>Top 5 Players</p>
@@ -227,7 +237,7 @@
     <div id="leaderboard" style="display: none;">
         <div class="leaderboard-modal">
             <div class="leaderboard-content">
-                <span class="closeLeaderboard">X</span>
+                <span class="closeLeaderboard" onclick="closeLeaderboard()" aria-disabled="true">X</span>
                 <h1>Top 5 Players</h1>
                 <div class="level-navigation">
                     <button id="leaderEasy" onclick="showLevel('easy')"
@@ -284,5 +294,4 @@
 
 </body>
 <script src="main.js"></script>
-
 </html>

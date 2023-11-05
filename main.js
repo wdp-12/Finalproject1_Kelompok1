@@ -1,6 +1,7 @@
 var canvas = document.getElementById('game-canvas');
 var context = canvas.getContext('2d');
 var startButton = document.getElementById('startButton');
+var guestButton = document.getElementById('guestMode')
 var startGameModal = document.getElementById('startGameModal')
 var gameOverModal = document.getElementById('gameOverModal');
 var leaderboardModal = document.getElementById('leaderboard');
@@ -11,8 +12,9 @@ var playIcon = document.getElementById("playIcon");
 var pauseKey = document.getElementById("pause-key"); // on mobile
 var playKey = document.getElementById("play-key"); // on mobile
 var closeModal = document.getElementsByClassName("close")[0];
-var playerName; // untuk menyimpan nama pleyer
-var playerLevel; // untuk menyimpan level pleyer
+var playerName = ""; // untuk menyimpan nama pleyer
+var subPlayerName = ""; // menyimpan nama (pendek) player
+var playerLevel = ""; // untuk menyimpan level pleyer
 var musicMuteIcon = document.querySelector('.music-mute-icon')
 var soundMuteIcon = document.querySelector('.sound-mute-icon')
 var replayIcon = document.querySelector('#replayIcon')
@@ -41,6 +43,12 @@ var pizza = {
     y: getRandomInt(0, 25) * grid
 };
 
+var golden = {
+    x: getRandomInt(0, 25) * grid,
+    y: getRandomInt(0, 25) * grid
+};
+
+
 var bomb = {
     x: getRandomInt(0, 25) * grid,
     y: getRandomInt(0, 25) * grid
@@ -48,6 +56,7 @@ var bomb = {
 };
 
 var pizzaCount = 0;
+var goldenCount = 0;
 var bombCount = 0;
 
 var isPlaying = false;
@@ -79,6 +88,7 @@ function playBgm() {
     fadeIn(bgmAudio, 8000, 0.3)
 }
 
+// SOUND & MUSIC
 function playBackgroundSound() {
     var bgAudio = document.getElementById('bgAudio');
     fadeIn(bgAudio, 2000, 0.7)
@@ -123,10 +133,19 @@ function pauseOrPlay(pause) {
         clickSfx()
 
         // Efek transisi
-        musicMuteIcon.style.transform = 'translateX(-55px) rotate(-180deg)';
-        soundMuteIcon.style.transform = 'translateX(-110px) rotate(-180deg)';
-        replayIcon.style.transform = 'translateX(-165px) rotate(-180deg)';
-        homeIcon.style.transform = 'translateX(-220px) rotate(-180deg)';
+
+        if (window.matchMedia("(max-width: 769px)").matches) {
+            musicMuteIcon.style.transform = 'translateX(-37px) rotate(-180deg)';
+            soundMuteIcon.style.transform = 'translateX(-74px) rotate(-180deg)';
+            replayIcon.style.transform = 'translateX(-111px) rotate(-180deg)';
+            homeIcon.style.transform = 'translateX(-148px) rotate(-180deg)';
+        } else {
+            musicMuteIcon.style.transform = 'translateX(-55px) rotate(-180deg)';
+            soundMuteIcon.style.transform = 'translateX(-110px) rotate(-180deg)';
+            replayIcon.style.transform = 'translateX(-165px) rotate(-180deg)';
+            homeIcon.style.transform = 'translateX(-220px) rotate(-180deg)';
+        }
+        
         musicMuteIcon.style.display = 'block';
         soundMuteIcon.style.display = 'block';
         replayIcon.style.display = 'block';
@@ -156,16 +175,25 @@ function pauseOrPlay(pause) {
         soundMuteIcon.style.transform = 'translateX(0) rotate(0)';
         replayIcon.style.transform = 'translateX(0) rotate(0)';
         homeIcon.style.transform = 'translateX(0) rotate(0)';
-        musicMuteIcon.style.display = 'block';
-        soundMuteIcon.style.display = 'block';
-        replayIcon.style.display = 'block';
-        homeIcon.style.display = 'block';
         setTimeout(() => {
-            musicMuteIcon.style.transform = 'translateX(-55px) rotate(-180deg)';
-            soundMuteIcon.style.transform = 'translateX(-110px) rotate(-180deg)';
-            replayIcon.style.transform = 'translateX(-165px) rotate(-180deg)';
-            homeIcon.style.transform = 'translateX(-220px) rotate(-180deg)';
+            if (window.matchMedia("(max-width: 769px)").matches) {
+                musicMuteIcon.style.transform = 'translateX(-37px) rotate(-180deg)';
+                soundMuteIcon.style.transform = 'translateX(-74px) rotate(-180deg)';
+                replayIcon.style.transform = 'translateX(-111px) rotate(-180deg)';
+                homeIcon.style.transform = 'translateX(-148px) rotate(-180deg)';
+            } else {
+                musicMuteIcon.style.transform = 'translateX(-55px) rotate(-180deg)';
+                soundMuteIcon.style.transform = 'translateX(-110px) rotate(-180deg)';
+                replayIcon.style.transform = 'translateX(-165px) rotate(-180deg)';
+                homeIcon.style.transform = 'translateX(-220px) rotate(-180deg)';
+            }
         }, 1);
+        setTimeout(() => {
+            musicMuteIcon.style.display = 'none';
+            soundMuteIcon.style.display = 'none';
+            replayIcon.style.display = 'none';
+            homeIcon.style.display = 'none';
+        }, 400);
     }
 }
 
@@ -210,6 +238,37 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
 }
 
+// ________[Interactive eat item]________
+function eatInteractive(gridx, gridy, point) {
+    let randomID = Math.random()*getRandomInt(1, 100)
+    let parent = document.querySelector('#interactive')
+    // parent.style.display = 'none'
+    parent.innerHTML = `
+        <span id="${randomID}" 
+        style="
+            position: absolute;
+            width: auto;
+            color: rgb(100, 255, 53); 
+            opacity: 0.9; 
+            transition: opacity 2s, transform 2s; 
+            transform: translateY(0);">
+                +${point} point
+        </span>`
+    let interactive = document.getElementById(`${randomID}`)
+    if (window.matchMedia("(max-width: 769px)").matches) {
+        parent.style.left = `${gridx-44}px`
+        parent.style.top = `${gridy-50}px`
+    } else {
+        parent.style.left = `${gridx}px`
+        parent.style.top = `${gridy}px`
+    }
+    parent.style.display = 'inline'
+    setTimeout(() => {
+        interactive.style.opacity = '0'
+        interactive.style.transform = 'translateY(-50px)'
+    }, 1);
+}
+
 let lastTime = 0; // Time var comparer
 
 // ________[Game loop function]________
@@ -222,7 +281,7 @@ function loop(timestamp) {
     requestAnimationFrame(loop);
 
     // nilai default kecepatan ular
-    let countThreshold = 15;
+    let countThreshold = 0;
 
     // Menyesuaikan countThreshold berdasarkan level
     if (playerLevel === "easy") {
@@ -290,8 +349,9 @@ function loop(timestamp) {
             // apple.x = getRandomInt(0, 25) * grid;
             // apple.y = getRandomInt(0, 25) * grid;
             score++;
-            scoreText.textContent = 'Score: ' + score;
+            scoreText.textContent = `Score (${subPlayerName}):  ${score}`;
             playEatSound(); // Mainkan suara saat memakan apel
+            eatInteractive(snake.cells[0].x, snake.cells[0].y, 1)
         }
 
         if (cell.x === pizza.x && cell.y === pizza.y) {
@@ -300,15 +360,31 @@ function loop(timestamp) {
             // pizza.y = getRandomInt(0, 25) * grid;
             // updatePizza()
             score += 5;
-            scoreText.textContent = 'Score: ' + score;
+            scoreText.textContent = `Score (${subPlayerName}):  ${score}`;
             pizzaCount = 0;
             playEatSound(); // Mainkan suara saat memakan pizza
+            eatInteractive(snake.cells[0].x, snake.cells[0].y, 5)
             pizza.x = -grid;
             pizza.y = -grid;
             setTimeout(function () {
                 pizza.x = getRandomInt(0, 25) * grid;
                 pizza.y = getRandomInt(0, 25) * grid;
             }, getRandomInt(10, 15) * 1000);
+        }
+
+        if (cell.x === golden.x && cell.y === golden.y) {
+            snake.maxCells += getRandomInt(2, 7);
+            // golden.x = getRandomInt(0, 25) * grid;
+            // golden.y = getRandomInt(0, 25) * grid;
+            // updateGolden()
+            let point = getRandomInt(10, 50)
+            score += point;
+            scoreText.textContent = `Score (${subPlayerName}):  ${score}`;
+            goldenCount = 0;
+            playEatSound(); // Mainkan suara saat memakan golden
+            eatInteractive(snake.cells[0].x, snake.cells[0].y, point)
+            golden.x = -grid;
+            golden.y = -grid;
         }
 
         if (cell.x === bomb.x && cell.y === bomb.y) {
@@ -323,17 +399,22 @@ function loop(timestamp) {
     context.drawImage(appleImage, apple.x, apple.y, grid - 1, grid - 1);
 
     var pizzaImage = new Image();
-    pizzaImage.src = 'assets/pizza.svg';
+    pizzaImage.src = 'assets/item/pizza.svg';
     context.drawImage(pizzaImage, pizza.x, pizza.y, grid - 1, grid - 1);
+
+    var goldenApple = new Image();
+    goldenApple.src = 'assets/item/golden-apple.svg';
+    context.drawImage(goldenApple, golden.x, golden.y, grid - 1, grid - 1);
 
     var bombImage = new Image();
     bombImage.src = 'assets/item/bomb.svg';
     context.drawImage(bombImage, bomb.x, bomb.y, grid - 1, grid - 1);
 
-    // Trace game loop speed
+    // Track the game loop speed
     const deltaTime = Math.ceil(timestamp - lastTime);
     lastTime = timestamp;
-    console.log(`Kecepatan loop game ${deltaTime}ms`);
+    // console.log(`Kecepatan loop game ${deltaTime}ms, treshold: ${countThreshold}, pizza ${pizzaCount}, bomb ${bombCount}, golden ${goldenCount}`);
+    // console.log(`Kecepatan loop game ${deltaTime}ms, x=${snake.cells[0].x} y=${snake.cells[0].y}`);
 }
 
 //Agar item tidak stack dengan sesama
@@ -347,6 +428,7 @@ function initializeItem(item) {
         (newItemX === snake.x && newItemY === snake.y) ||
         (newItemX === apple.x && newItemY === apple.y) ||
         (newItemX === pizza.x && newItemY === pizza.y) ||
+        (newItemX === golden.x && newItemY === golden.y) ||
         (newItemX === bomb.x && newItemY === bomb.y) ||
         isCollidingWithSnake(newItemX, newItemY)
     );
@@ -358,6 +440,7 @@ function initializeItem(item) {
 // Kemudian, gunakan fungsi ini untuk menginisialisasi item:
 initializeItem(apple);
 initializeItem(pizza);
+initializeItem(golden);
 initializeItem(bomb);
 
 function isCollidingWithSnake(x, y) {
@@ -372,8 +455,11 @@ function isCollidingWithSnake(x, y) {
 
 function updatePizza() {
     pizzaCount++;
+    if (!isPlaying) {
+        return
+    }
 
-    if (pizzaCount >= 4) {
+    if (pizzaCount >= getRandomInt(8, 15)) {
         var newPizzaX, newPizzaY;
 
         do {
@@ -381,6 +467,7 @@ function updatePizza() {
             newPizzaY = getRandomInt(0, 25) * grid;
         } while (
             (newPizzaX === apple.x && newPizzaY === apple.y) ||
+            (newPizzaX === golden.x && newPizzaY === golden.y) ||
             (newPizzaX === bomb.x && newPizzaY === bomb.y) ||
             isCollidingWithSnake(newPizzaX, newPizzaY)
         );
@@ -392,10 +479,39 @@ function updatePizza() {
     }
 }
 
+function updateGolden() {
+    goldenCount++;
+    if (!isPlaying) {
+        return
+    }
+
+    if (goldenCount >= getRandomInt(33, 51)) {
+        var newGoldenX, newGoldenY;
+
+        do {
+            newGoldenX = getRandomInt(0, 25) * grid;
+            newGoldenY = getRandomInt(0, 25) * grid;
+        } while (
+            (newGoldenX === apple.x && newGoldenY === apple.y) ||
+            (newGoldenX === pizza.x && newGoldenY === pizza.y) ||
+            (newGoldenX === bomb.x && newGoldenY === bomb.y) ||
+            isCollidingWithSnake(newGoldenX, newGoldenY)
+        );
+
+        golden.x = newGoldenX;
+        golden.y = newGoldenY;
+        goldenCount = 0;
+        // console.log('golden apel pindah');
+    }
+}
+
 function updateBomb() {
     bombCount++;
+    if (!isPlaying) {
+        return
+    }
 
-    if (bombCount >= 5) {
+    if (bombCount >= getRandomInt(10, 20)) {
         var newBombX, newBombY;
 
         do {
@@ -404,6 +520,7 @@ function updateBomb() {
         } while (
             (newBombX === apple.x && newBombY === apple.y) ||
             (newBombX === pizza.x && newBombY === pizza.y) ||
+            (newBombX === golden.x && newBombY === golden.y) ||
             isCollidingWithSnake(newBombX, newBombY)
         );
 
@@ -437,6 +554,9 @@ function closeNews() {
 
 
 // ________[Start Game function]________
+let updatePizzaInterval
+let updateGoldenInterval
+let updateBombInterval
 function startGame() {
     isPlaying = true;
     canvas.style.display = 'block';
@@ -445,7 +565,7 @@ function startGame() {
     pizzaCount = 0;
     bombCount = 0;
     score = 0;
-    scoreText.textContent = 'Score: 0';
+    scoreText.textContent = `Score (${subPlayerName}):  ${score}`;
     snake.x = 160;
     snake.y = 160;
     snake.cells = [];
@@ -467,29 +587,50 @@ function startGame() {
     apple.y = getRandomInt(0, 25) * grid;
 
     playBackgroundSound();
-    setInterval(updatePizza, 5000);
-    setInterval(updateBomb, 5000);
+    updatePizzaInterval = setInterval(updatePizza, 1000);
+    updateGoldenInterval = setInterval(updateGolden, 1000);
+    updateBombInterval = setInterval(updateBomb, 1000);
     loop();
 }
 
 // Mengulang kembali permainan
 function replayGame() {
     isPlaying = false;
-    modalHideTransition(document.querySelector('.start-game-content'));
+
+    document.querySelector('.start-game-content').style.transform = 'scale(0)'
+    document.querySelector('.start-game-content').style.opacity = '0'
+    startGameModal.style.display = 'block'
     setTimeout(() => {
-        gameOverModal.style.display = 'none';
-        startGameModal.style.display = 'block';
         modalShowTransition(document.querySelector('.start-game-content'), 1);
     }, 200);
     isPaused = false;
     pauseIcon.style.display = 'block';
     playIcon.style.display = 'none';
-    document.querySelector('.music-mute-icon').style.display = 'none'
-    document.querySelector('.sound-mute-icon').style.display = 'none'
-    document.querySelector('#replayIcon').style.display = 'none'
-    document.querySelector('#homeIcon').style.display = 'none'
-    playBackgroundSound();
-    clickSfx();
+    musicMuteIcon.style.transform = 'translateX(0) rotate(0)';
+    soundMuteIcon.style.transform = 'translateX(0) rotate(0)';
+    replayIcon.style.transform = 'translateX(0) rotate(0)';
+    homeIcon.style.transform = 'translateX(0) rotate(0)';
+    setTimeout(() => {
+        if (window.matchMedia("(max-width: 769px)").matches) {
+            musicMuteIcon.style.transform = 'translateX(-37px) rotate(-180deg)';
+            soundMuteIcon.style.transform = 'translateX(-74px) rotate(-180deg)';
+            replayIcon.style.transform = 'translateX(-111px) rotate(-180deg)';
+            homeIcon.style.transform = 'translateX(-148px) rotate(-180deg)';
+        } else {
+            musicMuteIcon.style.transform = 'translateX(-55px) rotate(-180deg)';
+            soundMuteIcon.style.transform = 'translateX(-110px) rotate(-180deg)';
+            replayIcon.style.transform = 'translateX(-165px) rotate(-180deg)';
+            homeIcon.style.transform = 'translateX(-220px) rotate(-180deg)';
+        }
+    }, 1);
+    setTimeout(() => {
+        musicMuteIcon.style.display = 'none';
+        soundMuteIcon.style.display = 'none';
+        replayIcon.style.display = 'none';
+        homeIcon.style.display = 'none';
+    }, 400);
+    document.getElementById("bgAudio").pause();
+    playBgm()
     return;
 }
 
@@ -502,6 +643,9 @@ function returnToLandingPage() {
 // Game over
 function gameOver() {
     isPlaying = false;
+    clearInterval(updatePizzaInterval)
+    clearInterval(updateGoldenInterval)
+    clearInterval(updateBombInterval)
     // Menghentikan suara latar belakang
     document.getElementById("bgAudio").pause();
     playBgm()
@@ -513,6 +657,48 @@ function gameOver() {
         score: score
     };
 
+    if (subPlayerName === 'Guest') {
+        var allPlayers = JSON.parse(localStorage.getItem('players')) || [];
+
+        // opsi 1
+        if (score > highscore) {
+            highscore = score; // Perbarui high score jika skor saat ini lebih tinggi
+            highscoreText.textContent = 'Highscore: ' + highscore; // Perbarui teks high score di layar
+
+            // Simpan high score ke local storage
+            localStorage.setItem('highscore', highscore);
+        }
+
+        var allPlayers = JSON.parse(localStorage.getItem('players')) || [];
+        allPlayers.sort(function (a, b) {
+            return b.score - a.score;
+        });
+        var topPlayers = allPlayers.slice(0, 5);
+        
+        var tabel = document.querySelector('.top-players-data');
+
+        tabel.innerHTML = '';
+        if (topPlayers.length > 0) {
+            topPlayers.forEach(function (player) {
+                tabel.innerHTML +=
+                    `<tr>
+                        <td>${player.name}</td>
+                        <td>${player.level}</td>
+                        <td>${player.score}</td>
+                    </tr>`;
+            });
+        }
+
+        gameOverModal.style.display = 'block';
+        document.querySelector('.game-over-content').style.transform = 'scale(0)'
+        document.querySelector('.game-over-content').style.opacity = '0'
+        modalShowTransition(document.querySelector('.game-over-content'), 1)
+        return
+    }
+
+    // ubah nama (pendek) player spt semula
+    subPlayerName = '';
+    
     var allPlayers = JSON.parse(localStorage.getItem('players')) || [];
 
     // Cari indeks pemain dengan nama yang sama
@@ -523,22 +709,25 @@ function gameOver() {
     // Jika pemain dengan nama yang sama ditemukan
     if (playerIndex !== -1) {
         if (score > allPlayers[playerIndex].score) {
-            allPlayers[playerIndex].score = score;
-        }
-        if (playerLevel !== allPlayers[playerIndex].level) {
-            // allPlayers[playerIndex].level = playerLevel;
+            if (playerLevel === allPlayers[playerIndex].level) {
+                allPlayers[playerIndex].score = score;
+            } else {
+                allPlayers.push(playerData);
+            }
+        } else if (playerLevel !== allPlayers[playerIndex].level) {
             allPlayers.push(playerData);
         }
     } else {
         // Tambahkan pemain baru jika nama tidak ada dalam local storage
         if (playerName !== undefined) {
             allPlayers.push(playerData);
-            console.log('tidak guest');
+            // console.log('tidak guest');
         }
     }
 
     localStorage.setItem('players', JSON.stringify(allPlayers));
 
+    // opsi 1
     if (score > highscore) {
         highscore = score; // Perbarui high score jika skor saat ini lebih tinggi
         highscoreText.textContent = 'Highscore: ' + highscore; // Perbarui teks high score di layar
@@ -547,18 +736,12 @@ function gameOver() {
         localStorage.setItem('highscore', highscore);
     }
 
-    // Ambil data pemain dari localStorage
     var allPlayers = JSON.parse(localStorage.getItem('players')) || [];
-
-    // Urutkan pemain berdasarkan skor (descending)
     allPlayers.sort(function (a, b) {
         return b.score - a.score;
     });
-
-    // Batasi hasil ke 5 pemain teratas
     var topPlayers = allPlayers.slice(0, 5);
-
-    // Dapatkan elemen untuk menampilkan data pemain
+    
     var tabel = document.querySelector('.top-players-data');
 
     tabel.innerHTML = '';
@@ -579,8 +762,8 @@ function gameOver() {
     // perkecil element modal dari style defaultnya 
     document.querySelector('.game-over-content').style.transform = 'scale(0)'
     document.querySelector('.game-over-content').style.opacity = '0'
-    // (element, scale,   opacity, delay)
-    // (element, default, default, 1    ) gunakan 1 untuk tanpa delay
+    // parameter => (element, delay  ,scale   , opacity)
+    // parameter => (element, 1      , default, default) gunakan 1 untuk tanpa delay
     modalShowTransition(document.querySelector('.game-over-content'), 1)
 }
 
@@ -662,6 +845,19 @@ function showLevel(level) {
     }
 }
 
+// ________[Highscore (all players)]________
+// opsi 2
+// function getTopHighscore(level) {
+//     let allPlayers = JSON.parse(localStorage.getItem('players')) || [];
+//     let topPlayers = allPlayers.filter(player => player.level === level);
+//     topPlayers.sort(function (a, b) {
+//         return b.score - a.score;
+//     });
+//     let content = `Highscore: ${topPlayers[0].score}(${topPlayers[0].name})`
+//     // console.log(content);
+//     highscoreText.textContent = content
+// }
+
 
 // ________[Countdown before startgame function]________
 function startCountdown() {
@@ -673,6 +869,14 @@ function startCountdown() {
     let countdownInterval;
     document.getElementById("bgm").pause()
     playCDSound()
+
+    // console.log(localStorage.getItem('highscore'));
+    if (localStorage.getItem('highscore') !== null) {
+        highscoreText.textContent = `Highscore: ${localStorage.getItem('highscore')}`
+    }
+
+    // opsi 2
+    // getTopHighscore(playerLevel)
 
     countdownElement.style.fontSize = '17vh'
     countdownElement.style.color = 'white'
@@ -722,13 +926,20 @@ startButton.addEventListener('click', function () {
     clickSfx()
     playerName = document.getElementById('name').value; // mengambil name value
     playerLevel = document.getElementById('level').value; // mengambil level value
+    // nama pendek player (5 huruf)
+    var maxLength = 6;
+    subPlayerName = playerName;
+    if (playerName.length > maxLength) {
+        subPlayerName = playerName.substring(0, 5) + '..';
+    };
 
+    document.querySelector('.input-info').innerText = ''
     if (playerName === '') {
         document.querySelector('.input-info').innerText = 'You have not entered a name.'
         return
+    } else if (playerName.length > 12) {
+        document.querySelector('.input-info').innerText = 'The maximum of name length is 12 characters.'
     } else if (usernameCheck(playerName)) {
-        document.querySelector('.input-info').innerText = ''
-
         modalHideTransition(document.querySelector('.start-game-content'), 1)
         setTimeout(() => {
             startGameModal.style.display = 'none';
@@ -755,22 +966,29 @@ document.addEventListener('keydown', function (e) {
                 return;
             }
 
+            if (gameOverModal.style.display === 'block') {
+                modalHideTransition(document.querySelector('.game-over-content'), 1)
+                setTimeout(() => {
+                    gameOverModal.style.display = 'none';
+                }, 200)
+
+                setTimeout(() => {
+                    startCountdown();
+                }, 200);
+            }
+            
+            document.querySelector('.input-info').innerHTML = ''
             if (playerName === '') {
                 document.querySelector('.input-info').innerHTML = 'You have not entered a name.'
                 return
+            } else if (playerName.length > 12) {
+                document.querySelector('.input-info').innerText = 'The maximum of name length is 12 characters.'
             } else if (usernameCheck(playerName)) {
-                document.querySelector('.input-info').innerHTML = ''
 
                 modalHideTransition(document.querySelector('.start-game-content'), 1)
                 setTimeout(() => {
                     startGameModal.style.display = 'none';
                 }, 200)
-                if (startGameModal.style.display = 'none') {
-                    modalHideTransition(document.querySelector('.game-over-content'), 1)
-                    setTimeout(() => {
-                        gameOverModal.style.display = 'none';
-                    }, 200)
-                }
 
                 setTimeout(() => {
                     startCountdown();
@@ -804,32 +1022,26 @@ document.addEventListener('keydown', function (e) {
 
 
 // ________[Start game as Guest function]________
-document.addEventListener('keydown', (e) => {
-    if (e.ctrlKey && e.key === 'm') {
-        clickSfx()
-        playerName = document.getElementById('name').value; // mengambil name value
-        playerLevel = document.getElementById('level').value; // mengambil level value
-        document.querySelector('.input-info').innerHTML = ''
+guestButton.addEventListener('click', function () {
+    clickSfx()
+    playerName = document.getElementById('name').value; // mengambil name value
+    playerLevel = document.getElementById('level').value; // mengambil level value
+    document.querySelector('.input-info').innerHTML = ''
+    subPlayerName = 'Guest';
 
-        modalHideTransition(document.querySelector('.start-game-content'), 1)
-        setTimeout(() => {
-            startGameModal.style.display = 'none';
-        }, 200)
-        if (startGameModal.style.display = 'none') {
-            modalHideTransition(document.querySelector('.game-over-content'), 1)
-            setTimeout(() => {
-                gameOverModal.style.display = 'none';
-            }, 200)
-        }
-        setTimeout(() => {
-            startCountdown();
-        }, 200);
-    }
+    modalHideTransition(document.querySelector('.start-game-content'), 1)
+    setTimeout(() => {
+        startGameModal.style.display = 'none';
+    }, 200)
+
+    setTimeout(() => {
+        startCountdown();
+    }, 200);
 })
 
 
 // ________[Close Gameover modal function]________
-document.querySelector(".close").addEventListener("click", function () {
+function closeGameOver() {
     clickSfx()
     modalHideTransition(document.querySelector('.game-over-content'))
 
@@ -840,11 +1052,11 @@ document.querySelector(".close").addEventListener("click", function () {
         startGameModal.style.display = 'block';
         modalShowTransition(document.querySelector('.start-game-content'), 1)
     }, 300)
-});
+}
 
 
 // ________[Close Leaderboard modal function]________
-document.querySelector(".closeLeaderboard").addEventListener("click", function () {
+function closeLeaderboard() {
     clickSfx()
     modalHideTransition(document.querySelector('.leaderboard-content'))
 
@@ -856,7 +1068,7 @@ document.querySelector(".closeLeaderboard").addEventListener("click", function (
         modalShowTransition(document.querySelector('.game-over-content'), 1)
     }, 300)
 
-});
+}
 
 
 // ________[Modal handler function (hide/show modal)]________
@@ -1054,12 +1266,6 @@ function animateCircles() {
 }
 animateCircles()
 
-document.body.addEventListener('mouseleave', function (event) {
-    circles.forEach(function (circle) {
-        circle.style.display = 'none'
-    })
-});
-
 function mediaDetection(x) {
     if (x.matches) {
         circles.forEach(function (circle) {
@@ -1136,9 +1342,18 @@ document.addEventListener('touchmove', function (event) {
             }
         }
     }
-});
+
+    event.preventDefault()
+}, { passive: false });
 
 document.addEventListener('touchend', function (event) {
     initialX = null;
     initialY = null;
 });
+
+
+// -----------<({HIGHSCORE DI POJOK KANAN BOARD})>-----------
+// |No_____| Nama______________________|Filter_____| Keyword (ctrl+f)_____|
+// [opsi 1]| highscore per sesi main   |           | opsi 1
+// [opsi 2]| highscore seluruh pemain  |(by level) | opsi 2
+// [opsi 3]| highscore per nama pemain |(by level) | belom
